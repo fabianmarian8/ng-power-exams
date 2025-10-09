@@ -1,0 +1,27 @@
+name: Bootstrap Yarn Zero-Install
+on:
+  workflow_dispatch: {}
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Enable Corepack (Yarn 3)
+        run: corepack enable
+      - name: Set Yarn version
+        run: yarn set version stable
+      - name: Yarn install (online) to populate .yarn/cache
+        run: yarn install
+      - name: Commit Yarn artifacts
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add .yarn .yarnrc.yml package.json yarn.lock
+          git commit -m "chore: bootstrap Yarn Zero-Install" || echo "no changes"
+          git push
