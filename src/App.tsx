@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Outages from "./pages/Outages";
 import Results from "./pages/Results";
+import OutageGuide from "./pages/OutageGuide";
+import ResultGuide from "./pages/ResultGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -19,7 +21,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/outages" element={<Outages />} />
+          <Route path="/outages/:slug" element={<OutageGuide />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/results/:slug" element={<ResultGuide />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

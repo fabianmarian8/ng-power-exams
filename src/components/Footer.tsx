@@ -24,18 +24,18 @@ const Footer = () => {
             <h3 className="mb-4 text-sm font-semibold">Power Outages</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/outages/ikeja" className="text-muted-foreground hover:text-primary">
-                  Ikeja Electric
+                <Link to="/outages/national-grid-status" className="text-muted-foreground hover:text-primary">
+                  National Grid Status
                 </Link>
               </li>
               <li>
-                <Link to="/outages/eko" className="text-muted-foreground hover:text-primary">
-                  Eko Disco
+                <Link to="/outages/outage-contacts-nigeria" className="text-muted-foreground hover:text-primary">
+                  DisCo Customer Care List
                 </Link>
               </li>
               <li>
-                <Link to="/outages/abuja" className="text-muted-foreground hover:text-primary">
-                  Abuja (AEDC)
+                <Link to="/outages/safety-during-blackouts" className="text-muted-foreground hover:text-primary">
+                  Safety During Blackouts
                 </Link>
               </li>
             </ul>
@@ -45,55 +45,40 @@ const Footer = () => {
             <h3 className="mb-4 text-sm font-semibold">Exam Results</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/results/jamb" className="text-muted-foreground hover:text-primary">
-                  JAMB Results
+                <Link to="/results/check-jamb-result-2025" className="text-muted-foreground hover:text-primary">
+                  Check JAMB Result
                 </Link>
               </li>
               <li>
-                <Link to="/results/waec" className="text-muted-foreground hover:text-primary">
-                  WAEC Results
+                <Link to="/results/waec-result-checker" className="text-muted-foreground hover:text-primary">
+                  WAEC Result Checker
                 </Link>
               </li>
               <li>
-                <Link to="/results/neco" className="text-muted-foreground hover:text-primary">
-                  NECO Results
+                <Link to="/results/neco-result-checker" className="text-muted-foreground hover:text-primary">
+                  NECO Result Checker
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">Important Links</h3>
+            <h3 className="mb-4 text-sm font-semibold">Quick Resources</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a 
-                  href="https://jamb.gov.ng" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  JAMB Official
-                </a>
+                <Link to="/outages/report-outage-aedc-pors" className="text-muted-foreground hover:text-primary">
+                  Report AEDC Outage (PORS)
+                </Link>
               </li>
               <li>
-                <a 
-                  href="https://waecdirect.org" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  WAEC Direct
-                </a>
+                <Link to="/outages/prepaid-meter-balance" className="text-muted-foreground hover:text-primary">
+                  Check Prepaid Meter Balance
+                </Link>
               </li>
               <li>
-                <a 
-                  href="https://results.neco.gov.ng" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  NECO Results
-                </a>
+                <Link to="/results/neco-e-verify" className="text-muted-foreground hover:text-primary">
+                  NECO e-Verify Guide
+                </Link>
               </li>
             </ul>
           </div>
