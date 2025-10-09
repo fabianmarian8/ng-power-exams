@@ -2,6 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { ArrowRight, LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface InfoCardProps {
   title: string;
@@ -12,6 +13,8 @@ interface InfoCardProps {
 }
 
 const InfoCard = ({ title, description, icon: Icon, href, items }: InfoCardProps) => {
+  const { t } = useLanguage();
+  
   return (
     <Card className="group transition-all hover:shadow-lg hover:border-primary/50">
       <CardHeader>
@@ -36,7 +39,7 @@ const InfoCard = ({ title, description, icon: Icon, href, items }: InfoCardProps
         )}
         <Link to={href}>
           <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground">
-            View Details
+            {t('common.viewDetails')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>

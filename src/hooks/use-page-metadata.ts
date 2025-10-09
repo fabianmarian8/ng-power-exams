@@ -2,12 +2,19 @@ import { useEffect } from "react";
 
 const SITE_NAME = "NaijaInfo";
 
-export const usePageMetadata = (title: string, description?: string) => {
+export const usePageMetadata = (title: string, description?: string, lang?: string) => {
   useEffect(() => {
+    // Update document language
+    if (lang) {
+      document.documentElement.lang = lang;
+    }
+
+    // Update page title
     if (title) {
       document.title = `${title} | ${SITE_NAME}`;
     }
 
+    // Update meta description
     if (description) {
       let meta = document.querySelector("meta[name='description']");
 
@@ -19,7 +26,7 @@ export const usePageMetadata = (title: string, description?: string) => {
 
       meta.setAttribute("content", description);
     }
-  }, [title, description]);
+  }, [title, description, lang]);
 };
 
 export default usePageMetadata;

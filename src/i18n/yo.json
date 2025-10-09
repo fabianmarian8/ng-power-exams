@@ -1,0 +1,37 @@
+{
+  "header": {
+    "siteName": "NaijaInfo",
+    "powerOutages": "Power Outages",
+    "examResults": "Exam Results",
+    "language": "Èdè"
+  },
+  "footer": {
+    "tagline": "Your trusted source for power outage updates and exam results in Nigeria.",
+    "powerOutages": "Power Outages",
+    "nationalGridStatus": "National Grid Status",
+    "discoCustomerCare": "DisCo Customer Care List",
+    "safetyDuringBlackouts": "Safety During Blackouts",
+    "examResults": "Exam Results",
+    "checkJambResult": "Check JAMB Result",
+    "waecResultChecker": "WAEC Result Checker",
+    "necoResultChecker": "NECO Result Checker",
+    "quickResources": "Quick Resources",
+    "reportAedcOutage": "Report AEDC Outage (PORS)",
+    "checkPrepaidMeter": "Check Prepaid Meter Balance",
+    "necoEverify": "NECO e-Verify Guide",
+    "copyright": "© {year} NaijaInfo. All official links redirect to government portals."
+  },
+  "common": {
+    "viewDetails": "View Details",
+    "learnMore": "Learn More",
+    "officialWebsite": "Official Website",
+    "lastUpdated": "Last updated",
+    "home": "Home"
+  },
+  "index": {
+    "hero": {
+      "title": "Nigeria Power & Exam Results Hub",
+      "subtitle": "Get real-time power outage updates and check exam results"
+    }
+  }
+}

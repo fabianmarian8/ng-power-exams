@@ -6,8 +6,12 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Header = () => {
+  const { t } = useLanguage();
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -15,19 +19,20 @@ const Header = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary">
             <Zap className="h-6 w-6 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold">NaijaInfo</span>
+          <span className="text-xl font-bold">{t('header.siteName')}</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           <Link to="/outages" className="flex items-center space-x-2 text-sm font-medium transition-colors hover:text-primary">
             <Zap className="h-4 w-4" />
-            <span>Power Outages</span>
+            <span>{t('header.powerOutages')}</span>
           </Link>
           <Link to="/results" className="flex items-center space-x-2 text-sm font-medium transition-colors hover:text-primary">
             <GraduationCap className="h-4 w-4" />
-            <span>Exam Results</span>
+            <span>{t('header.examResults')}</span>
           </Link>
+          <LanguageSwitcher variant="dropdown" />
         </nav>
 
         {/* Mobile Navigation */}
@@ -38,14 +43,17 @@ const Header = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="right">
-            <nav className="flex flex-col space-y-4 mt-8">
+            <div className="mb-6 pb-4 border-b">
+              <LanguageSwitcher variant="list" />
+            </div>
+            <nav className="flex flex-col space-y-4">
               <Link to="/outages" className="flex items-center space-x-2 text-lg font-medium">
                 <Zap className="h-5 w-5" />
-                <span>Power Outages</span>
+                <span>{t('header.powerOutages')}</span>
               </Link>
               <Link to="/results" className="flex items-center space-x-2 text-lg font-medium">
                 <GraduationCap className="h-5 w-5" />
-                <span>Exam Results</span>
+                <span>{t('header.examResults')}</span>
               </Link>
             </nav>
           </SheetContent>
