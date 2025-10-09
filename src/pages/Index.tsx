@@ -50,9 +50,9 @@ const Index = () => {
         <section className="container py-8">
           <Alert>
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>{t('index.alert.title')}</AlertTitle>
+            <AlertTitle>{t('index.officialAlert.title')}</AlertTitle>
             <AlertDescription>
-              {t('index.alert.description')}
+              {t('index.officialAlert.description')}
             </AlertDescription>
           </Alert>
         </section>
@@ -61,26 +61,26 @@ const Index = () => {
           <div className="grid gap-8 md:grid-cols-2">
             <InfoCard
               icon={Zap}
-              title={t('index.outagesCard.title')}
-              description={t('index.outagesCard.description')}
+              title={t('index.powerCard.title')}
+              description={t('index.powerCard.description')}
               href="/outages"
               items={[
-                t('index.outagesCard.items.0'),
-                t('index.outagesCard.items.1'),
-                t('index.outagesCard.items.2'),
-                t('index.outagesCard.items.3')
+                t('index.powerCard.item1'),
+                t('index.powerCard.item2'),
+                t('index.powerCard.item3'),
+                t('index.powerCard.item4')
               ]}
             />
             <InfoCard
               icon={GraduationCap}
-              title={t('index.resultsCard.title')}
-              description={t('index.resultsCard.description')}
+              title={t('index.examCard.title')}
+              description={t('index.examCard.description')}
               href="/results"
               items={[
-                t('index.resultsCard.items.0'),
-                t('index.resultsCard.items.1'),
-                t('index.resultsCard.items.2'),
-                t('index.resultsCard.items.3')
+                t('index.examCard.item1'),
+                t('index.examCard.item2'),
+                t('index.examCard.item3'),
+                t('index.examCard.item4')
               ]}
             />
           </div>
@@ -89,9 +89,9 @@ const Index = () => {
         <section className="border-t bg-muted/40">
           <div className="container py-12 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">{t('index.quickAccess.title')}</h2>
+              <h2 className="text-2xl font-bold">{t('index.quickLinks.title')}</h2>
               <Button asChild variant="ghost" className="text-primary hover:text-primary">
-                <Link to="/outages">{t('index.quickAccess.viewAllDiscos')}</Link>
+                <Link to="/outages">{t('index.quickLinks.viewAllDiscos')}</Link>
               </Button>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -124,9 +124,9 @@ const Index = () => {
 
         <section className="container py-12 space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">{t('index.quickAccess.examShortcuts')}</h2>
+            <h2 className="text-2xl font-bold">{t('index.quickLinks.examShortcuts')}</h2>
             <Button asChild variant="ghost" className="text-primary hover:text-primary">
-              <Link to="/results">{t('index.quickAccess.browseResultsHub')}</Link>
+              <Link to="/results">{t('index.quickLinks.browseResultsHub')}</Link>
             </Button>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -174,14 +174,14 @@ const Index = () => {
               <div className="space-y-2 max-w-2xl">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Phone className="h-6 w-6 text-primary" />
-                  {t('index.emergency.title')}
+                  {t('index.emergencyContact.title')}
                 </h2>
                 <p className="text-muted-foreground">
-                  {t('index.emergency.description')}
+                  {t('index.emergencyContact.subtitle')}
                 </p>
               </div>
               <Button asChild variant="outline">
-                <Link to="/outages/outage-contacts-nigeria">{t('index.emergency.cta')}</Link>
+                <Link to="/outages/outage-contacts-nigeria">{t('index.emergencyContact.cta')}</Link>
               </Button>
             </div>
           </div>
