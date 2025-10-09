@@ -8,8 +8,10 @@ import { Link } from "react-router-dom";
 import { ExternalLink, MapPin, AlertTriangle, Compass } from "lucide-react";
 import { outageGuides } from "@/data/outages";
 import usePageMetadata from "@/hooks/use-page-metadata";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Outages = () => {
+  const { t } = useLanguage();
   usePageMetadata("meta.outages.title", "meta.outages.description");
 
   const nationalGuides = outageGuides.filter((guide) => guide.category === "national");
@@ -27,13 +29,12 @@ const Outages = () => {
         <section className="border-b bg-gradient-to-b from-accent/20 to-background">
           <div className="container py-12 md:py-16">
             <div className="mx-auto max-w-3xl space-y-4">
-              <Badge variant="outline" className="text-primary border-primary/60">Power Intelligence Hub</Badge>
+              <Badge variant="outline" className="text-primary border-primary/60">{t('outages.hero.badge')}</Badge>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-                Nigeria Power Outage Updates
+                {t('outages.hero.title')}
               </h1>
               <p className="text-lg text-muted-foreground">
-                Track national grid status, get location-specific outage information, and access step-by-step reporting guides for
- every Distribution Company.
+                {t('outages.hero.subtitle')}
               </p>
             </div>
           </div>
@@ -51,7 +52,7 @@ const Outages = () => {
               </CardHeader>
               <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <Button asChild>
-                  <Link to={`/outages/${nationalHighlight.slug}`}>View National Status Guide</Link>
+                  <Link to={`/outages/${nationalHighlight.slug}`}>{t('outages.nationalCard.cta')}</Link>
                 </Button>
                 <div className="flex flex-wrap gap-3">
                   {nationalHighlight.officialLinks?.slice(0, 2).map((link) => (
@@ -69,8 +70,8 @@ const Outages = () => {
 
           <div className="space-y-6">
             <div className="flex items-center justify-between gap-4">
-              <h2 className="text-2xl font-semibold">Outage Guides by Distribution Company</h2>
-              <Badge variant="secondary" className="rounded-full">12 DisCos + Aba Power</Badge>
+              <h2 className="text-2xl font-semibold">{t('outages.discoSection.title')}</h2>
+              <Badge variant="secondary" className="rounded-full">{t('outages.discoSection.badge')}</Badge>
             </div>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {discoGuides.map((guide) => (
@@ -95,7 +96,7 @@ const Outages = () => {
                       </div>
                     )}
                     <Button asChild variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Link to={`/outages/${guide.slug}`}>Open Guide</Link>
+                      <Link to={`/outages/${guide.slug}`}>{t('common.openGuide')}</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -105,9 +106,9 @@ const Outages = () => {
 
           <div className="grid gap-8 lg:grid-cols-2">
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">How-To Guides</h2>
+              <h2 className="text-2xl font-semibold">{t('outages.howToSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                Learn how to report outages, locate your feeder, and stay safe during blackouts with concise step-by-step content.
+                {t('outages.howToSection.description')}
               </p>
               <div className="grid gap-4">
                 {howToGuides.map((guide) => (
@@ -118,7 +119,7 @@ const Outages = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/outages/${guide.slug}`}>View instructions</Link>
+                        <Link to={`/outages/${guide.slug}`}>{t('outages.howToSection.cta')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -127,9 +128,9 @@ const Outages = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">Resource Library</h2>
+              <h2 className="text-2xl font-semibold">{t('outages.resourceSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                Save essential contact lists, maintenance calendars, and prepaid meter tips for quick reference.
+                {t('outages.resourceSection.description')}
               </p>
               <div className="grid gap-4">
                 {resourceGuides.map((guide) => (
@@ -140,7 +141,7 @@ const Outages = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/outages/${guide.slug}`}>Explore resource</Link>
+                        <Link to={`/outages/${guide.slug}`}>{t('outages.resourceSection.cta')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -150,9 +151,9 @@ const Outages = () => {
           </div>
 
           <Alert className="border-primary/50 bg-primary/5">
-            <AlertTitle>Stay Informed the Right Way</AlertTitle>
+            <AlertTitle>{t('outages.stayInformed.title')}</AlertTitle>
             <AlertDescription className="text-sm text-muted-foreground">
-              Cross-check social media updates with the official DisCo channels linked above. For national grid disturbances, always confirm with the Transmission Company of Nigeria (TCN) before sharing alerts.
+              {t('outages.stayInformed.text')}
             </AlertDescription>
           </Alert>
 
@@ -160,15 +161,15 @@ const Outages = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Compass className="h-5 w-5 text-primary" />
-                Need Exam Support Instead?
+                {t('outages.needExamSupport.title')}
               </CardTitle>
               <CardDescription>
-                Visit the Results Hub for JAMB, WAEC, and NECO guidance with official portals and troubleshooting steps.
+                {t('outages.needExamSupport.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <Link to="/results">Go to Results Hub</Link>
+                <Link to="/results">{t('outages.needExamSupport.cta')}</Link>
               </Button>
             </CardContent>
           </Card>

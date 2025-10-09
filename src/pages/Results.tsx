@@ -8,8 +8,10 @@ import { Link } from "react-router-dom";
 import { ExternalLink, ShieldCheck, GraduationCap } from "lucide-react";
 import { resultGuides } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Results = () => {
+  const { t } = useLanguage();
   usePageMetadata("meta.results.title", "meta.results.description");
 
   const jambGuides = resultGuides.filter((guide) => guide.category === "jamb");
@@ -25,10 +27,10 @@ const Results = () => {
         <section className="border-b bg-gradient-to-b from-accent/20 to-background">
           <div className="container py-12 md:py-16">
             <div className="mx-auto max-w-3xl space-y-4">
-              <Badge variant="outline" className="text-primary border-primary/60">Results Hub</Badge>
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">Nigeria Exam Results Hub</h1>
+              <Badge variant="outline" className="text-primary border-primary/60">{t('results.hero.badge')}</Badge>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{t('results.hero.title')}</h1>
               <p className="text-lg text-muted-foreground">
-                Use official portals to check your scores, print slips, and verify results. Each guide includes trusted links, fees, and troubleshooting steps.
+                {t('results.hero.subtitle')}
               </p>
             </div>
           </div>
@@ -46,7 +48,7 @@ const Results = () => {
               </CardHeader>
               <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <Button asChild>
-                  <Link to={`/results/${highlighted.slug}`}>Read Step-by-Step Guide</Link>
+                  <Link to={`/results/${highlighted.slug}`}>{t('results.highlightedCard.cta')}</Link>
                 </Button>
                 <div className="flex flex-wrap gap-3">
                   {highlighted.officialLinks.slice(0, 2).map((link) => (
@@ -64,9 +66,9 @@ const Results = () => {
 
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">JAMB Guides</h2>
+              <h2 className="text-2xl font-semibold">{t('results.jambSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                Access UTME results, admission status, and official SMS options on the e-Facility portal.
+                {t('results.jambSection.description')}
               </p>
               <div className="grid gap-4">
                 {jambGuides.map((guide) => (
@@ -77,7 +79,7 @@ const Results = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/results/${guide.slug}`}>Open JAMB Guide</Link>
+                        <Link to={`/results/${guide.slug}`}>{t('results.jambSection.cta')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -86,9 +88,9 @@ const Results = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">WAEC Guides</h2>
+              <h2 className="text-2xl font-semibold">{t('results.waecSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                Learn how to use WAEC e-PINs, fix common errors, and verify candidate results securely.
+                {t('results.waecSection.description')}
               </p>
               <div className="grid gap-4">
                 {waecGuides.map((guide) => (
@@ -99,7 +101,7 @@ const Results = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/results/${guide.slug}`}>Open WAEC Guide</Link>
+                        <Link to={`/results/${guide.slug}`}>{t('results.waecSection.cta')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -108,9 +110,9 @@ const Results = () => {
             </div>
 
             <div className="space-y-4">
-              <h2 className="text-2xl font-semibold">NECO Guides</h2>
+              <h2 className="text-2xl font-semibold">{t('results.necoSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                Buy NECO tokens, check SSCE results, and authenticate certificates with e-Verify.
+                {t('results.necoSection.description')}
               </p>
               <div className="grid gap-4">
                 {necoGuides.map((guide) => (
@@ -121,7 +123,7 @@ const Results = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/results/${guide.slug}`}>Open NECO Guide</Link>
+                        <Link to={`/results/${guide.slug}`}>{t('results.necoSection.cta')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -131,9 +133,9 @@ const Results = () => {
           </div>
 
           <Alert className="border-primary/50 bg-primary/5">
-            <AlertTitle>Protect Your Credentials</AlertTitle>
+            <AlertTitle>{t('results.protectCredentials.title')}</AlertTitle>
             <AlertDescription className="text-sm text-muted-foreground">
-              Only enter registration numbers, PINs, or tokens on the official portals linked above. Avoid third-party sites that claim to improve scores or collect payments without receipts.
+              {t('results.protectCredentials.text')}
             </AlertDescription>
           </Alert>
 
@@ -141,15 +143,15 @@ const Results = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-primary" />
-                Need Power Outage Updates?
+                {t('results.needOutageSupport.title')}
               </CardTitle>
               <CardDescription>
-                Explore DisCo-specific outage trackers, contact lists, and safety tips across Nigeria.
+                {t('results.needOutageSupport.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <Link to="/outages">Go to Outage Hub</Link>
+                <Link to="/outages">{t('results.needOutageSupport.cta')}</Link>
               </Button>
             </CardContent>
           </Card>

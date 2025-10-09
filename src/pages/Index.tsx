@@ -9,8 +9,10 @@ import { Link } from "react-router-dom";
 import { outageGuides } from "@/data/outages";
 import { resultGuides } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const { t } = useLanguage();
   usePageMetadata("meta.homepage.title", "meta.homepage.description");
 
   const featuredOutages = outageGuides.filter((guide) => guide.category === "disco").slice(0, 6);
@@ -28,17 +30,17 @@ const Index = () => {
           <div className="container py-16 md:py-24">
             <div className="mx-auto max-w-3xl text-center space-y-6">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                Nigeria Power & Exam Results Hub
+                {t('index.hero.title')}
               </h1>
               <p className="text-lg text-muted-foreground md:text-xl">
-                Real-time outage intelligence, official reporting channels, and verified steps to check JAMB, WAEC, and NECO results without compromising your data.
+                {t('index.hero.subtitle')}
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild>
-                  <Link to="/outages/national-grid-status">Check National Grid Status</Link>
+                  <Link to="/outages/national-grid-status">{t('index.hero.ctaPrimary')}</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link to="/results/check-jamb-result-2025">Check JAMB Result</Link>
+                  <Link to="/results/check-jamb-result-2025">{t('index.hero.ctaSecondary')}</Link>
                 </Button>
               </div>
             </div>
@@ -48,9 +50,9 @@ const Index = () => {
         <section className="container py-8">
           <Alert>
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Official Sources Only</AlertTitle>
+            <AlertTitle>{t('index.alert.title')}</AlertTitle>
             <AlertDescription>
-              All exam results and power outage information link directly to official government and DisCo portals. We do not store or process personal data.
+              {t('index.alert.description')}
             </AlertDescription>
           </Alert>
         </section>
@@ -59,26 +61,26 @@ const Index = () => {
           <div className="grid gap-8 md:grid-cols-2">
             <InfoCard
               icon={Zap}
-              title="Power Outage Updates"
-              description="Track outages and planned maintenance across Nigeria's DisCos with direct reporting steps."
+              title={t('index.outagesCard.title')}
+              description={t('index.outagesCard.description')}
               href="/outages"
               items={[
-                "National grid status from TCN",
-                "Contact lists for 12 DisCos and Aba Power",
-                "How to report faults via phone, SMS, or apps",
-                "Safety tips for generators and inverters"
+                t('index.outagesCard.items.0'),
+                t('index.outagesCard.items.1'),
+                t('index.outagesCard.items.2'),
+                t('index.outagesCard.items.3')
               ]}
             />
             <InfoCard
               icon={GraduationCap}
-              title="Exam Results Checker"
-              description="Step-by-step guides to check official JAMB, WAEC, and NECO results and verifications."
+              title={t('index.resultsCard.title')}
+              description={t('index.resultsCard.description')}
               href="/results"
               items={[
-                "JAMB e-Facility, CAPS, and SMS results",
-                "WAEC e-PIN purchases and verification",
-                "NECO tokens and e-Verify portal",
-                "Troubleshooting common result errors"
+                t('index.resultsCard.items.0'),
+                t('index.resultsCard.items.1'),
+                t('index.resultsCard.items.2'),
+                t('index.resultsCard.items.3')
               ]}
             />
           </div>
@@ -87,9 +89,9 @@ const Index = () => {
         <section className="border-t bg-muted/40">
           <div className="container py-12 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">Quick Access by Location</h2>
+              <h2 className="text-2xl font-bold">{t('index.quickAccess.title')}</h2>
               <Button asChild variant="ghost" className="text-primary hover:text-primary">
-                <Link to="/outages">View all DisCos</Link>
+                <Link to="/outages">{t('index.quickAccess.viewAllDiscos')}</Link>
               </Button>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -111,7 +113,7 @@ const Index = () => {
                       </div>
                     )}
                     <Button asChild variant="outline" size="sm">
-                      <Link to={`/outages/${guide.slug}`}>See outage guide</Link>
+                      <Link to={`/outages/${guide.slug}`}>{t('common.viewDetails')}</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -122,9 +124,9 @@ const Index = () => {
 
         <section className="container py-12 space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Exam Result Shortcuts</h2>
+            <h2 className="text-2xl font-bold">{t('index.quickAccess.examShortcuts')}</h2>
             <Button asChild variant="ghost" className="text-primary hover:text-primary">
-              <Link to="/results">Browse results hub</Link>
+              <Link to="/results">{t('index.quickAccess.browseResultsHub')}</Link>
             </Button>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -138,7 +140,7 @@ const Index = () => {
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <p>{guide!.heroDescription}</p>
                     <Button asChild variant="outline" size="sm">
-                      <Link to={`/results/${guide!.slug}`}>Open guide</Link>
+                      <Link to={`/results/${guide!.slug}`}>{t('common.openGuide')}</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -157,7 +159,7 @@ const Index = () => {
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <p>{guide.heroDescription}</p>
                     <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                      <Link to={`/outages/${guide.slug}`}>Read how-to</Link>
+                      <Link to={`/outages/${guide.slug}`}>{t('common.readHowTo')}</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -172,14 +174,14 @@ const Index = () => {
               <div className="space-y-2 max-w-2xl">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Phone className="h-6 w-6 text-primary" />
-                  Need Emergency Help?
+                  {t('index.emergency.title')}
                 </h2>
                 <p className="text-muted-foreground">
-                  For urgent power issues, contact your local DisCo customer care. For exam result issues, reach out to the official examination body helplines.
+                  {t('index.emergency.description')}
                 </p>
               </div>
               <Button asChild variant="outline">
-                <Link to="/outages/outage-contacts-nigeria">Save customer care numbers</Link>
+                <Link to="/outages/outage-contacts-nigeria">{t('index.emergency.cta')}</Link>
               </Button>
             </div>
           </div>
@@ -191,17 +193,17 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Compass className="h-5 w-5 text-primary" />
-                  Explore the Full Knowledge Base
+                  {t('index.knowledgeBase.title')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
-                <p>More than 30 guides cover outage reporting, prepaid meters, blackout safety, and exam verification steps.</p>
+                <p>{t('index.knowledgeBase.description')}</p>
                 <div className="flex flex-wrap gap-3">
                   <Button asChild>
-                    <Link to="/outages">Power Outage Guides</Link>
+                    <Link to="/outages">{t('index.knowledgeBase.outagesButton')}</Link>
                   </Button>
                   <Button asChild variant="outline">
-                    <Link to="/results">Exam Results Guides</Link>
+                    <Link to="/results">{t('index.knowledgeBase.resultsButton')}</Link>
                   </Button>
                 </div>
               </CardContent>
