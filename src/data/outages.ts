@@ -52,12 +52,12 @@ export const outageGuides: OutageGuide[] = [
     officialLinks: [
       {
         label: "TCN Nigeria Website",
-        href: "https://www.tcnng.org",
+        href: "https://www.tcn.org.ng",
         description: "Official grid updates and press releases"
       },
       {
         label: "TCN on X (Twitter)",
-        href: "https://twitter.com/TCN_NIGERIA",
+        href: "https://x.com/TCN_NIGERIA",
         description: "Live alerts when national outages occur"
       },
       {
@@ -112,7 +112,7 @@ export const outageGuides: OutageGuide[] = [
     category: "disco",
     coverage: ["Agege", "Ikeja", "Ikorodu", "Abule Egba", "Shomolu"],
     reportChannels: [
-      { label: "Customer Care", value: "0700-123-5666" },
+      { label: "Customer Care", value: "0700-2255-432" },
       { label: "WhatsApp", value: "+234-901-003-2323" },
       { label: "Email", value: "customercare@ikejaelectric.com" }
     ],
@@ -561,7 +561,7 @@ export const outageGuides: OutageGuide[] = [
     officialLinks: [
       {
         label: "TCN Technical Reports",
-        href: "https://www.tcnng.org/category/press-release",
+        href: "https://www.tcn.org.ng/category/press-release",
         description: "Post-event analyses and restoration updates"
       },
       {
@@ -664,7 +664,7 @@ export const outageGuides: OutageGuide[] = [
       }
     ],
     reportChannels: [
-      { label: "Ikeja Electric", value: "0700-123-5666 (WhatsApp: +234-901-003-2323)" },
+      { label: "Ikeja Electric", value: "0700-2255-432 (WhatsApp: +234-901-003-2323)" },
       { label: "Eko Disco", value: "0708-992-2010 (WhatsApp: +234-708-812-5588)" },
       { label: "AEDC", value: "0803-907-2323 (PORS App support)" },
       { label: "BEDC", value: "0803-901-0003 (SMS: OUT + Account to 34778)" },
@@ -697,7 +697,7 @@ export const outageGuides: OutageGuide[] = [
     officialLinks: [
       {
         label: "TCN Maintenance Notices",
-        href: "https://www.tcnng.org/category/press-release",
+        href: "https://www.tcn.org.ng/category/press-release",
         description: "Daily press releases for transmission line work"
       },
       {
