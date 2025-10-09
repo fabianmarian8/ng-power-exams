@@ -52,7 +52,7 @@ export const outageGuides: OutageGuide[] = [
     officialLinks: [
       {
         label: "TCN Nigeria Website",
-        href: "https://www.tcnng.org",
+        href: "https://www.tcn.org.ng",
         description: "Official grid updates and press releases"
       },
       {
@@ -112,8 +112,8 @@ export const outageGuides: OutageGuide[] = [
     category: "disco",
     coverage: ["Agege", "Ikeja", "Ikorodu", "Abule Egba", "Shomolu"],
     reportChannels: [
-      { label: "Customer Care", value: "0700-123-5666" },
-      { label: "WhatsApp", value: "+234-901-003-2323" },
+      { label: "Customer Care", value: "01-700-0250" },
+      { label: "24/7 Helpline", value: "0700-022-5543" },
       { label: "Email", value: "customercare@ikejaelectric.com" }
     ],
     officialLinks: [
@@ -559,11 +559,11 @@ export const outageGuides: OutageGuide[] = [
       "TCN and GenCos coordinate black-start restoration"
     ],
     officialLinks: [
-      {
-        label: "TCN Technical Reports",
-        href: "https://www.tcnng.org/category/press-release",
-        description: "Post-event analyses and restoration updates"
-      },
+        {
+          label: "TCN Technical Reports",
+          href: "https://www.tcn.org.ng/category/press-release/",
+          description: "Post-event analyses and restoration updates"
+        },
       {
         label: "NERC Regulatory Insights",
         href: "https://nerc.gov.ng/index.php/library/documents/industry-reports",
@@ -664,7 +664,7 @@ export const outageGuides: OutageGuide[] = [
       }
     ],
     reportChannels: [
-      { label: "Ikeja Electric", value: "0700-123-5666 (WhatsApp: +234-901-003-2323)" },
+      { label: "Ikeja Electric", value: "01-700-0250 / 0700-022-5543" },
       { label: "Eko Disco", value: "0708-992-2010 (WhatsApp: +234-708-812-5588)" },
       { label: "AEDC", value: "0803-907-2323 (PORS App support)" },
       { label: "BEDC", value: "0803-901-0003 (SMS: OUT + Account to 34778)" },
@@ -695,11 +695,11 @@ export const outageGuides: OutageGuide[] = [
       "Nigeria planned electricity maintenance schedule with links to TCN and DisCo notices published for the current week.",
     category: "national",
     officialLinks: [
-      {
-        label: "TCN Maintenance Notices",
-        href: "https://www.tcnng.org/category/press-release",
-        description: "Daily press releases for transmission line work"
-      },
+        {
+          label: "TCN Maintenance Notices",
+          href: "https://www.tcn.org.ng/category/press-release/",
+          description: "Daily press releases for transmission line work"
+        },
       {
         label: "Ikeja Electric Planned Outage",
         href: "https://www.ikejaelectric.com/planned-outage",
