@@ -52,7 +52,7 @@ const Outages = () => {
               </CardHeader>
               <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <Button asChild>
-                  <Link to={`/outages/${nationalHighlight.slug}`}>{t('outages.nationalCard.cta')}</Link>
+                  <Link to={`/outages/${nationalHighlight.slug}`}>{t('outages.nationalCard.viewGuide')}</Link>
                 </Button>
                 <div className="flex flex-wrap gap-3">
                   {nationalHighlight.officialLinks?.slice(0, 2).map((link) => (
@@ -119,7 +119,7 @@ const Outages = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/outages/${guide.slug}`}>{t('outages.howToSection.cta')}</Link>
+                        <Link to={`/outages/${guide.slug}`}>{t('outages.howToSection.viewInstructions')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -141,7 +141,7 @@ const Outages = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/outages/${guide.slug}`}>{t('outages.resourceSection.cta')}</Link>
+                        <Link to={`/outages/${guide.slug}`}>{t('outages.resourceSection.explore')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -151,9 +151,9 @@ const Outages = () => {
           </div>
 
           <Alert className="border-primary/50 bg-primary/5">
-            <AlertTitle>{t('outages.stayInformed.title')}</AlertTitle>
+            <AlertTitle>{t('outages.alert.title')}</AlertTitle>
             <AlertDescription className="text-sm text-muted-foreground">
-              {t('outages.stayInformed.text')}
+              {t('outages.alert.description')}
             </AlertDescription>
           </Alert>
 
@@ -161,15 +161,15 @@ const Outages = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Compass className="h-5 w-5 text-primary" />
-                {t('outages.needExamSupport.title')}
+                {t('outages.examCta.title')}
               </CardTitle>
               <CardDescription>
-                {t('outages.needExamSupport.description')}
+                {t('outages.examCta.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <Link to="/results">{t('outages.needExamSupport.cta')}</Link>
+                <Link to="/results">{t('outages.examCta.goToResults')}</Link>
               </Button>
             </CardContent>
           </Card>

@@ -65,10 +65,10 @@ const Index = () => {
               description={t('index.powerCard.description')}
               href="/outages"
               items={[
-                t('index.powerCard.item1'),
-                t('index.powerCard.item2'),
-                t('index.powerCard.item3'),
-                t('index.powerCard.item4')
+                t('index.powerCard.items.0'),
+                t('index.powerCard.items.1'),
+                t('index.powerCard.items.2'),
+                t('index.powerCard.items.3')
               ]}
             />
             <InfoCard
@@ -77,10 +77,10 @@ const Index = () => {
               description={t('index.examCard.description')}
               href="/results"
               items={[
-                t('index.examCard.item1'),
-                t('index.examCard.item2'),
-                t('index.examCard.item3'),
-                t('index.examCard.item4')
+                t('index.examCard.items.0'),
+                t('index.examCard.items.1'),
+                t('index.examCard.items.2'),
+                t('index.examCard.items.3')
               ]}
             />
           </div>
@@ -89,9 +89,9 @@ const Index = () => {
         <section className="border-t bg-muted/40">
           <div className="container py-12 space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">{t('index.quickLinks.title')}</h2>
+              <h2 className="text-2xl font-bold">{t('index.quickAccess.title')}</h2>
               <Button asChild variant="ghost" className="text-primary hover:text-primary">
-                <Link to="/outages">{t('index.quickLinks.viewAllDiscos')}</Link>
+                <Link to="/outages">{t('index.quickAccess.viewAll')}</Link>
               </Button>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -124,9 +124,9 @@ const Index = () => {
 
         <section className="container py-12 space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">{t('index.quickLinks.examShortcuts')}</h2>
+            <h2 className="text-2xl font-bold">{t('index.examShortcuts.title')}</h2>
             <Button asChild variant="ghost" className="text-primary hover:text-primary">
-              <Link to="/results">{t('index.quickLinks.browseResultsHub')}</Link>
+              <Link to="/results">{t('index.examShortcuts.browse')}</Link>
             </Button>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -174,14 +174,14 @@ const Index = () => {
               <div className="space-y-2 max-w-2xl">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                   <Phone className="h-6 w-6 text-primary" />
-                  {t('index.emergencyContact.title')}
+                  {t('index.emergency.title')}
                 </h2>
                 <p className="text-muted-foreground">
-                  {t('index.emergencyContact.subtitle')}
+                  {t('index.emergency.description')}
                 </p>
               </div>
               <Button asChild variant="outline">
-                <Link to="/outages/outage-contacts-nigeria">{t('index.emergencyContact.cta')}</Link>
+                <Link to="/outages/outage-contacts-nigeria">{t('index.emergency.saveNumbers')}</Link>
               </Button>
             </div>
           </div>
@@ -200,10 +200,10 @@ const Index = () => {
                 <p>{t('index.knowledgeBase.description')}</p>
                 <div className="flex flex-wrap gap-3">
                   <Button asChild>
-                    <Link to="/outages">{t('index.knowledgeBase.outagesButton')}</Link>
+                    <Link to="/outages">{t('index.knowledgeBase.powerGuides')}</Link>
                   </Button>
                   <Button asChild variant="outline">
-                    <Link to="/results">{t('index.knowledgeBase.resultsButton')}</Link>
+                    <Link to="/results">{t('index.knowledgeBase.resultGuides')}</Link>
                   </Button>
                 </div>
               </CardContent>

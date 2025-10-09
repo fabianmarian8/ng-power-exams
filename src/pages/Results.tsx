@@ -48,7 +48,7 @@ const Results = () => {
               </CardHeader>
               <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <Button asChild>
-                  <Link to={`/results/${highlighted.slug}`}>{t('results.highlightedCard.cta')}</Link>
+                  <Link to={`/results/${highlighted.slug}`}>{t('results.highlightCard.readGuide')}</Link>
                 </Button>
                 <div className="flex flex-wrap gap-3">
                   {highlighted.officialLinks.slice(0, 2).map((link) => (
@@ -79,7 +79,7 @@ const Results = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/results/${guide.slug}`}>{t('results.jambSection.cta')}</Link>
+                        <Link to={`/results/${guide.slug}`}>{t('results.jambSection.openGuide')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -101,7 +101,7 @@ const Results = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/results/${guide.slug}`}>{t('results.waecSection.cta')}</Link>
+                        <Link to={`/results/${guide.slug}`}>{t('results.waecSection.openGuide')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -123,7 +123,7 @@ const Results = () => {
                     </CardHeader>
                     <CardContent>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                        <Link to={`/results/${guide.slug}`}>{t('results.necoSection.cta')}</Link>
+                        <Link to={`/results/${guide.slug}`}>{t('results.necoSection.openGuide')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -133,9 +133,9 @@ const Results = () => {
           </div>
 
           <Alert className="border-primary/50 bg-primary/5">
-            <AlertTitle>{t('results.protectCredentials.title')}</AlertTitle>
+            <AlertTitle>{t('results.alert.title')}</AlertTitle>
             <AlertDescription className="text-sm text-muted-foreground">
-              {t('results.protectCredentials.text')}
+              {t('results.alert.description')}
             </AlertDescription>
           </Alert>
 
@@ -143,15 +143,15 @@ const Results = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <ShieldCheck className="h-5 w-5 text-primary" />
-                {t('results.needOutageSupport.title')}
+                {t('results.outageCta.title')}
               </CardTitle>
               <CardDescription>
-                {t('results.needOutageSupport.description')}
+                {t('results.outageCta.description')}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild>
-                <Link to="/outages">{t('results.needOutageSupport.cta')}</Link>
+                <Link to="/outages">{t('results.outageCta.goToOutages')}</Link>
               </Button>
             </CardContent>
           </Card>
