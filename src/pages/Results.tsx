@@ -68,7 +68,7 @@ const Results = () => {
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold">{t('results.jambSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                {t('results.jambSection.description')}
+                {t('results.jambSection.subtitle')}
               </p>
               <div className="grid gap-4">
                 {jambGuides.map((guide) => (
@@ -90,7 +90,7 @@ const Results = () => {
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold">{t('results.waecSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                {t('results.waecSection.description')}
+                {t('results.waecSection.subtitle')}
               </p>
               <div className="grid gap-4">
                 {waecGuides.map((guide) => (
@@ -112,7 +112,7 @@ const Results = () => {
             <div className="space-y-4">
               <h2 className="text-2xl font-semibold">{t('results.necoSection.title')}</h2>
               <p className="text-sm text-muted-foreground">
-                {t('results.necoSection.description')}
+                {t('results.necoSection.subtitle')}
               </p>
               <div className="grid gap-4">
                 {necoGuides.map((guide) => (

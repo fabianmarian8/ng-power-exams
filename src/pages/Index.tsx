@@ -37,10 +37,10 @@ const Index = () => {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild>
-                  <Link to="/outages/national-grid-status">{t('index.hero.ctaPrimary')}</Link>
+                  <Link to="/outages/national-grid-status">{t('index.hero.checkGridButton')}</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link to="/results/check-jamb-result-2025">{t('index.hero.ctaSecondary')}</Link>
+                  <Link to="/results/check-jamb-result-2025">{t('index.hero.checkJambButton')}</Link>
                 </Button>
               </div>
             </div>
@@ -140,7 +140,7 @@ const Index = () => {
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <p>{guide!.heroDescription}</p>
                     <Button asChild variant="outline" size="sm">
-                      <Link to={`/results/${guide!.slug}`}>{t('common.openGuide')}</Link>
+                      <Link to={`/results/${guide!.slug}`}>{t('index.examShortcuts.openGuide')}</Link>
                     </Button>
                   </CardContent>
                 </Card>
@@ -159,7 +159,7 @@ const Index = () => {
                   <CardContent className="space-y-3 text-sm text-muted-foreground">
                     <p>{guide.heroDescription}</p>
                     <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                      <Link to={`/outages/${guide.slug}`}>{t('common.readHowTo')}</Link>
+                      <Link to={`/outages/${guide.slug}`}>{t('index.howToSection.readHowTo')}</Link>
                     </Button>
                   </CardContent>
                 </Card>

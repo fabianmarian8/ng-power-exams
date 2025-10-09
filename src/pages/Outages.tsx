@@ -96,7 +96,7 @@ const Outages = () => {
                       </div>
                     )}
                     <Button asChild variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Link to={`/outages/${guide.slug}`}>{t('common.openGuide')}</Link>
+                      <Link to={`/outages/${guide.slug}`}>{t('outages.discoSection.openGuide')}</Link>
                     </Button>
                   </CardContent>
                 </Card>
