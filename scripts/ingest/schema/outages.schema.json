@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["events", "generatedAt"],
+  "properties": {
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "category",
+          "title",
+          "publishedAt",
+          "detectedAt",
+          "sourceUrl"
+        ],
+        "properties": {
+          "id": { "type": "string" },
+          "source": { "type": "string", "enum": ["TCN", "IKEDC", "EKEDC", "KADUNA"] },
+          "category": {
+            "type": "string",
+            "enum": ["planned", "unplanned", "restoration", "advisory"]
+          },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "areas": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "feeder": { "type": "string" },
+          "window": {
+            "type": "object",
+            "properties": {
+              "start": { "type": "string", "format": "date-time" },
+              "end": { "type": "string", "format": "date-time" }
+            }
+          },
+          "publishedAt": { "type": "string", "format": "date-time" },
+          "detectedAt": { "type": "string", "format": "date-time" },
+          "sourceUrl": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}
