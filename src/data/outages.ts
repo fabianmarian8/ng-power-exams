@@ -29,10 +29,14 @@ export interface OutageGuide {
   quickFacts?: string[];
   reportChannels?: OutageGuideContact[];
   officialLinks?: OutageGuideLink[];
+  primarySource?: string;
+  lastVerified?: string;
   steps?: string[];
   sections: OutageGuideSection[];
   faq?: Array<{ question: string; answer: string }>;
 }
+
+export const DEFAULT_OUTAGE_LAST_VERIFIED = "2025-02-09T09:00:00+01:00";
 
 export const outageGuides: OutageGuide[] = [
   {
@@ -44,6 +48,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Live Nigeria national grid outage status with links to TCN press releases, restoration updates, and customer advisories.",
     category: "national",
+    primarySource: "Transmission Company of Nigeria (TCN)",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     quickFacts: [
       "TCN shares official press releases after grid disturbances",
       "Generation shortfalls or transmission faults trigger load shedding",
@@ -111,6 +117,8 @@ export const outageGuides: OutageGuide[] = [
       "Ikeja Electric outage map for Lagos Mainland with CNN feeder lookup, reporting steps, and official customer care channels.",
     category: "disco",
     coverage: ["Agege", "Ikeja", "Ikorodu", "Abule Egba", "Shomolu"],
+    primarySource: "Ikeja Electric Customer Notification Network (CNN)",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Customer Care", value: "0700-2255-432" },
       { label: "WhatsApp", value: "+234-901-003-2323" },
@@ -162,6 +170,8 @@ export const outageGuides: OutageGuide[] = [
       "Eko Disco outage today for Lagos Island with feeder list, customer care contacts, and reporting steps for EKEDC customers.",
     category: "disco",
     coverage: ["Lagos Island", "Lekki", "Victoria Island", "Apapa", "Ibeju-Lekki"],
+    primarySource: "Eko Electricity Distribution Company Outage Notices",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "24/7 Helpline", value: "0708-992-2010" },
       { label: "WhatsApp", value: "+234-708-812-5588" },
@@ -208,6 +218,8 @@ export const outageGuides: OutageGuide[] = [
       "Abuja Electricity Distribution Company outage reporting via PORS app with phone numbers for FCT, Kogi, Nasarawa, and Niger.",
     category: "disco",
     coverage: ["FCT", "Niger", "Nasarawa", "Kogi"],
+    primarySource: "Abuja Electricity Distribution Company Outage Desk",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0803-907-2323" },
       { label: "PORS Mobile App", value: "Android & iOS app stores" },
@@ -254,6 +266,8 @@ export const outageGuides: OutageGuide[] = [
       "Benin Electricity Distribution Company outage tracker for Edo, Delta, Ekiti, and Ondo with customer care phone numbers and escalation steps.",
     category: "disco",
     coverage: ["Edo", "Delta", "Ekiti", "Ondo"],
+    primarySource: "Benin Electricity Distribution Company Outage Portal",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Customer Care", value: "0803-901-0003" },
       { label: "WhatsApp", value: "+234-807-507-2965" },
@@ -294,6 +308,8 @@ export const outageGuides: OutageGuide[] = [
       "Ibadan Electricity Distribution Company outage alerts for Oyo, Ogun, Osun, and Kwara with feeder SMS service and support contacts.",
     category: "disco",
     coverage: ["Oyo", "Ogun", "Osun", "Kwara", "parts of Niger"],
+    primarySource: "Ibadan Electricity Distribution Company Outage Dashboard",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0700-123-9999" },
       { label: "WhatsApp", value: "+234-803-907-0001" },
@@ -335,6 +351,8 @@ export const outageGuides: OutageGuide[] = [
       "Enugu Disco outage alerts for Enugu, Ebonyi, Anambra, Imo, and Abia with customer care lines and planned maintenance.",
     category: "disco",
     coverage: ["Enugu", "Ebonyi", "Anambra", "Imo", "Abia"],
+    primarySource: "Enugu Electricity Distribution Company Newsroom",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0815-082-0000" },
       { label: "SMS", value: "Send 'OUT' + Account Number to 0815-082-6060" },
@@ -370,6 +388,8 @@ export const outageGuides: OutageGuide[] = [
       "PHED outage updates for Rivers, Akwa Ibom, Cross River, and Bayelsa with planned maintenance calendar and emergency contacts.",
     category: "disco",
     coverage: ["Rivers", "Akwa Ibom", "Cross River", "Bayelsa"],
+    primarySource: "Port Harcourt Electricity Distribution Company Outage Portal",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0700-743-3292" },
       { label: "WhatsApp", value: "+234-803-905-1111" },
@@ -405,6 +425,8 @@ export const outageGuides: OutageGuide[] = [
       "Kano Disco outage updates for Kano, Jigawa, and Katsina with customer care lines, feeder codes, and escalation steps.",
     category: "disco",
     coverage: ["Kano", "Jigawa", "Katsina"],
+    primarySource: "Kano Electricity Distribution Company Announcements",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0700-555-1111" },
       { label: "WhatsApp", value: "+234-807-709-3000" },
@@ -435,6 +457,8 @@ export const outageGuides: OutageGuide[] = [
       "Kaduna Electricity Distribution outage alerts covering Kaduna, Kebbi, Sokoto, and Zamfara with ticket escalation steps.",
     category: "disco",
     coverage: ["Kaduna", "Kebbi", "Sokoto", "Zamfara"],
+    primarySource: "Kaduna Electric Outage Information Portal",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0817-082-6333" },
       { label: "WhatsApp", value: "+234-803-700-0030" },
@@ -465,6 +489,8 @@ export const outageGuides: OutageGuide[] = [
       "Jos Disco outage and maintenance notices for Plateau, Bauchi, Benue, and Gombe with customer support contacts.",
     category: "disco",
     coverage: ["Plateau", "Bauchi", "Benue", "Gombe"],
+    primarySource: "Jos Electricity Distribution Company Announcements",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0700-553-3227" },
       { label: "WhatsApp", value: "+234-813-432-1112" },
@@ -495,6 +521,8 @@ export const outageGuides: OutageGuide[] = [
       "Yola Disco outage updates for Adamawa, Taraba, Borno, and Yobe with contact center numbers and restoration tips.",
     category: "disco",
     coverage: ["Adamawa", "Taraba", "Borno", "Yobe"],
+    primarySource: "Yola Electricity Distribution Company Service Updates",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Call Center", value: "0700-934-0000" },
       { label: "SMS", value: "Text 'OUT' + Meter Number to 37065" },
@@ -525,6 +553,8 @@ export const outageGuides: OutageGuide[] = [
       "Aba Power outage notices with industrial feeder information, customer care contacts, and maintenance alerts.",
     category: "disco",
     coverage: ["Aba North", "Aba South", "Osisioma", "Ugwunagbo"],
+    primarySource: "Aba Power Geometric Customer Updates",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     reportChannels: [
       { label: "Customer Desk", value: "0704-444-2222" },
       { label: "Email", value: "support@abapower.com" }
@@ -553,6 +583,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Explanation of Nigeria's grid collapse causes, frequency, and reforms with links to TCN and NERC documentation.",
     category: "national",
+    primarySource: "Transmission Company of Nigeria and NERC Publications",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     quickFacts: [
       "Grid imbalances occur when generation falls below demand",
       "Transmission faults trigger protective system shutdowns",
@@ -597,6 +629,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Guide to finding your Ikeja Electric feeder name through the CNN portal, bill statements, and prepaid meter details.",
     category: "guide",
+    primarySource: "Ikeja Electric Customer Notification Network (CNN)",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     steps: [
       "Visit the Ikeja Electric CNN portal and select your business unit",
       "Enter your meter number or account number to display feeder information",
@@ -625,6 +659,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Seven-step guide to reporting AEDC outages with the PORS mobile app, including ticket tracking and escalation tips.",
     category: "guide",
+    primarySource: "NERC Power Outage Reporting System (PORS)",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     steps: [
       "Download the PORS app from Google Play or the iOS App Store",
       "Register with your AEDC account number and contact details",
@@ -656,6 +692,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Complete Nigeria DisCo outage contact list with helplines, WhatsApp numbers, and email addresses for quick reporting.",
     category: "resource",
+    primarySource: "Official DisCo Customer Care Directories",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     sections: [
       {
         heading: "Customer Care Directory",
@@ -694,6 +732,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Nigeria planned electricity maintenance schedule with links to TCN and DisCo notices published for the current week.",
     category: "national",
+    primarySource: "Transmission Company of Nigeria and DisCo Maintenance Notices",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     officialLinks: [
       {
         label: "TCN Maintenance Notices",
@@ -733,6 +773,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Guide to checking prepaid electricity meter balance in Nigeria using USSD codes, smart card readers, and official online token vendors.",
     category: "resource",
+    primarySource: "DisCo USSD Codes and Authorized Payment Partners",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     steps: [
       "Check balance directly on your meter by entering the short code (e.g., 07 on most smart meters)",
       "Use your DisCo's USSD service to view balance on your phone",
@@ -761,6 +803,8 @@ export const outageGuides: OutageGuide[] = [
     metaDescription:
       "Safety checklist for Nigerian homes during blackouts, including generator ventilation, inverter battery care, and fire risk reduction.",
     category: "guide",
+    primarySource: "NERC Safety Advisories and DisCo Public Guidance",
+    lastVerified: DEFAULT_OUTAGE_LAST_VERIFIED,
     sections: [
       {
         heading: "Generator Safety",

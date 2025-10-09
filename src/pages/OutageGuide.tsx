@@ -8,20 +8,21 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ExternalLink, Phone } from "lucide-react";
 import { Navigate, Link, useParams } from "react-router-dom";
-import { outageGuides } from "@/data/outages";
+import { outageGuides, DEFAULT_OUTAGE_LAST_VERIFIED } from "@/data/outages";
 import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { formatLocalizedDateTime } from "@/lib/utils";
 
 const OutageGuide = () => {
   const { slug } = useParams();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const guide = outageGuides.find((item) => item.slug === slug);
+
+  usePageMetadata(guide?.title ?? "meta.outages.title", guide?.metaDescription ?? "meta.outages.description");
 
   if (!guide) {
     return <Navigate to="/outages" replace />;
   }
-
-  usePageMetadata(guide.title, guide.metaDescription);
 
   const related = outageGuides
     .filter((item) => item.slug !== guide.slug && (item.category === guide.category || guide.category === "disco"))
@@ -44,7 +45,16 @@ const OutageGuide = () => {
               </Badge>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{guide.heroTitle}</h1>
               <p className="text-lg text-muted-foreground">{guide.heroDescription}</p>
-
+              <div className="grid gap-2 rounded-lg border bg-background/80 p-4 text-sm text-muted-foreground sm:grid-cols-2">
+                <div>
+                  <span className="font-semibold text-foreground">{t('guidePages.officialSource')}:</span>{' '}
+                  {guide.primarySource ?? guide.officialLinks?.[0]?.label ?? t('outages.labels.pendingSource')}
+                </div>
+                <div>
+                  <span className="font-semibold text-foreground">{t('guidePages.lastVerified')}:</span>{' '}
+                  {formatLocalizedDateTime(guide.lastVerified ?? DEFAULT_OUTAGE_LAST_VERIFIED, language)}
+                </div>
+              </div>
               {guide.coverage && guide.coverage.length > 0 && (
                 <div className="flex flex-wrap gap-2 pt-2">
                   {guide.coverage.map((state) => (

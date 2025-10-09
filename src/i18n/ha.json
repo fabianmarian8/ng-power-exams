@@ -31,6 +31,8 @@
     "learnMore": "Kara Koyo",
     "officialWebsite": "Gidan Yanar Gizon Hukuma",
     "lastUpdated": "Sabuntawa na ƙarshe",
+    "lastVerified": "An tabbatar da ƙarshe",
+    "officialSource": "Madin-gida",
     "home": "Gida",
     "backTo": "Koma zuwa"
   },
@@ -113,6 +115,9 @@
     "nationalCard": {
       "viewGuide": "Duba Jagorar Matsayin ƙasa"
     },
+    "labels": {
+      "pendingSource": "Har yanzu ana jiran madin-gida"
+    },
     "discoSection": {
       "title": "Jagororin Katsewa ta Kamfanin Rarraba",
       "badge": "DisCos 12 + Aba Power",
@@ -164,7 +169,7 @@
     },
     "alert": {
       "title": "Kare Bayanan Sirrinku",
-      "description": "Kawai shigar da lambobin rajista, PINs, ko alamun akan hanyoyin hukuma da aka haɗa a sama. Ku guje wa shafukan ɓangare na uku da ke iƙirarin inganta maki ko karɓar kuɗi ba tare da rasit ba."
+      "description": "Kawai shigar da lambobin rajista, PINs, ko alamun akan hanyoyin hukuma da aka haɗa a sama. Ba ma sarrafa ko tabbatar da sakamakon ku—duk maɓallan suna kai ku kai tsaye zuwa WAEC, NECO, ko JAMB. Ku guje wa shafukan ɓangare na uku da ke iƙirarin inganta maki ko karɓar kuɗi ba tare da rasit ba."
     },
     "outageCta": {
       "title": "Kuna Buƙatar Sabuntawar Matsalar Wutar Lantarki?",
@@ -182,9 +187,11 @@
     "relatedGuides": "Jagororin Da Suka Dace",
     "followSteps": "Bi Waɗannan Matakai",
     "visitSite": "Ziyarci Shafin",
+    "officialSource": "Madin-gida",
+    "lastVerified": "An tabbatar da ƙarshe",
     "readGuide": "Karanta Jagora",
     "outageDisclaimer": "Kullum dogara ne akan hanyoyin hukuma na DisCo don tabbatar da katsewa. Wannan jagorar ta taƙaita bayanan jama'a don taimaka muku ɗaukar mataki da sauri lokacin katsewa.",
-    "resultDisclaimer": "Kullum yi amfani da hanyoyin jarrabawa na hukuma. Wannan jagorar ba ta adana bayanan sirri ko masu duba na madadin; tana taƙaita umarnin jama'a don saurin samun.",
+    "resultDisclaimer": "Kullum yi amfani da hanyoyin jarrabawa na hukuma. Ba ma adana bayananka ko duba sakamakon a madadinka; duk matakan nan suna kai ka kai tsaye zuwa WAEC, NECO, ko JAMB.",
     "categoryLabels": {
       "national": "Sabuntawa na ƙasa",
       "disco": "Kamfanin Rarraba",
@@ -197,7 +204,7 @@
     },
     "disclaimers": {
       "outage": "Kullum dogara da hanyoyin hukumar DisCo don tabbatar da katsewa. Wannan jagorar ta taƙaita bayanan jama'a don taimaka maka ka yi aiki da sauri yayin katsewa.",
-      "result": "Kullum yi amfani da shafukan jarrabawa na hukuma. Wannan jagorar ba ta adana bayanan sirri ko samar da hanyoyin gani; ta taƙaita umarnin jama'a don samun sauri."
+      "result": "Kullum yi amfani da shafukan jarrabawa na hukuma. Ba ma adana bayananka ko duba sakamakon ka; duk hanyoyin nan suna kai ka kai tsaye zuwa WAEC, NECO, ko JAMB."
     }
   }
 }

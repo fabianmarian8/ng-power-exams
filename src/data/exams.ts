@@ -20,12 +20,16 @@ export interface ResultGuide {
   metaDescription: string;
   category: ResultGuideCategory;
   examBody: string;
+  primarySource?: string;
+  lastVerified?: string;
   steps?: string[];
   officialLinks: ResultGuideLink[];
   sections: ResultGuideSection[];
   faq?: Array<{ question: string; answer: string }>;
   tips?: string[];
 }
+
+export const DEFAULT_RESULT_LAST_VERIFIED = "2025-02-09T09:00:00+01:00";
 
 export const resultGuides: ResultGuide[] = [
   {
@@ -38,6 +42,8 @@ export const resultGuides: ResultGuide[] = [
       "Step-by-step process for checking 2025 JAMB UTME results using the official e-Facility portal and result checker.",
     category: "jamb",
     examBody: "Joint Admissions and Matriculation Board (JAMB)",
+    primarySource: "JAMB e-Facility Portal",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Visit https://www.jamb.gov.ng/efacility and sign in with your registered email",
       "Select 'Print Result Slip' or 'Check UTME Result'",
@@ -82,6 +88,8 @@ export const resultGuides: ResultGuide[] = [
       "Guide to checking and accepting admission offers on JAMB CAPS, including tips for refreshing your profile.",
     category: "jamb",
     examBody: "Joint Admissions and Matriculation Board (JAMB)",
+    primarySource: "JAMB Central Admissions Processing System (CAPS)",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Sign into the JAMB e-Facility portal and open the CAPS dashboard",
       "Switch to desktop site mode on mobile browsers for the full menu",
@@ -119,6 +127,8 @@ export const resultGuides: ResultGuide[] = [
       "Instructions for paying and printing an official JAMB result slip online, including acceptable payment channels.",
     category: "jamb",
     examBody: "Joint Admissions and Matriculation Board (JAMB)",
+    primarySource: "JAMB Result Slip Printing Service",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Login to the JAMB e-Facility portal",
       "Select 'Print Result Slip' and click 'Continue to Payment'",
@@ -156,6 +166,8 @@ export const resultGuides: ResultGuide[] = [
       "Guide to buying a WAEC e-PIN and checking SSCE results on waecdirect.org, with error troubleshooting tips.",
     category: "waec",
     examBody: "West African Examinations Council (WAEC)",
+    primarySource: "WAEC Direct Result Checker",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Purchase a WAEC Direct e-PIN from authorized vendors or WAEC offices",
       "Visit https://www.waecdirect.org",
@@ -193,6 +205,8 @@ export const resultGuides: ResultGuide[] = [
       "Instructions for schools and employers to verify WAEC results via the official verification portal and digital certificates.",
     category: "waec",
     examBody: "West African Examinations Council (WAEC)",
+    primarySource: "WAEC Results Verification Service",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Create an account on the WAEC verification portal",
       "Purchase verification units based on the number of candidates",
@@ -230,6 +244,8 @@ export const resultGuides: ResultGuide[] = [
       "How to purchase NECO result tokens and check 2025 SSCE results on results.neco.gov.ng with troubleshooting tips.",
     category: "neco",
     examBody: "National Examinations Council (NECO)",
+    primarySource: "NECO Results Portal",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Buy a NECO result token from the official portal or accredited agents",
       "Visit https://results.neco.gov.ng",
@@ -267,6 +283,8 @@ export const resultGuides: ResultGuide[] = [
       "Guide for institutions to verify NECO results using the e-Verify portal, including payment and report download steps.",
     category: "neco",
     examBody: "National Examinations Council (NECO)",
+    primarySource: "NECO e-Verify Portal",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Register as an institution on verify.neco.gov.ng",
       "Purchase verification credits",
@@ -304,6 +322,8 @@ export const resultGuides: ResultGuide[] = [
       "Official JAMB SMS result checking format, network fees, and troubleshooting common errors for Nigerian candidates.",
     category: "jamb",
     examBody: "Joint Admissions and Matriculation Board (JAMB)",
+    primarySource: "JAMB SMS Result Checking Service",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Open the messaging app on the phone number used during JAMB registration",
       "Type RESULT and send to 55019 or 66019",
@@ -340,6 +360,8 @@ export const resultGuides: ResultGuide[] = [
       "Troubleshooting guide for WAEC result checker errors including invalid PIN, wrong details, and exceeded usage limits.",
     category: "waec",
     examBody: "West African Examinations Council (WAEC)",
+    primarySource: "WAEC Direct Support Notices",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Confirm that the e-PIN and serial number match the card you purchased",
       "Verify the examination year and candidate number",
@@ -376,6 +398,8 @@ export const resultGuides: ResultGuide[] = [
       "Where to buy NECO tokens, how to apply them on the results portal, and tips for keeping them secure.",
     category: "neco",
     examBody: "National Examinations Council (NECO)",
+    primarySource: "NECO Token Purchase Portal",
+    lastVerified: DEFAULT_RESULT_LAST_VERIFIED,
     steps: [
       "Create an account on result.neco.gov.ng/token",
       "Purchase tokens using debit card, bank transfer, or USSD",

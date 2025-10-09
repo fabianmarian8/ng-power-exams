@@ -6,18 +6,25 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { ExternalLink, MapPin, AlertTriangle, Compass } from "lucide-react";
-import { outageGuides } from "@/data/outages";
+import { outageGuides, DEFAULT_OUTAGE_LAST_VERIFIED } from "@/data/outages";
 import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { formatLocalizedDateTime } from "@/lib/utils";
 
 const Outages = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   usePageMetadata("meta.outages.title", "meta.outages.description");
 
   const nationalGuides = outageGuides.filter((guide) => guide.category === "national");
   const discoGuides = outageGuides.filter((guide) => guide.category === "disco");
   const howToGuides = outageGuides.filter((guide) => guide.category === "guide");
   const resourceGuides = outageGuides.filter((guide) => guide.category === "resource");
+
+  const resolveSource = (guide: (typeof outageGuides)[number]) =>
+    guide.primarySource ?? guide.officialLinks?.[0]?.label ?? t("outages.labels.pendingSource");
+
+  const resolveLastVerified = (guide: (typeof outageGuides)[number]) =>
+    formatLocalizedDateTime(guide.lastVerified ?? DEFAULT_OUTAGE_LAST_VERIFIED, language);
 
   const nationalHighlight = nationalGuides.find((guide) => guide.slug === "national-grid-status") ?? nationalGuides[0];
 
@@ -50,10 +57,20 @@ const Outages = () => {
                 </CardTitle>
                 <CardDescription>{nationalHighlight.heroDescription}</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <Button asChild>
-                  <Link to={`/outages/${nationalHighlight.slug}`}>{t('outages.nationalCard.viewGuide')}</Link>
-                </Button>
+              <CardContent className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="flex flex-col gap-3">
+                  <Button asChild>
+                    <Link to={`/outages/${nationalHighlight.slug}`}>{t('outages.nationalCard.viewGuide')}</Link>
+                  </Button>
+                  <div className="space-y-1 text-xs text-muted-foreground md:text-sm">
+                    <p>
+                      <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(nationalHighlight)}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(nationalHighlight)}
+                    </p>
+                  </div>
+                </div>
                 <div className="flex flex-wrap gap-3">
                   {nationalHighlight.officialLinks?.slice(0, 2).map((link) => (
                     <Button key={link.href} asChild variant="outline" size="sm">
@@ -95,6 +112,14 @@ const Outages = () => {
                         ))}
                       </div>
                     )}
+                    <div className="space-y-1 text-xs text-muted-foreground">
+                      <p>
+                        <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                      </p>
+                      <p>
+                        <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                      </p>
+                    </div>
                     <Button asChild variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
                       <Link to={`/outages/${guide.slug}`}>{t('outages.discoSection.openGuide')}</Link>
                     </Button>
@@ -118,6 +143,14 @@ const Outages = () => {
                       <CardDescription>{guide.heroDescription}</CardDescription>
                     </CardHeader>
                     <CardContent>
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        </p>
+                      </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
                         <Link to={`/outages/${guide.slug}`}>{t('outages.howToSection.viewInstructions')}</Link>
                       </Button>
@@ -140,6 +173,14 @@ const Outages = () => {
                       <CardDescription>{guide.heroDescription}</CardDescription>
                     </CardHeader>
                     <CardContent>
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        </p>
+                      </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
                         <Link to={`/outages/${guide.slug}`}>{t('outages.resourceSection.explore')}</Link>
                       </Button>

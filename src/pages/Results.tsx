@@ -6,17 +6,24 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { ExternalLink, ShieldCheck, GraduationCap } from "lucide-react";
-import { resultGuides } from "@/data/exams";
+import { resultGuides, DEFAULT_RESULT_LAST_VERIFIED } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { formatLocalizedDateTime } from "@/lib/utils";
 
 const Results = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   usePageMetadata("meta.results.title", "meta.results.description");
 
   const jambGuides = resultGuides.filter((guide) => guide.category === "jamb");
   const waecGuides = resultGuides.filter((guide) => guide.category === "waec");
   const necoGuides = resultGuides.filter((guide) => guide.category === "neco");
+  const resolveSource = (guide: (typeof resultGuides)[number]) =>
+    guide.primarySource ?? guide.officialLinks[0]?.label ?? t('outages.labels.pendingSource');
+
+  const resolveLastVerified = (guide: (typeof resultGuides)[number]) =>
+    formatLocalizedDateTime(guide.lastVerified ?? DEFAULT_RESULT_LAST_VERIFIED, language);
+
   const highlighted = jambGuides.find((guide) => guide.slug === "check-jamb-result-2025") ?? jambGuides[0];
 
   return (
@@ -46,10 +53,20 @@ const Results = () => {
                 </CardTitle>
                 <CardDescription>{highlighted.heroDescription}</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <Button asChild>
-                  <Link to={`/results/${highlighted.slug}`}>{t('results.highlightCard.readGuide')}</Link>
-                </Button>
+              <CardContent className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div className="flex flex-col gap-3">
+                  <Button asChild>
+                    <Link to={`/results/${highlighted.slug}`}>{t('results.highlightCard.readGuide')}</Link>
+                  </Button>
+                  <div className="space-y-1 text-xs text-muted-foreground md:text-sm">
+                    <p>
+                      <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(highlighted)}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(highlighted)}
+                    </p>
+                  </div>
+                </div>
                 <div className="flex flex-wrap gap-3">
                   {highlighted.officialLinks.slice(0, 2).map((link) => (
                     <Button key={link.href} asChild variant="outline" size="sm">
@@ -77,7 +94,15 @@ const Results = () => {
                       <CardTitle className="text-lg">{guide.title}</CardTitle>
                       <CardDescription>{guide.heroDescription}</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-3">
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        </p>
+                      </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
                         <Link to={`/results/${guide.slug}`}>{t('results.jambSection.openGuide')}</Link>
                       </Button>
@@ -99,7 +124,15 @@ const Results = () => {
                       <CardTitle className="text-lg">{guide.title}</CardTitle>
                       <CardDescription>{guide.heroDescription}</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-3">
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        </p>
+                      </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
                         <Link to={`/results/${guide.slug}`}>{t('results.waecSection.openGuide')}</Link>
                       </Button>
@@ -121,7 +154,15 @@ const Results = () => {
                       <CardTitle className="text-lg">{guide.title}</CardTitle>
                       <CardDescription>{guide.heroDescription}</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-3">
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        </p>
+                      </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
                         <Link to={`/results/${guide.slug}`}>{t('results.necoSection.openGuide')}</Link>
                       </Button>

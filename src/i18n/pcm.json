@@ -31,6 +31,8 @@
     "learnMore": "Learn More",
     "officialWebsite": "Official Website",
     "lastUpdated": "Last update",
+    "lastVerified": "Last check time",
+    "officialSource": "Official source",
     "home": "Home",
     "backTo": "Back to"
   },
@@ -113,6 +115,9 @@
     "nationalCard": {
       "viewGuide": "View National Status Guide"
     },
+    "labels": {
+      "pendingSource": "Official source never land"
+    },
     "discoSection": {
       "title": "Outage Guides by Distribution Company",
       "badge": "12 DisCos + Aba Power",
@@ -164,7 +169,7 @@
     },
     "alert": {
       "title": "Protect Your Credentials",
-      "description": "Only enter registration numbers, PINs, or tokens for the official portals wey we link above. Avoid third-party sites wey claim say dem fit improve scores or collect payment without receipts."
+      "description": "Only enter registration numbers, PINs, or tokens for the official portals wey we link above. We no dey process or confirm result—every button go carry you go WAEC, NECO, or JAMB. Avoid third-party sites wey claim say dem fit improve scores or collect payment without receipts."
     },
     "outageCta": {
       "title": "You Need Light Wahala Updates?",
@@ -182,9 +187,11 @@
     "relatedGuides": "Related Guides",
     "followSteps": "Follow These Steps",
     "visitSite": "Visit Site",
+    "officialSource": "Official source",
+    "lastVerified": "Last check time",
     "readGuide": "Read Guide",
     "outageDisclaimer": "Always rely on official DisCo channels for outage confirmation. This guide summarize public information to help you act faster during interruptions.",
-    "resultDisclaimer": "Always use official examination portals. This guide no dey store personal information or alternative checkers; e summarise public instructions for quicker access.",
+    "resultDisclaimer": "Always use official examination portals. This guide no dey store personal information or alternative checkers; everything we list go carry you go the official site.",
     "categoryLabels": {
       "national": "National Update",
       "disco": "Distribution Company",
@@ -197,7 +204,7 @@
     },
     "disclaimers": {
       "outage": "Always check official DisCo channels to confirm if light don really go. Dis guide just summarize public information to help you act fast during blackout.",
-      "result": "Always use official examination portals. Dis guide no dey save your personal information or provide alternative checkers; e just summarize public instructions to help you quick."
+      "result": "Use only the official examination portals we link. We no dey keep your details or check result for you—everything go carry you go WAEC, NECO, or JAMB site."
     }
   }
 }
