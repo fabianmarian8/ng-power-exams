@@ -90,9 +90,9 @@ const Footer = () => {
         <div className="mt-8 border-t pt-8 space-y-4">
           <Alert className="border-muted bg-muted/20">
             <AlertDescription className="text-xs text-muted-foreground">
-              <strong>{t('footer.dataNotice.title')}:</strong> {t('footer.dataNotice.text')}
+              <strong>{t('footer.disclaimer.title')}:</strong> {t('footer.disclaimer.text')}
               <br />
-              <span className="text-muted-foreground/80">{t('footer.lastVerified')}: 2025-10-09</span>
+              <span className="text-muted-foreground/80">{t('footer.lastUpdated')}: 2025-10-09</span>
             </AlertDescription>
           </Alert>
           <p className="text-center text-sm text-muted-foreground">
