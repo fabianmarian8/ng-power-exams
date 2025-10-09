@@ -13,17 +13,33 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Restore npm cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-${{ runner.os }}-
+
       - run: npm ci
+        env:
+          # Odkomentuj iba jednu z nasledujúcich možností podľa potreby súkromného registru:
+          # NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - run: npm run ingest
+
       - name: Commit data
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/live/*.json || true
+          git config user.name "bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add public/live/*.json
           git commit -m "chore: update outages data [skip ci]" || echo "no changes"
-          git push || echo "no remote"
-      - name: Trigger deploy
-        if: ${{ success() && env.VERCEL_DEPLOY_HOOK }}
+          git push
+
+      - name: Trigger deploy (Vercel)
         run: curl -X POST "$VERCEL_DEPLOY_HOOK"
         env:
           VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
