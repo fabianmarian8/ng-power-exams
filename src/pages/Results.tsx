@@ -10,10 +10,7 @@ import { resultGuides } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
 
 const Results = () => {
-  usePageMetadata(
-    "Nigeria Exam Results Hub",
-    "Official JAMB, WAEC, and NECO result guides with portal links, verification steps, and troubleshooting tips."
-  );
+  usePageMetadata("meta.results.title", "meta.results.description");
 
   const jambGuides = resultGuides.filter((guide) => guide.category === "jamb");
   const waecGuides = resultGuides.filter((guide) => guide.category === "waec");

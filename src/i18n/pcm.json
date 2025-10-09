@@ -1,17 +1,17 @@
 {
   "header": {
     "siteName": "NaijaInfo",
-    "powerOutages": "Power Outages",
-    "examResults": "Exam Results",
+    "powerOutages": "Light Wahala",
+    "examResults": "Exam Result",
     "language": "Language"
   },
   "footer": {
-    "tagline": "Your trusted source for power outage updates and exam results in Nigeria.",
-    "powerOutages": "Power Outages",
+    "tagline": "Where you go dey find correct info about light wahala and exam result for Naija.",
+    "powerOutages": "Light Wahala",
     "nationalGridStatus": "National Grid Status",
     "discoCustomerCare": "DisCo Customer Care List",
-    "safetyDuringBlackouts": "Safety During Blackouts",
-    "examResults": "Exam Results",
+    "safetyDuringBlackouts": "How To Stay Safe When Light Go",
+    "examResults": "Exam Result",
     "checkJambResult": "Check JAMB Result",
     "waecResultChecker": "WAEC Result Checker",
     "necoResultChecker": "NECO Result Checker",
@@ -19,19 +19,181 @@
     "reportAedcOutage": "Report AEDC Outage (PORS)",
     "checkPrepaidMeter": "Check Prepaid Meter Balance",
     "necoEverify": "NECO e-Verify Guide",
-    "copyright": "© {year} NaijaInfo. All official links redirect to government portals."
+    "copyright": "© {year} NaijaInfo. All official links dem dey carry you go government portals.",
+    "disclaimer": {
+      "title": "Data Verification Notice",
+      "text": "We dey verify contact info and links from official sources. Always check with official DisCo and examination body announcements."
+    },
+    "lastUpdated": "Last time we check"
   },
   "common": {
-    "viewDetails": "View Details",
+    "viewDetails": "See More",
     "learnMore": "Learn More",
     "officialWebsite": "Official Website",
-    "lastUpdated": "Last updated",
-    "home": "Home"
+    "lastUpdated": "Last update",
+    "home": "Home",
+    "backTo": "Back to"
+  },
+  "meta": {
+    "homepage": {
+      "title": "Nigeria Power & Exam Results Hub",
+      "description": "Central source for Nigeria power outage updates, DisCo contacts, and official JAMB, WAEC, NECO result guides."
+    },
+    "outages": {
+      "title": "Nigeria Power Outage Updates",
+      "description": "Official outage information for all Nigerian DisCos with reporting steps, contact numbers, and safety guides."
+    },
+    "results": {
+      "title": "Nigeria Exam Results Hub",
+      "description": "Official JAMB, WAEC, and NECO result guides with portal links, verification steps, and troubleshooting tips."
+    }
   },
   "index": {
     "hero": {
       "title": "Nigeria Power & Exam Results Hub",
-      "subtitle": "Get real-time power outage updates and check exam results"
+      "subtitle": "Real-time info about light wahala, how to report am, plus how to check your JAMB, WAEC, and NECO result the correct way.",
+      "checkGridButton": "Check National Grid Status",
+      "checkJambButton": "Check JAMB Result"
+    },
+    "officialAlert": {
+      "title": "Official Sources Only",
+      "description": "All exam result and light wahala info dey link direct to government and DisCo portals. We no dey store your personal data."
+    },
+    "powerCard": {
+      "title": "Light Wahala Updates",
+      "description": "Track outages and maintenance wey DisCos dey plan with direct steps to report am.",
+      "items": [
+        "National grid status from TCN",
+        "Contact lists for 12 DisCos and Aba Power",
+        "How to report fault through phone, SMS, or apps",
+        "Safety tips for generator and inverter"
+      ]
+    },
+    "examCard": {
+      "title": "Exam Result Checker",
+      "description": "Step-by-step guide to check official JAMB, WAEC, and NECO results and verifications.",
+      "items": [
+        "JAMB e-Facility, CAPS, and SMS results",
+        "WAEC e-PIN purchases and verification",
+        "NECO tokens and e-Verify portal",
+        "How to fix common result errors"
+      ]
+    },
+    "quickAccess": {
+      "title": "Quick Access by Location",
+      "viewAll": "View all DisCos",
+      "seeGuide": "See outage guide"
+    },
+    "examShortcuts": {
+      "title": "Exam Result Shortcuts",
+      "browse": "Browse results hub",
+      "openGuide": "Open guide"
+    },
+    "howToSection": {
+      "readHowTo": "Read how-to"
+    },
+    "emergency": {
+      "title": "You Need Emergency Help?",
+      "description": "For urgent light wahala, call your DisCo customer care. For exam result problem, reach the official examination body helpline.",
+      "saveNumbers": "Save customer care numbers"
+    },
+    "knowledgeBase": {
+      "title": "Explore the Full Knowledge Base",
+      "description": "More than 30 guides cover outage reporting, prepaid meter, blackout safety, and exam verification steps.",
+      "powerGuides": "Light Wahala Guides",
+      "resultGuides": "Exam Result Guides"
+    }
+  },
+  "outages": {
+    "hero": {
+      "badge": "Power Intelligence Hub",
+      "title": "Nigeria Light Wahala Updates",
+      "subtitle": "Track national grid status, get location-specific outage info, and access step-by-step reporting guides for every Distribution Company."
+    },
+    "nationalCard": {
+      "viewGuide": "View National Status Guide"
+    },
+    "discoSection": {
+      "title": "Outage Guides by Distribution Company",
+      "badge": "12 DisCos + Aba Power",
+      "openGuide": "Open Guide"
+    },
+    "howToSection": {
+      "title": "How-To Guides",
+      "subtitle": "Learn how to report outages, find your feeder, and stay safe when light go with concise step-by-step content.",
+      "viewInstructions": "View instructions"
+    },
+    "resourceSection": {
+      "title": "Resource Library",
+      "subtitle": "Save essential contact lists, maintenance calendars, and prepaid meter tips for quick reference.",
+      "explore": "Explore resource"
+    },
+    "alert": {
+      "title": "Stay Informed the Right Way",
+      "description": "Cross-check social media updates with the official DisCo channels wey we link above. For national grid wahala, always confirm with TCN before you share alert."
+    },
+    "examCta": {
+      "title": "You Need Exam Support Instead?",
+      "description": "Visit the Results Hub for JAMB, WAEC, and NECO guidance with official portals and troubleshooting steps.",
+      "goToResults": "Go to Results Hub"
+    }
+  },
+  "results": {
+    "hero": {
+      "badge": "Results Hub",
+      "title": "Nigeria Exam Result Hub",
+      "subtitle": "Use official portals to check your scores, print slips, and verify results. Each guide get trusted links, fees, and troubleshooting steps."
+    },
+    "highlightCard": {
+      "readGuide": "Read Step-by-Step Guide"
+    },
+    "jambSection": {
+      "title": "JAMB Guides",
+      "subtitle": "Access UTME results, admission status, and official SMS options for e-Facility portal.",
+      "openGuide": "Open JAMB Guide"
+    },
+    "waecSection": {
+      "title": "WAEC Guides",
+      "subtitle": "Learn how to use WAEC e-PINs, fix common errors, and verify candidate results properly.",
+      "openGuide": "Open WAEC Guide"
+    },
+    "necoSection": {
+      "title": "NECO Guides",
+      "subtitle": "Buy NECO tokens, check SSCE results, and authenticate certificates with e-Verify.",
+      "openGuide": "Open NECO Guide"
+    },
+    "alert": {
+      "title": "Protect Your Credentials",
+      "description": "Only enter registration numbers, PINs, or tokens for the official portals wey we link above. Avoid third-party sites wey claim say dem fit improve scores or collect payment without receipts."
+    },
+    "outageCta": {
+      "title": "You Need Light Wahala Updates?",
+      "description": "Explore DisCo-specific outage trackers, contact lists, and safety tips across Nigeria.",
+      "goToOutages": "Go to Outage Hub"
+    }
+  },
+  "guidePages": {
+    "quickFacts": "Quick Facts",
+    "howToReach": "How to Reach Support",
+    "officialLinks": "Official Links",
+    "stepByStep": "Step-by-Step Guide",
+    "quickTips": "Quick Tips",
+    "faq": "Frequently Asked Questions",
+    "relatedGuides": "Related Guides",
+    "followSteps": "Follow These Steps",
+    "visitSite": "Visit Site",
+    "readGuide": "Read Guide",
+    "outageDisclaimer": "Always rely on official DisCo channels for outage confirmation. This guide summarize public information to help you act faster during interruptions.",
+    "resultDisclaimer": "Always use official examination portals. This guide no dey store personal information or alternative checkers; e summarise public instructions for quicker access.",
+    "categoryLabels": {
+      "national": "National Update",
+      "disco": "Distribution Company",
+      "guide": "How-To Guide",
+      "resource": "Resource",
+      "jamb": "JAMB",
+      "waec": "WAEC",
+      "neco": "NECO",
+      "general": "Exam Tips"
     }
   }
 }

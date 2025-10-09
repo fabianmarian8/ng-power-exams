@@ -1,37 +1,199 @@
 {
   "header": {
     "siteName": "NaijaInfo",
-    "powerOutages": "Power Outages",
-    "examResults": "Exam Results",
+    "powerOutages": "Nsogbu Ọkụ",
+    "examResults": "Nsonaazụ Ule",
     "language": "Asụsụ"
   },
   "footer": {
-    "tagline": "Your trusted source for power outage updates and exam results in Nigeria.",
-    "powerOutages": "Power Outages",
-    "nationalGridStatus": "National Grid Status",
-    "discoCustomerCare": "DisCo Customer Care List",
-    "safetyDuringBlackouts": "Safety During Blackouts",
-    "examResults": "Exam Results",
-    "checkJambResult": "Check JAMB Result",
-    "waecResultChecker": "WAEC Result Checker",
-    "necoResultChecker": "NECO Result Checker",
-    "quickResources": "Quick Resources",
-    "reportAedcOutage": "Report AEDC Outage (PORS)",
-    "checkPrepaidMeter": "Check Prepaid Meter Balance",
-    "necoEverify": "NECO e-Verify Guide",
-    "copyright": "© {year} NaijaInfo. All official links redirect to government portals."
+    "tagline": "Ebe ị ga-enweta ozi ziri ezi gbasara nsogbu ọkụ na nsonaazụ ule na Naịjirịa.",
+    "powerOutages": "Nsogbu Ọkụ",
+    "nationalGridStatus": "Ọnọdụ Grid Mba",
+    "discoCustomerCare": "Ndepụta Nlekọta Ndị Ahịa DisCo",
+    "safetyDuringBlackouts": "Nchekwa Mgbe Ọkụ Kwụsịrị",
+    "examResults": "Nsonaazụ Ule",
+    "checkJambResult": "Lelee Nsonaazụ JAMB",
+    "waecResultChecker": "Onye Nlele Nsonaazụ WAEC",
+    "necoResultChecker": "Onye Nlele Nsonaazụ NECO",
+    "quickResources": "Akụrụngwa Ngwa Ngwa",
+    "reportAedcOutage": "Kọọ Nkwụsị AEDC (PORS)",
+    "checkPrepaidMeter": "Lelee Ngụkọta Mita Prepaid",
+    "necoEverify": "Ntuziaka NECO e-Verify",
+    "copyright": "© {year} NaijaInfo. Njikọ gọọmentị niile na-eduga na ọnụ ụzọ gọọmentị.",
+    "disclaimer": {
+      "title": "Ọkwa Nkwenye Data",
+      "text": "A na-enyocha ozi kọntaktị na njikọ sitere na isi mmalite gọọmentị. Jide n'aka na ị na-enyocha na ọkwa gọọmentị DisCo na ụlọ ọrụ ule."
+    },
+    "lastUpdated": "Oge ikpeazụ enyochara"
   },
   "common": {
-    "viewDetails": "View Details",
-    "learnMore": "Learn More",
-    "officialWebsite": "Official Website",
-    "lastUpdated": "Last updated",
-    "home": "Home"
+    "viewDetails": "Lee Nkọwa",
+    "learnMore": "Mụtakwuo Ihe",
+    "officialWebsite": "Webụsaịtị Gọọmentị",
+    "lastUpdated": "Mmelite ikpeazụ",
+    "home": "Ụlọ",
+    "backTo": "Laghachi na"
+  },
+  "meta": {
+    "homepage": {
+      "title": "Nigeria Power & Exam Results Hub",
+      "description": "Central source for Nigeria power outage updates, DisCo contacts, and official JAMB, WAEC, NECO result guides."
+    },
+    "outages": {
+      "title": "Nigeria Power Outage Updates",
+      "description": "Official outage information for all Nigerian DisCos with reporting steps, contact numbers, and safety guides."
+    },
+    "results": {
+      "title": "Nigeria Exam Results Hub",
+      "description": "Official JAMB, WAEC, and NECO result guides with portal links, verification steps, and troubleshooting tips."
+    }
   },
   "index": {
     "hero": {
       "title": "Nigeria Power & Exam Results Hub",
-      "subtitle": "Get real-time power outage updates and check exam results"
+      "subtitle": "Ozi oge n'oge gbasara nsogbu ọkụ, ụzọ ịkọ akụkọ, na usoro enyochara iji lelee JAMB, WAEC, na NECO n'enweghị nsogbu.",
+      "checkGridButton": "Lelee Ọnọdụ Grid Mba",
+      "checkJambButton": "Lelee Nsonaazụ JAMB"
+    },
+    "officialAlert": {
+      "title": "Naanị Isi Mmalite Gọọmentị",
+      "description": "Nsonaazụ ule niile na ozi nsogbu ọkụ na-ejikọ ozugbo na ọnụ ụzọ gọọmentị na DisCo. Anyị adịghị echekwa ma ọ bụ hazie data nkeonwe gị."
+    },
+    "powerCard": {
+      "title": "Mmelite Nsogbu Ọkụ",
+      "description": "Soro nkwụsị na nrụzi ahazịrị n'ofe DisCos Naịjirịa na usoro ịkọ akụkọ ozugbo.",
+      "items": [
+        "Ọnọdụ grid mba sitere na TCN",
+        "Ndepụta kọntaktị maka DisCos 12 na Aba Power",
+        "Otu esi akọ nsogbu site na ekwentị, SMS, ma ọ bụ ngwa",
+        "Ndụmọdụ nchekwa maka generators na inverters"
+      ]
+    },
+    "examCard": {
+      "title": "Onye Nlele Nsonaazụ Ule",
+      "description": "Ntuziaka nzọụkwụ site na nzọụkwụ iji lelee nsonaazụ gọọmentị JAMB, WAEC, na NECO na nkwenye.",
+      "items": [
+        "JAMB e-Facility, CAPS, na nsonaazụ SMS",
+        "Ịzụta WAEC e-PIN na nkwenye",
+        "Tokens NECO na ọnụ ụzọ e-Verify",
+        "Otu esi edozi mperi nsonaazụ a na-ahụkarị"
+      ]
+    },
+    "quickAccess": {
+      "title": "Nnweta Ngwa Ngwa Site na Ọnọdụ",
+      "viewAll": "Lee DisCos niile",
+      "seeGuide": "Lee ntuziaka nkwụsị"
+    },
+    "examShortcuts": {
+      "title": "Ụzọ Mkpụmkpụ Nsonaazụ Ule",
+      "browse": "Gaa na ebe nsonaazụ",
+      "openGuide": "Mepee ntuziaka"
+    },
+    "howToSection": {
+      "readHowTo": "Gụọ otu-esi-eme"
+    },
+    "emergency": {
+      "title": "Ị Chọrọ Enyemaka Mberede?",
+      "description": "Maka nsogbu ọkụ dị ngwa ngwa, kpọọ nlekọta ndị ahịa DisCo mpaghara gị. Maka nsogbu nsonaazụ ule, kpọọ ahịrị enyemaka ụlọ ọrụ ule gọọmentị.",
+      "saveNumbers": "Chekwaa nọmba nlekọta ndị ahịa"
+    },
+    "knowledgeBase": {
+      "title": "Nyochaa Ebe Nchekwa Ihe Ọmụma Zuru Ezu",
+      "description": "Ntuziaka karịrị 30 na-ekpuchi ịkọ akụkọ nkwụsị, mita prepaid, nchekwa nkwụsị, na usoro nkwenye ule.",
+      "powerGuides": "Ntuziaka Nsogbu Ọkụ",
+      "resultGuides": "Ntuziaka Nsonaazụ Ule"
+    }
+  },
+  "outages": {
+    "hero": {
+      "badge": "Ebe Ozi Ike",
+      "title": "Mmelite Nsogbu Ọkụ Naịjirịa",
+      "subtitle": "Soro ọnọdụ grid mba, nweta ozi nkwụsị ọnọdụ akọwapụtara, ma nweta ntuziaka ịkọ akụkọ nzọụkwụ site na nzọụkwụ maka Ụlọ Ọrụ Nkesa ọ bụla."
+    },
+    "nationalCard": {
+      "viewGuide": "Lee Ntuziaka Ọnọdụ Mba"
+    },
+    "discoSection": {
+      "title": "Ntuziaka Nkwụsị Site na Ụlọ Ọrụ Nkesa",
+      "badge": "DisCos 12 + Aba Power",
+      "openGuide": "Mepee Ntuziaka"
+    },
+    "howToSection": {
+      "title": "Ntuziaka Otu-Esi-Eme",
+      "subtitle": "Mụta otu esi akọ nkwụsị, chọta onye na-enye gị nri, ma nọrọ ná nchekwa mgbe ọkụ kwụsịrị na ọdịnaya nzọụkwụ site na nzọụkwụ dị nkenke.",
+      "viewInstructions": "Lee ntuziaka"
+    },
+    "resourceSection": {
+      "title": "Ọba Akwụkwọ Akụrụngwa",
+      "subtitle": "Chekwaa ndepụta kọntaktị dị mkpa, kalenda nrụzi, na ndụmọdụ mita prepaid maka ntụaka ngwa ngwa.",
+      "explore": "Nyochaa akụrụngwa"
+    },
+    "alert": {
+      "title": "Nọrọ Na-Amata Ihe N'Ụzọ Ziri Ezi",
+      "description": "Lelee mmelite mgbasa ozi ọha na eze na ọwa gọọmentị DisCo anyị jikọtara n'elu. Maka nsogbu grid mba, jide n'aka na ị na-akwado na Ụlọ Ọrụ Nnyefe Naịjirịa (TCN) tupu ịkesa ọkwa."
+    },
+    "examCta": {
+      "title": "Ị Chọrọ Nkwado Ule Kama?",
+      "description": "Gaa na Ebe Nsonaazụ maka ntuziaka JAMB, WAEC, na NECO na ọnụ ụzọ gọọmentị na usoro idozi nsogbu.",
+      "goToResults": "Gaa na Ebe Nsonaazụ"
+    }
+  },
+  "results": {
+    "hero": {
+      "badge": "Ebe Nsonaazụ",
+      "title": "Ebe Nsonaazụ Ule Naịjirịa",
+      "subtitle": "Jiri ọnụ ụzọ gọọmentị lelee akara gị, bipụta mpempe akwụkwọ, ma kwenye nsonaazụ. Ntuziaka ọ bụla nwere njikọ ntụkwasị obi, ego, na usoro idozi nsogbu."
+    },
+    "highlightCard": {
+      "readGuide": "Gụọ Ntuziaka Nzọụkwụ Site na Nzọụkwụ"
+    },
+    "jambSection": {
+      "title": "Ntuziaka JAMB",
+      "subtitle": "Nweta nsonaazụ UTME, ọnọdụ nweta, na nhọrọ SMS gọọmentị na ọnụ ụzọ e-Facility.",
+      "openGuide": "Mepee Ntuziaka JAMB"
+    },
+    "waecSection": {
+      "title": "Ntuziaka WAEC",
+      "subtitle": "Mụta otu esi eji WAEC e-PINs, dozie mperi a na-ahụkarị, ma kwenye nsonaazụ onye asọmpi n'ụzọ nchekwa.",
+      "openGuide": "Mepee Ntuziaka WAEC"
+    },
+    "necoSection": {
+      "title": "Ntuziaka NECO",
+      "subtitle": "Zụta tokens NECO, lelee nsonaazụ SSCE, ma kwenye asambodo na e-Verify.",
+      "openGuide": "Mepee Ntuziaka NECO"
+    },
+    "alert": {
+      "title": "Chebe Ihe Njirimara Gị",
+      "description": "Naanị tinye nọmba ndebanye aha, PINs, ma ọ bụ tokens na ọnụ ụzọ gọọmentị anyị jikọtara n'elu. Zere saịtị ndị ọzọ na-ekwu na ha nwere ike ịkwalite akara gị ma ọ bụ nakọta ụgwọ na-enweghị risiti."
+    },
+    "outageCta": {
+      "title": "Ị Chọrọ Mmelite Nsogbu Ọkụ?",
+      "description": "Nyochaa ndị na-eso ụzọ nkwụsị DisCo, ndepụta kọntaktị, na ndụmọdụ nchekwa n'ofe Naịjirịa.",
+      "goToOutages": "Gaa na Ebe Nkwụsị"
+    }
+  },
+  "guidePages": {
+    "quickFacts": "Eziokwu Ngwa Ngwa",
+    "howToReach": "Otu Esi Eru Enyemaka",
+    "officialLinks": "Njikọ Gọọmentị",
+    "stepByStep": "Ntuziaka Nzọụkwụ Site na Nzọụkwụ",
+    "quickTips": "Ndụmọdụ Ngwa Ngwa",
+    "faq": "Ajụjụ A Na-Ajụkarị",
+    "relatedGuides": "Ntuziaka Metụtara",
+    "followSteps": "Soro Nzọụkwụ Ndị A",
+    "visitSite": "Gaa na Saịtị",
+    "readGuide": "Gụọ Ntuziaka",
+    "outageDisclaimer": "Dabere mgbe niile na ọwa gọọmentị DisCo maka nkwenye nkwụsị. Ntuziaka a na-achịkọta ozi ọha na eze iji nyere gị aka mee ihe ngwa ngwa n'oge nkwụsị.",
+    "resultDisclaimer": "Jiri ọnụ ụzọ ule gọọmentị mgbe niile. Ntuziaka a adịghị echekwa ozi nkeonwe ma ọ bụ ndị nlele ọzọ; ọ na-achịkọta ntuziaka ọha na eze maka nnweta ngwa ngwa.",
+    "categoryLabels": {
+      "national": "Mmelite Mba",
+      "disco": "Ụlọ Ọrụ Nkesa",
+      "guide": "Ntuziaka Otu-Esi-Eme",
+      "resource": "Akụrụngwa",
+      "jamb": "JAMB",
+      "waec": "WAEC",
+      "neco": "NECO",
+      "general": "Ndụmọdụ Ule"
     }
   }
 }

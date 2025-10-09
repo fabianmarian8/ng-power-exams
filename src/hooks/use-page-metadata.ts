@@ -1,32 +1,28 @@
 import { useEffect } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SITE_NAME = "NaijaInfo";
 
-export const usePageMetadata = (title: string, description?: string, lang?: string) => {
+export const usePageMetadata = (titleKey: string, descriptionKey?: string) => {
+  const { t, language } = useLanguage();
+  
   useEffect(() => {
-    // Update document language
-    if (lang) {
-      document.documentElement.lang = lang;
-    }
-
-    // Update page title
-    if (title) {
-      document.title = `${title} | ${SITE_NAME}`;
-    }
-
-    // Update meta description
+    const title = t(titleKey);
+    const description = descriptionKey ? t(descriptionKey) : undefined;
+    
+    document.documentElement.lang = language;
+    document.title = `${title} | ${SITE_NAME}`;
+    
     if (description) {
       let meta = document.querySelector("meta[name='description']");
-
       if (!meta) {
         meta = document.createElement("meta");
         meta.setAttribute("name", "description");
         document.head.appendChild(meta);
       }
-
       meta.setAttribute("content", description);
     }
-  }, [title, description, lang]);
+  }, [titleKey, descriptionKey, language, t]);
 };
 
 export default usePageMetadata;

@@ -11,10 +11,7 @@ import { resultGuides } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
 
 const Index = () => {
-  usePageMetadata(
-    "Nigeria Power & Exam Results Hub",
-    "Central source for Nigeria power outage updates, DisCo contacts, and official JAMB, WAEC, NECO result guides."
-  );
+  usePageMetadata("meta.homepage.title", "meta.homepage.description");
 
   const featuredOutages = outageGuides.filter((guide) => guide.category === "disco").slice(0, 6);
   const highlightedHowTos = outageGuides.filter((guide) => guide.category !== "disco").slice(0, 3);

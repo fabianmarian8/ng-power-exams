@@ -10,10 +10,7 @@ import { outageGuides } from "@/data/outages";
 import usePageMetadata from "@/hooks/use-page-metadata";
 
 const Outages = () => {
-  usePageMetadata(
-    "Nigeria Power Outage Updates",
-    "Official outage information for all Nigerian DisCos with reporting steps, contact numbers, and safety guides."
-  );
+  usePageMetadata("meta.outages.title", "meta.outages.description");
 
   const nationalGuides = outageGuides.filter((guide) => guide.category === "national");
   const discoGuides = outageGuides.filter((guide) => guide.category === "disco");
