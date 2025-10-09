@@ -194,6 +194,10 @@
       "waec": "WAEC",
       "neco": "NECO",
       "general": "Ndụmọdụ Ule"
+    },
+    "disclaimers": {
+      "outage": "Mgbe niile dabere na ọwa DisCo gọọmentị maka nkwenye nkwụsị ọkụ. Ntuziaka a na-achịkọta ozi ọha iji nyere gị aka ime ngwa ngwa n'oge nkwụsị.",
+      "result": "Mgbe niile jiri pọtalụ ule gọọmentị. Ntuziaka a adịghị echekwa ozi nkeonwe ma ọ bụ nyochaa ndị ọzọ; ọ na-achịkọta ntụziaka ọha maka ohere ngwa ngwa."
     }
   }
 }

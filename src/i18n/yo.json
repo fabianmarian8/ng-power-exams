@@ -196,6 +196,10 @@
       "waec": "WAEC",
       "neco": "NECO",
       "general": "Àwọn Ìmọ̀ràn Ìdánwò"
+    },
+    "disclaimers": {
+      "outage": "Nigbagbogbo gbarale awọn ikanni DisCo osise fun ijẹrisi pipade ina. Itọsọna yi ṣe akopọ alaye gbangba lati ran ọ lọwọ lati ṣe ni iyara lakoko awọn idiwọ.",
+      "result": "Nigbagbogbo lo awọn oju-iwe idanwo osise. Itọsọna yii ko tọju alaye ti ara ẹni tabi awọn oluṣayẹwo miiran; o ṣe akopọ awọn ilana gbangba fun iraye si yiyara."
     }
   }
 }

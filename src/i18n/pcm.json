@@ -194,6 +194,10 @@
       "waec": "WAEC",
       "neco": "NECO",
       "general": "Exam Tips"
+    },
+    "disclaimers": {
+      "outage": "Always check official DisCo channels to confirm if light don really go. Dis guide just summarize public information to help you act fast during blackout.",
+      "result": "Always use official examination portals. Dis guide no dey save your personal information or provide alternative checkers; e just summarize public instructions to help you quick."
     }
   }
 }

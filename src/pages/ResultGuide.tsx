@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Breadcrumb } from "@/components/Breadcrumb";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,16 +10,11 @@ import { ExternalLink, HelpCircle } from "lucide-react";
 import { Navigate, Link, useParams } from "react-router-dom";
 import { resultGuides } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
-
-const categoryLabels: Record<string, string> = {
-  jamb: "JAMB",
-  waec: "WAEC",
-  neco: "NECO",
-  general: "Exam Tips"
-};
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const ResultGuide = () => {
   const { slug } = useParams();
+  const { t } = useLanguage();
   const guide = resultGuides.find((item) => item.slug === slug);
 
   if (!guide) {
@@ -38,9 +34,13 @@ const ResultGuide = () => {
       <main className="flex-1">
         <section className="border-b bg-gradient-to-b from-accent/20 to-background">
           <div className="container py-12 md:py-16">
+            <Breadcrumb items={[
+              { label: t('header.examResults'), href: '/results' },
+              { label: guide.title }
+            ]} />
             <div className="space-y-4 max-w-3xl">
               <Badge variant="outline" className="text-primary border-primary/60">
-                {categoryLabels[guide.category] ?? "Exam Guide"}
+                {t(`guidePages.categories.${guide.category}`) || t('guidePages.categories.general')}
               </Badge>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{guide.heroTitle}</h1>
               <p className="text-lg text-muted-foreground">{guide.heroDescription}</p>
@@ -53,7 +53,7 @@ const ResultGuide = () => {
           {guide.steps && guide.steps.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Follow These Steps</CardTitle>
+                <CardTitle>{t('guidePages.followSteps')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ol className="space-y-3 text-sm text-muted-foreground list-decimal list-inside">
@@ -67,7 +67,7 @@ const ResultGuide = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle>Official Links</CardTitle>
+              <CardTitle>{t('guidePages.officialLinks')}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               {guide.officialLinks.map((link) => (
@@ -78,7 +78,7 @@ const ResultGuide = () => {
                   )}
                   <Button asChild variant="outline" size="sm" className="mt-4 w-full">
                     <a href={link.href} target="_blank" rel="noopener noreferrer">
-                      Visit Site
+                      {t('guidePages.visitSite')}
                       <ExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
@@ -107,7 +107,7 @@ const ResultGuide = () => {
           {guide.tips && guide.tips.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Quick Tips</CardTitle>
+                <CardTitle>{t('guidePages.quickTips')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-3 text-sm text-muted-foreground">
@@ -125,7 +125,7 @@ const ResultGuide = () => {
           {guide.faq && guide.faq.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Frequently Asked Questions</CardTitle>
+                <CardTitle>{t('guidePages.faq')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {guide.faq.map((item, index) => (
@@ -140,7 +140,7 @@ const ResultGuide = () => {
 
           {related.length > 0 && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-semibold">Related Guides</h2>
+              <h2 className="text-2xl font-semibold">{t('guidePages.relatedGuides')}</h2>
               <div className="grid gap-6 md:grid-cols-2">
                 {related.map((item) => (
                   <Card key={item.slug} className="h-full">
@@ -150,7 +150,7 @@ const ResultGuide = () => {
                     <CardContent className="space-y-4">
                       <p className="text-sm text-muted-foreground">{item.heroDescription}</p>
                       <Button asChild variant="outline" size="sm">
-                        <Link to={`/results/${item.slug}`}>Read Guide</Link>
+                        <Link to={`/results/${item.slug}`}>{t('guidePages.readGuide')}</Link>
                       </Button>
                     </CardContent>
                   </Card>
@@ -161,7 +161,7 @@ const ResultGuide = () => {
 
           <Alert className="border-primary/50 bg-primary/5">
             <AlertDescription className="text-sm text-muted-foreground">
-              Always use official examination portals. This guide does not store personal information or alternative checkers; it summarises public instructions for quicker access.
+              {t('guidePages.disclaimers.result')}
             </AlertDescription>
           </Alert>
         </section>

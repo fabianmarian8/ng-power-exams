@@ -194,6 +194,10 @@
       "waec": "WAEC",
       "neco": "NECO",
       "general": "Shawarwarin Jarrabawa"
+    },
+    "disclaimers": {
+      "outage": "Kullum dogara da hanyoyin hukumar DisCo don tabbatar da katsewa. Wannan jagorar ta taƙaita bayanan jama'a don taimaka maka ka yi aiki da sauri yayin katsewa.",
+      "result": "Kullum yi amfani da shafukan jarrabawa na hukuma. Wannan jagorar ba ta adana bayanan sirri ko samar da hanyoyin gani; ta taƙaita umarnin jama'a don samun sauri."
     }
   }
 }

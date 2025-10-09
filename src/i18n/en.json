@@ -194,6 +194,10 @@
       "waec": "WAEC",
       "neco": "NECO",
       "general": "Exam Tips"
+    },
+    "disclaimers": {
+      "outage": "Always rely on official DisCo channels for outage confirmation. This guide summarizes public information to help you act faster during interruptions.",
+      "result": "Always use official examination portals. This guide does not store personal information or alternative checkers; it summarises public instructions for quicker access."
     }
   }
 }
