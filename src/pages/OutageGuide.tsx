@@ -40,7 +40,7 @@ const OutageGuide = () => {
             ]} />
             <div className="space-y-4 max-w-3xl">
               <Badge variant="outline" className="text-primary border-primary/60">
-                {t(`guidePages.categories.${guide.category}`) || t('guidePages.categories.guide')}
+                {t(`guidePages.categoryLabels.${guide.category}`) || t('guidePages.categoryLabels.guide')}
               </Badge>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{guide.heroTitle}</h1>
               <p className="text-lg text-muted-foreground">{guide.heroDescription}</p>
