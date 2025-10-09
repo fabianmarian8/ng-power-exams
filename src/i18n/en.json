@@ -31,6 +31,8 @@
     "learnMore": "Learn More",
     "officialWebsite": "Official Website",
     "lastUpdated": "Last updated",
+    "lastVerified": "Last verified",
+    "officialSource": "Official source",
     "home": "Home",
     "backTo": "Back to"
   },
@@ -113,6 +115,9 @@
     "nationalCard": {
       "viewGuide": "View National Status Guide"
     },
+    "labels": {
+      "pendingSource": "Awaiting official source"
+    },
     "discoSection": {
       "title": "Outage Guides by Distribution Company",
       "badge": "12 DisCos + Aba Power",
@@ -164,7 +169,7 @@
     },
     "alert": {
       "title": "Protect Your Credentials",
-      "description": "Only enter registration numbers, PINs, or tokens on the official portals linked above. Avoid third-party sites that claim to improve scores or collect payments without receipts."
+      "description": "Only enter registration numbers, PINs, or tokens on the official portals linked above. We never process or verify scores—every button redirects you to WAEC, NECO, or JAMB. Avoid third-party sites that claim to improve scores or collect payments without receipts."
     },
     "outageCta": {
       "title": "Need Power Outage Updates?",
@@ -182,6 +187,8 @@
     "relatedGuides": "Related Guides",
     "followSteps": "Follow These Steps",
     "visitSite": "Visit Site",
+    "officialSource": "Official source",
+    "lastVerified": "Last verified",
     "readGuide": "Read Guide",
     "outageDisclaimer": "Always rely on official DisCo channels for outage confirmation. This guide summarizes public information to help you act faster during interruptions.",
     "resultDisclaimer": "Always use official examination portals. This guide does not store personal information or alternative checkers; it summarises public instructions for quicker access.",
@@ -197,7 +204,7 @@
     },
     "disclaimers": {
       "outage": "Always rely on official DisCo channels for outage confirmation. This guide summarizes public information to help you act faster during interruptions.",
-      "result": "Always use official examination portals. This guide does not store personal information or alternative checkers; it summarises public instructions for quicker access."
+      "result": "Use only the official examination portals linked here. We do not store credentials or verify results on your behalf; every step redirects to WAEC, NECO, or JAMB."
     }
   }
 }

@@ -8,20 +8,21 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ExternalLink, HelpCircle } from "lucide-react";
 import { Navigate, Link, useParams } from "react-router-dom";
-import { resultGuides } from "@/data/exams";
+import { resultGuides, DEFAULT_RESULT_LAST_VERIFIED } from "@/data/exams";
 import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { formatLocalizedDateTime } from "@/lib/utils";
 
 const ResultGuide = () => {
   const { slug } = useParams();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const guide = resultGuides.find((item) => item.slug === slug);
+
+  usePageMetadata(guide?.title ?? "meta.results.title", guide?.metaDescription ?? "meta.results.description");
 
   if (!guide) {
     return <Navigate to="/results" replace />;
   }
-
-  usePageMetadata(guide.title, guide.metaDescription);
 
   const related = resultGuides
     .filter((item) => item.slug !== guide.slug && item.category === guide.category)
@@ -45,6 +46,16 @@ const ResultGuide = () => {
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">{guide.heroTitle}</h1>
               <p className="text-lg text-muted-foreground">{guide.heroDescription}</p>
               <p className="text-sm text-muted-foreground">{guide.examBody}</p>
+              <div className="grid gap-2 rounded-lg border bg-background/80 p-4 text-sm text-muted-foreground sm:grid-cols-2">
+                <div>
+                  <span className="font-semibold text-foreground">{t('guidePages.officialSource')}:</span>{' '}
+                  {guide.primarySource ?? guide.officialLinks[0]?.label ?? t('outages.labels.pendingSource')}
+                </div>
+                <div>
+                  <span className="font-semibold text-foreground">{t('guidePages.lastVerified')}:</span>{' '}
+                  {formatLocalizedDateTime(guide.lastVerified ?? DEFAULT_RESULT_LAST_VERIFIED, language)}
+                </div>
+              </div>
             </div>
           </div>
         </section>

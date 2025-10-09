@@ -31,6 +31,8 @@
     "learnMore": "Kọ́ Síi",
     "officialWebsite": "Ojú-ìwé Ìjọba",
     "lastUpdated": "Ìmúdójúìwọ̀n tó kẹ́yìn",
+    "lastVerified": "Ìmúdájú tó kẹ́yìn",
+    "officialSource": "Orísun ìjọba",
     "home": "Ilé",
     "backTo": "Padà sí"
   },
@@ -113,6 +115,9 @@
     "nationalCard": {
       "viewGuide": "Wo Ìtọ́sọ́nà Ipò Orílẹ̀-èdè"
     },
+    "labels": {
+      "pendingSource": "A ń dúró de orísun ìjọba"
+    },
     "discoSection": {
       "title": "Àwọn Ìtọ́sọ́nà Pípa Nípa Ilé-iṣẹ́ Pínpín",
       "badge": "DisCos 12 + Aba Power",
@@ -166,7 +171,7 @@
     },
     "alert": {
       "title": "Dààbò Bo Àwọn Ìwé-ẹ̀rí Rẹ",
-      "description": "Tẹ àwọn nọ́mbà ìforúkọsílẹ̀, PINs, tàbí tókẹ́n sórí àwọn ọ̀nà ìjọba tí a ti sopọ̀ lókè nìkan. Yẹra fún àwọn ojú-ìwé ẹ̀ka-kẹta tó ń sọ pé wọ́n lè ṣe àwọn àmì rẹ dáradára tàbí gba owó láìsí rísíìtì."
+      "description": "Tẹ àwọn nọ́mbà ìforúkọsílẹ̀, PINs, tàbí tókẹ́n sórí àwọn ọ̀nà ìjọba tí a ti sopọ̀ lókè nìkan. A kì í ṣe àtọwọ́dá tàbí ìmúdájú èsì—bọtìnì kọọkan ń gbé ọ lọ sí WAEC, NECO, tàbí JAMB taara. Yẹra fún àwọn ojú-ìwé ẹ̀ka-kẹta tó ń sọ pé wọ́n lè ṣe àwọn àmì rẹ dáradára tàbí gba owó láìsí rísíìtì."
     },
     "outageCta": {
       "title": "Ṣé O Nílò Ìmúdójúìwọ̀n Ìṣòro Ìmọ́lẹ̀?",
@@ -184,9 +189,11 @@
     "relatedGuides": "Àwọn Ìtọ́sọ́nà Tó Jọra",
     "followSteps": "Tẹ̀lé Àwọn Ìgbésẹ̀ Wọ̀nyí",
     "visitSite": "Ṣàbẹ̀wò Ojú-ìwé",
+    "officialSource": "Orísun ìjọba",
+    "lastVerified": "Ìmúdájú tó kẹ́yìn",
     "readGuide": "Ka Ìtọ́sọ́nà",
     "outageDisclaimer": "Máa gbẹ́kẹ̀lé àwọn ọ̀nà ìjọba DisCo fún ìjẹ́rìísí pípa. Ìtọ́sọ́nà yìí ń ṣàkópọ̀ ìròyìn gbogbo ènìyàn láti ràn ọ́ lọ́wọ́ ṣe ohun kánkán kíákíá lákokò ìdáwọ́dúró.",
-    "resultDisclaimer": "Máa lo àwọn ọ̀nà ìdánwò ìjọba. Ìtọ́sọ́nà yìí kò pa ìròyìn tìrẹ mọ́ tàbí ẹ̀rọ ìṣàyẹ̀wò míràn; ó ṣàkópọ̀ àwọn ìlànà gbogbo ènìyàn fún ìwọlé kíákíá.",
+    "resultDisclaimer": "Máa lo àwọn ọ̀nà ìdánwò ìjọba. A kì í pa ìròyìn tìrẹ mọ́ tàbí ṣàyẹ̀wò èsì fún ọ; gbogbo ìgbésẹ̀ ni yóò gbé ọ lọ sí WAEC, NECO, tàbí JAMB taara.",
     "categoryLabels": {
       "national": "Ìmúdójúìwọ̀n Orílẹ̀-èdè",
       "disco": "Ilé-iṣẹ́ Pínpín",
@@ -199,7 +206,7 @@
     },
     "disclaimers": {
       "outage": "Nigbagbogbo gbarale awọn ikanni DisCo osise fun ijẹrisi pipade ina. Itọsọna yi ṣe akopọ alaye gbangba lati ran ọ lọwọ lati ṣe ni iyara lakoko awọn idiwọ.",
-      "result": "Nigbagbogbo lo awọn oju-iwe idanwo osise. Itọsọna yii ko tọju alaye ti ara ẹni tabi awọn oluṣayẹwo miiran; o ṣe akopọ awọn ilana gbangba fun iraye si yiyara."
+      "result": "Máa lo àwọn oju-ìwé ìdánwò ìjọba. A kì í tọju ìròyìn rẹ tàbí ṣàyẹ̀wò èsì rẹ; gbogbo ọ̀nà yìí ń gbé ọ lọ sí WAEC, NECO, tàbí JAMB taara."
     }
   }
 }

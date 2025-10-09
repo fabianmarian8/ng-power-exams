@@ -31,6 +31,8 @@
     "learnMore": "Mụtakwuo Ihe",
     "officialWebsite": "Webụsaịtị Gọọmentị",
     "lastUpdated": "Mmelite ikpeazụ",
+    "lastVerified": "Nnyocha ikpeazụ",
+    "officialSource": "Isi ozi",
     "home": "Ụlọ",
     "backTo": "Laghachi na"
   },
@@ -113,6 +115,9 @@
     "nationalCard": {
       "viewGuide": "Lee Ntuziaka Ọnọdụ Mba"
     },
+    "labels": {
+      "pendingSource": "Anaghịkwa akọwapụta isi ozi"
+    },
     "discoSection": {
       "title": "Ntuziaka Nkwụsị Site na Ụlọ Ọrụ Nkesa",
       "badge": "DisCos 12 + Aba Power",
@@ -164,7 +169,7 @@
     },
     "alert": {
       "title": "Chebe Ihe Njirimara Gị",
-      "description": "Naanị tinye nọmba ndebanye aha, PINs, ma ọ bụ tokens na ọnụ ụzọ gọọmentị anyị jikọtara n'elu. Zere saịtị ndị ọzọ na-ekwu na ha nwere ike ịkwalite akara gị ma ọ bụ nakọta ụgwọ na-enweghị risiti."
+      "description": "Naanị tinye nọmba ndebanye aha, PINs, ma ọ bụ tokens na ọnụ ụzọ gọọmentị anyị jikọtara n'elu. Anyị anaghị emeso ma ọ bụ nyochaa nsonaazụ maka gị—bọtịnụ ọ bụla na-ebuga gị ozugbo na WAEC, NECO, ma ọ bụ JAMB. Zere saịtị ndị ọzọ na-ekwu na ha nwere ike ịkwalite akara gị ma ọ bụ nakọta ụgwọ na-enweghị risiti."
     },
     "outageCta": {
       "title": "Ị Chọrọ Mmelite Nsogbu Ọkụ?",
@@ -182,9 +187,11 @@
     "relatedGuides": "Ntuziaka Metụtara",
     "followSteps": "Soro Nzọụkwụ Ndị A",
     "visitSite": "Gaa na Saịtị",
+    "officialSource": "Isi ozi",
+    "lastVerified": "Nnyocha ikpeazụ",
     "readGuide": "Gụọ Ntuziaka",
     "outageDisclaimer": "Dabere mgbe niile na ọwa gọọmentị DisCo maka nkwenye nkwụsị. Ntuziaka a na-achịkọta ozi ọha na eze iji nyere gị aka mee ihe ngwa ngwa n'oge nkwụsị.",
-    "resultDisclaimer": "Jiri ọnụ ụzọ ule gọọmentị mgbe niile. Ntuziaka a adịghị echekwa ozi nkeonwe ma ọ bụ ndị nlele ọzọ; ọ na-achịkọta ntuziaka ọha na eze maka nnweta ngwa ngwa.",
+    "resultDisclaimer": "Jiri ọnụ ụzọ ule gọọmentị mgbe niile. Anyị anaghị echekwa ozi gị ma ọ bụ nyochaa nsonaazụ maka gị; nzọụkwụ ọ bụla na-ebuga gị ozugbo na WAEC, NECO, ma ọ bụ JAMB.",
     "categoryLabels": {
       "national": "Mmelite Mba",
       "disco": "Ụlọ Ọrụ Nkesa",
@@ -197,7 +204,7 @@
     },
     "disclaimers": {
       "outage": "Mgbe niile dabere na ọwa DisCo gọọmentị maka nkwenye nkwụsị ọkụ. Ntuziaka a na-achịkọta ozi ọha iji nyere gị aka ime ngwa ngwa n'oge nkwụsị.",
-      "result": "Mgbe niile jiri pọtalụ ule gọọmentị. Ntuziaka a adịghị echekwa ozi nkeonwe ma ọ bụ nyochaa ndị ọzọ; ọ na-achịkọta ntụziaka ọha maka ohere ngwa ngwa."
+      "result": "Mgbe niile jiri pọtalụ ule gọọmentị. Anyị anaghị echekwa ozi gị ma ọ bụ nyochaa nsonaazụ gị; nzọụkwụ ọ bụla na-ebuga gị ozugbo na WAEC, NECO, ma ọ bụ JAMB."
     }
   }
 }
