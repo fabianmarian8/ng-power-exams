@@ -10,6 +10,7 @@ import { outageGuides, DEFAULT_OUTAGE_LAST_VERIFIED } from "@/data/outages";
 import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatLocalizedDateTime } from "@/lib/utils";
+import OutagesBoard from "@/components/OutagesBoard";
 
 const Outages = () => {
   const { t, language } = useLanguage();
@@ -48,6 +49,8 @@ const Outages = () => {
         </section>
 
         <section className="container py-10 space-y-10">
+          <OutagesBoard />
+
           {nationalHighlight && (
             <Card className="border-primary/40">
               <CardHeader>
