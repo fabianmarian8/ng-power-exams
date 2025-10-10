@@ -1,4 +1,5 @@
 {
+
   "generatedAt": "2025-10-10T10:21:07.590Z",
   "items": [
     {
@@ -203,6 +204,91 @@
     },
     {
       "id": "408f43a233e5cd3964c1a2a69d43748583f0267f",
+=======
+  "generatedAt": "2025-10-10T10:33:50.357Z",
+  "items": [
+    {
+      "id": "986fc1ef38764aa496d89a573a750e04d63e94ff",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "Russia hits Ukraine with ‘massive’ strikes, power cuts in Kyiv",
+      "summary": "Russia hits Ukraine with ‘massive’ strikes, power cuts in Kyiv Vanguard News",
+      "publishedAt": "2025-10-10T08:16:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/10/russia-hits-ukraine-with-massive-strikes-power-cuts-in-kyiv/"
+    },
+    {
+      "id": "4421587cf9b0ef4fa8f0c160122954b50ce624fd",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "APC disqualifies 2 Ekiti gov’ship aspirants, dissolves Enugu exco",
+      "summary": "The ruling All Progressives Congress (APC) has disqualified two contenders from its governorship primaries in Ekiti State slated for next year. APC Deputy National Publicity Secretary Duro Meseko disclosed this to newsmen after the National Working Committee (NWC) meeting held yesterday at the party’s national secretariat in Abuja. He said the incumbent governor, Abiodun Oyebanji, […]",
+      "publishedAt": "2025-10-10T07:55:00+01:00",
+      "officialUrl": "https://dailytrust.com/apc-disqualifies-2-ekiti-govship-aspirants-dissolves-enugu-exco/"
+    },
+    {
+      "id": "ae9aeffde0051b0e9611d41759f92b70b21d7546",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Ex-deputy govs push for good governance",
+      "summary": "Former deputy governors across Nigeria yesterday converged in Abuja to launch their new secretariat and pledged to promote patriotism, good governance, and national unity. Among those present were Senator Aliyu Wamakko (Sokoto), Dr Chris Akomas (Abia), Pauline Tallen (Plateau), Alhaji Abdulmalik Mahmood (Bauchi), Prince Ezeakonobi Madumere (Imo), Tele Ikuru (Rivers), and James Magaji (Kaduna). The […]",
+      "publishedAt": "2025-10-10T07:46:00+01:00",
+      "officialUrl": "https://dailytrust.com/ex-deputy-govs-push-for-good-governance/"
+    },
+    {
+      "id": "9fcd1e2387a3a1e5c9f9aeb6e0183f52636c2586",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Eko DisCo registers electricity company as Lagos subsidiary",
+      "summary": "Eko Electricity Distribution Company Plc (EKEDC) has formally registered Excel Electricity Distribution Company Limited as a wholly owned subsidiary to oversee its electricity distribution operations within Lagos State. Read More",
+      "publishedAt": "2025-10-09T12:39:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/eko-disco-registers-electricity-company-as-lagos-subsidiary/"
+    },
+    {
+      "id": "d963969facee1e663c0d3ff20d4285b9c7740e7f",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "NSE: With 55% Grid Access, Nigeria Faces Persistent Energy Challenges",
+      "summary": "Despite Nigeria’s installed capacity of 13,014 MW serving over 220 million people, only 55 per cent of Nigerians has grid access, highlighting persistent energy challenges in the country, the Nigerian Society of Engineers (NSE) has said. Read More",
+      "publishedAt": "2025-10-09T12:28:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/nse-with-55-grid-access-nigeria-faces-persistent-energy-challenges/"
+    },
+    {
+      "id": "1cbdca65a94c9eebb29c2790eece288d3dd33f7e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "BREAKING: Nigerian Authorities Delist 1.9 Million Electricity Customers For Inactivity In One Year",
+      "summary": "A Sahara Reporters review of data from the Nigerian Electricity Regulatory Commission (NERC) has revealed that 1.9 million customers were delisted from the Commission’s database between March and June 2025. Read More",
+      "publishedAt": "2025-10-09T12:24:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/breaking-nigerian-authorities-delist-1-9-million-electricity-customers-for-inactivity-in-one-year/"
+    },
+    {
+      "id": "398a6b8b92915957655905b9f630ab1749f99024",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Spike in electricity demand pushes subsidy to N514b in three months",
+      "summary": "Nigeria’s electricity market continues to be weighed down by subsidy payments and inefficiencies as taxpayers incurred N514.35 billion to subsidise electricity consumption in just three months, largely driven by high demand from residents of Lagos and Abuja. Read More",
+      "publishedAt": "2025-10-08T09:09:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/spike-in-electricity-demand-pushes-subsidy-to-n514b-in-three-months/"
+    },
+    {
+      "id": "c6ecde747a7993c1a4ae21fd387c4e3ef82c27b2",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "FG to add 7,000MW to national grid –Power minister",
+      "summary": "The Minister of Power, Chief Adebayo Adelabu, has announced that the Federal Government is moving into the first phase of the Siemens power project, which will add an additional 7,000 megawatts to the national grid and help stabilise electricity supply across the country. Read More",
+      "publishedAt": "2025-10-08T09:06:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/fg-to-add-7000mw-to-national-grid-power-minister/"
+    },
+    {
+      "id": "105ff6b4ab986948e2c9b1bad7887cbed29087fd",
       "domain": "POWER",
       "tier": "MEDIA",
       "source": "Punch",
@@ -215,6 +301,7 @@
       "id": "5e21cafb7930d1751e1563358fc7c74404bced77",
       "domain": "EXAMS",
       "tier": "OFFICIAL",
+
       "source": "JAMB",
       "title": "Important CAPS advisory for admission letters",
       "summary": "Candidates should log into CAPS to accept or reject admission offers.",
@@ -285,5 +372,64 @@
   "latestOfficialByDomain": {
     "POWER": "2025-02-20T05:30:00+01:00",
     "EXAMS": "2025-02-19T10:30:00+01:00"
+      "source": "Kaduna Electric",
+      "title": "FG Targets Market Stability, Infrastructure Upgrade In Power Reforms",
+      "summary": "The Federal Government says ongoing reforms in Nigeria’s electricity market are focused on stabilising revenue, improving supply reliability, and upgrading key infrastructure to support industrial growth…. Read More",
+      "publishedAt": "2025-10-07T11:27:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/fg-targets-market-stability-infrastructure-upgrade-in-power-reforms/"
+    },
+    {
+      "id": "002e170d570eef77151de63607d4608e51b45901",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Lagos licenses new electricity distribution firms to replace Eko, Ikeja DisCos",
+      "summary": "The Lagos State Electricity Regulatory Commission (LASERC) has officially granted power distribution licences to Excel Distribution Company Limited and IE Energy Lagos Limited, marking a major milestone in the state’s journey toward an independent and competitive electricity market. Read More",
+      "publishedAt": "2025-10-07T11:22:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/lagos-licenses-new-electricity-distribution-firms-to-replace-eko-ikeja-discos/"
+    },
+    {
+      "id": "a9260b0ee6f25b67683cc761966b171ce976b78b",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Power sector revenue to exceed N2trn by 2025 – Adelabu",
+      "summary": "Adebayo Adelabu, minister of power has said that power sector revenue is expected to exceed N2 trillion, up from N1.7 trillion recorded in 2024. This increase in revenue according to the Minister is driven by the tariff policy reform being implemented by the government. Read More",
+      "publishedAt": "2025-10-07T11:15:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/power-sector-revenue-to-exceed-n2trn-by-2025-adelabu/"
+    },
+    {
+      "id": "f97ede86db61d3097dca1b6af67e6ebd2709bc78",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "House Committee Tasks NDPHC on Improvement of Safety Standards, Workers’ Welfare at Calabar Power Plant",
+      "summary": "The House of Representatives Committee on Safety Standards and Regulations has urged Niger Delta Power Holding Company (NDPHC) to improve further on safety standards at the 565 megawatts (MW) Calabar Power Plant in Odukpani, Cross River State. Read More",
+      "publishedAt": "2025-10-06T09:31:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/house-committee-tasks-ndphc-on-improvement-of-safety-standards-workers-welfare-at-calabar-power-plant/"
+    },
+    {
+      "id": "19c3832b7cb884ffd47d18388cc1e504342fc8ab",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Electricity Act: Poor Nigerians, others to get tariff relief",
+      "summary": "The new Chairman of the Nigerian Electricity Regulatory Commission, Abdullahi Ramat, has revealed that schools, hospitals and low-income Nigerians will benefit from a tariff relief package under the Electricity Act 2023. Read More",
+      "publishedAt": "2025-10-06T09:29:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/electricity-act-poor-nigerians-others-to-get-tariff-relief/"
+    },
+    {
+      "id": "823a4bf2d9a39b2e651dc5e4f46a2ff4d8d6be4b",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "$2 billion for super grid: Financing light or darkness?",
+      "summary": "FOR 25 years, Nigeria has pursued electricity reform like a mirage—always visible, never attained. Today, installed generation capacity stands around 13 gigawatts (GW), yet only about a third reaches consumers. The rest drains away through gas shortages, technical leakages, sabotage, and recurring grid collapses—costing the economy between 2 per cent and 3 per cent of […]",
+      "publishedAt": "2025-10-10T24:30:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/2-billion-for-super-grid-financing-light-or-darkness/"
+    }
+  ],
+  "latestOfficialByDomain": {
+    "POWER": "2025-10-09T12:39:00+01:00"
   }
 }
