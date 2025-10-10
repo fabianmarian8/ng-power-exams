@@ -1,64 +1,61 @@
 {
   "items": [
     {
-      "id": "demo-tcn-maint",
-      "source": "TCN",
-      "sourceName": "Transmission Company of Nigeria",
-      "title": "Scheduled maintenance on the Jebba–Osogbo 330kV corridor",
-      "summary": "TCN crews will execute OPGW replacement and relay calibration between Jebba and Osogbo.",
-      "publishedAt": "2025-10-10T06:30:00.000Z",
-      "status": "PLANNED",
-      "plannedWindow": {
-        "start": "2025-10-11T08:00:00.000Z",
-        "end": "2025-10-11T16:00:00.000Z",
-        "timezone": "Africa/Lagos"
-      },
-      "affectedAreas": ["Jebba", "Osogbo", "Ilorin"],
-      "verifiedBy": "TCN",
-      "officialUrl": "https://www.tcn.org.ng/latest-news/jebba-osogbo-maintenance"
-    },
-    {
-      "id": "demo-ekedc-lekki-upgrade",
       "source": "EKEDC",
       "sourceName": "Eko Electricity Distribution Company",
-      "title": "Lekki business unit daytime upgrade schedule",
-      "summary": "Eko Disco advises customers in Lekki, Ajah and Ibeju-Lekki about planned daytime maintenance with TCN.",
-      "publishedAt": "2025-10-09T09:15:00.000Z",
-      "status": "PLANNED",
-      "plannedWindow": {
-        "start": "2025-10-12T09:00:00.000Z",
-        "end": "2025-10-12T17:00:00.000Z",
-        "timezone": "Africa/Lagos"
-      },
-      "affectedAreas": ["Lekki", "Ajah", "Ibeju-Lekki"],
+      "title": "Report A Fault",
+      "summary": "Report A Fault",
+      "officialUrl": "https://ekedp.com/whistleblowing",
       "verifiedBy": "DISCO",
-      "officialUrl": "https://ekedp.com/news/lekki-upgrade"
-    },
-    {
-      "id": "demo-kaduna-outage",
-      "source": "KADUNA",
-      "sourceName": "Kaduna Electric",
-      "title": "Emergency outage in Kaduna metropolis",
-      "summary": "Load remains off on the 33kV Mando line while TCN replaces faulty isolators.",
-      "publishedAt": "2025-10-08T16:45:00.000Z",
+      "publishedAt": "2025-10-10T08:14:22.818Z",
       "status": "UNPLANNED",
-      "affectedAreas": ["Kaduna North", "Kaduna South"],
-      "verifiedBy": "DISCO",
-      "officialUrl": "https://kadunaelectric.com/emergency-update-kaduna"
+      "id": "8f7372dd0f81"
     },
     {
-      "id": "demo-jed-restored",
-      "source": "JED",
-      "sourceName": "Jos Electricity Distribution Plc",
-      "title": "Rayfield feeder supply restored",
-      "summary": "Jos Electricity Distribution Plc confirms that supply to Rayfield Band A feeder has been restored to normal schedule.",
-      "publishedAt": "2025-10-07T11:20:00.000Z",
-      "status": "RESTORED",
-      "affectedAreas": ["Rayfield", "Bukuru"],
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
+      "summary": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
+      "officialUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504",
       "verifiedBy": "DISCO",
-      "officialUrl": "https://jedplc.com/rayfield-update"
+      "publishedAt": "2025-10-10T08:14:22.816Z",
+      "status": "UNPLANNED",
+      "id": "3862f09ee6b9"
+    },
+    {
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
+      "summary": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
+      "officialUrl": "https://ekedp.com/news/public-notice-upgraded-and-downgraded-feeders-for-march-2025-5420",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-10-10T08:14:22.817Z",
+      "status": "PLANNED",
+      "id": "970f273476d4"
+    },
+    {
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
+      "summary": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
+      "officialUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-10-10T08:14:22.816Z",
+      "status": "PLANNED",
+      "id": "5abbc63a16ba"
+    },
+    {
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "Prepaid Meter Upgrade Checker",
+      "summary": "Prepaid Meter Upgrade Checker",
+      "officialUrl": "https://ekedp.com/sts",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-10-10T08:14:22.814Z",
+      "status": "PLANNED",
+      "id": "6310597cb169"
     }
   ],
-  "generatedAt": "2025-10-10T08:07:08.761Z",
-  "latestSourceAt": "2025-10-10T06:30:00.000Z"
+  "generatedAt": "2025-10-10T08:14:24.003Z",
+  "latestSourceAt": "2025-10-10T08:14:22.818Z"
 }
