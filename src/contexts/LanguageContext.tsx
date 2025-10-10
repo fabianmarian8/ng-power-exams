@@ -18,7 +18,7 @@ export const LANGUAGES = [
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, fallback?: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -55,19 +55,22 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     setLanguageState(lang);
   };
 
-  const t = (key: string): string => {
+  const t = (key: string, fallback?: string): string => {
     const keys = key.split('.');
     let value: any = translations;
 
     for (const k of keys) {
       value = value?.[k];
       if (value === undefined) {
+        if (fallback !== undefined) {
+          return fallback;
+        }
         console.warn(`Translation missing for key: ${key}`);
         return key;
       }
     }
 
-    return typeof value === 'string' ? value : key;
+    return typeof value === 'string' ? value : (fallback ?? key);
   };
 
   return (

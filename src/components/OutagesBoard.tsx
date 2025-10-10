@@ -165,15 +165,15 @@ function PlannedCard({
   const calendarLink = buildCalendarLink(item);
 
   return (
-    <Card key={item.id} className="h-full">
+    <Card key={item.id} className="h-full hover:shadow-lg transition-shadow">
       <CardHeader className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{getSourceBadgeLabel(item)}</Badge>
-          <Badge variant="outline" className="bg-emerald-100 text-emerald-900 dark:bg-emerald-900/20 dark:text-emerald-200">
+          <Badge variant="outline" className="bg-nigeria-green-light text-nigeria-green-dark">
             {plannedLabel}
           </Badge>
           {ongoing && (
-            <Badge variant="default" className="bg-orange-500 hover:bg-orange-500">
+            <Badge variant="default" className="bg-warning-orange text-white animate-pulse-glow">
               {ongoingLabel}
             </Badge>
           )}
@@ -244,12 +244,17 @@ function LiveCard({
   officialSourceLabel: string;
 }) {
   const areas = item.affectedAreas ?? [];
+  const isUnplanned = item.status === 'UNPLANNED';
+  const isRestored = item.status === 'RESTORED';
+  
   return (
-    <Card key={item.id} className="h-full">
+    <Card key={item.id} className="h-full hover:shadow-lg transition-shadow">
       <CardHeader>
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{getSourceBadgeLabel(item)}</Badge>
-          <Badge className="capitalize">{statusLabel}</Badge>
+          <Badge className={isUnplanned ? 'bg-urgent-red text-white' : isRestored ? 'bg-nigeria-green text-white' : ''}>
+            {statusLabel}
+          </Badge>
           {getVerificationBadge(item)}
         </div>
         <CardTitle className="text-lg leading-tight">{item.title}</CardTitle>
@@ -282,10 +287,6 @@ function LiveCard({
 
 export function OutagesBoard() {
   const { t } = useLanguage();
-  const translate = (key: string, fallback: string) => {
-    const value = t(key);
-    return value === key ? fallback : value;
-  };
   const { data, isLoading, error, isRefetching, planned, active, restored, lastIngest, lastSourceUpdate } = useOutages();
   const [plannedFilter, setPlannedFilter] = useState<PlannedFilter>('sevenDays');
 
@@ -338,15 +339,17 @@ export function OutagesBoard() {
     return (
       <div className="space-y-6">
         {header}
-        <Card>
-          <CardHeader>
-            <CardTitle>Načítavam živé hlásenia…</CardTitle>
-            <CardDescription>Overujeme oficiálne zdroje distribučných spoločností.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="animate-pulse text-sm text-muted-foreground">Prosím, čakajte…</div>
-          </CardContent>
-        </Card>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div 
+              key={i} 
+              className="h-48 rounded-lg bg-gradient-to-r from-muted via-muted-foreground/10 to-muted animate-shimmer"
+              style={{
+                backgroundSize: '200% 100%',
+              }}
+            />
+          ))}
+        </div>
       </div>
     );
   }
@@ -363,9 +366,9 @@ export function OutagesBoard() {
   }
 
   const statusLabels: Record<OutageItem['status'], string> = {
-    UNPLANNED: translate('badge.unplanned', 'Neplánovaná porucha'),
-    RESTORED: translate('badge.restored', 'Obnovenie dodávky'),
-    PLANNED: translate('badge.planned', 'Plánovaná odstávka')
+    UNPLANNED: t('badge.unplanned', 'Neplánovaná porucha'),
+    RESTORED: t('badge.restored', 'Obnovenie dodávky'),
+    PLANNED: t('badge.planned', 'Plánovaná odstávka')
   };
 
   const liveItems = [...active, ...restored];
@@ -377,7 +380,7 @@ export function OutagesBoard() {
       <section className="space-y-4">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-xl font-semibold">{translate('plannedOutages.header', 'Plánované odstávky')}</h3>
+            <h3 className="text-xl font-semibold">{t('plannedOutages.header', 'Plánované odstávky')}</h3>
             <p className="text-sm text-muted-foreground">
               Sledujeme oficiálne harmonogramy údržby a plánovaných odstávok. Časy sú prepočítané do časovej zóny Africa/Lagos.
             </p>
@@ -389,7 +392,7 @@ export function OutagesBoard() {
               size="sm"
               onClick={() => setPlannedFilter('today')}
             >
-              {translate('plannedOutages.filter.today', 'Dnes')}
+              {t('plannedOutages.filter.today', 'Dnes')}
             </Button>
             <Button
               type="button"
@@ -397,7 +400,7 @@ export function OutagesBoard() {
               size="sm"
               onClick={() => setPlannedFilter('sevenDays')}
             >
-              {translate('plannedOutages.filter.sevenDays', 'Najbližších 7 dní')}
+              {t('plannedOutages.filter.sevenDays', 'Najbližších 7 dní')}
             </Button>
             <Button
               type="button"
@@ -405,7 +408,7 @@ export function OutagesBoard() {
               size="sm"
               onClick={() => setPlannedFilter('all')}
             >
-              {translate('plannedOutages.filter.all', 'Všetko')}
+              {t('plannedOutages.filter.all', 'Všetko')}
             </Button>
           </div>
         </div>
@@ -423,10 +426,10 @@ export function OutagesBoard() {
                 key={item.id}
                 item={item}
                 ongoing={isPlannedOngoing(item, new Date())}
-                plannedLabel={translate('badge.planned', 'Plánovaná odstávka')}
-                ongoingLabel={translate('badge.ongoing', 'Prebieha')}
-                officialSourceLabel={translate('common.officialSource', 'Oficiálny zdroj')}
-                addToCalendarLabel={translate('cta.addToCalendar', 'Pridať do kalendára')}
+                plannedLabel={t('badge.planned', 'Plánovaná odstávka')}
+                ongoingLabel={t('badge.ongoing', 'Prebieha')}
+                officialSourceLabel={t('common.officialSource', 'Oficiálny zdroj')}
+                addToCalendarLabel={t('cta.addToCalendar', 'Pridať do kalendára')}
               />
             ))}
           </div>
@@ -454,7 +457,7 @@ export function OutagesBoard() {
                 key={item.id}
                 item={item}
                 statusLabel={statusLabels[item.status]}
-                officialSourceLabel={translate('common.officialSource', 'Oficiálny zdroj')}
+                officialSourceLabel={t('common.officialSource', 'Oficiálny zdroj')}
               />
             ))}
           </div>

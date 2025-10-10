@@ -11,6 +11,7 @@ import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatLocalizedDateTime } from "@/lib/utils";
 import OutagesBoard from "@/components/OutagesBoard";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
 const Outages = () => {
   const { t, language } = useLanguage();
@@ -34,9 +35,17 @@ const Outages = () => {
       <Header />
 
       <main className="flex-1">
-        <section className="border-b bg-gradient-to-b from-accent/20 to-background">
-          <div className="container py-12 md:py-16">
-            <div className="mx-auto max-w-3xl space-y-4">
+        <section 
+          className="relative border-b bg-gradient-to-b from-accent/20 to-background overflow-hidden"
+          style={{
+            backgroundImage: 'url(/images/hero/power-grid.jpg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background" />
+          <div className="container relative py-12 md:py-16">
+            <ScrollReveal className="mx-auto max-w-3xl space-y-4">
               <Badge variant="outline" className="text-primary border-primary/60">{t('outages.hero.badge')}</Badge>
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                 {t('outages.hero.title')}
@@ -44,7 +53,7 @@ const Outages = () => {
               <p className="text-lg text-muted-foreground">
                 {t('outages.hero.subtitle')}
               </p>
-            </div>
+            </ScrollReveal>
           </div>
         </section>
 
@@ -94,40 +103,42 @@ const Outages = () => {
               <Badge variant="secondary" className="rounded-full">{t('outages.discoSection.badge')}</Badge>
             </div>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {discoGuides.map((guide) => (
-                <Card key={guide.slug} className="group h-full">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-2">
-                        <CardTitle className="text-lg">{guide.title}</CardTitle>
-                        <CardDescription>{guide.heroDescription}</CardDescription>
+              {discoGuides.map((guide, idx) => (
+                <ScrollReveal key={guide.slug} delay={idx * 50}>
+                  <Card className="group h-full hover:shadow-lg hover:scale-105 transition-all">
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-2">
+                          <CardTitle className="text-lg">{guide.title}</CardTitle>
+                          <CardDescription>{guide.heroDescription}</CardDescription>
+                        </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {guide.coverage && (
-                      <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-                        {guide.coverage.map((state) => (
-                          <span key={state} className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1">
-                            <MapPin className="h-3 w-3 text-primary" />
-                            {state}
-                          </span>
-                        ))}
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {guide.coverage && (
+                        <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
+                          {guide.coverage.map((state) => (
+                            <span key={state} className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-1">
+                              <MapPin className="h-3 w-3 text-primary" />
+                              {state}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <div className="space-y-1 text-xs text-muted-foreground">
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
+                        </p>
+                        <p>
+                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        </p>
                       </div>
-                    )}
-                    <div className="space-y-1 text-xs text-muted-foreground">
-                      <p>
-                        <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
-                      </p>
-                      <p>
-                        <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
-                      </p>
-                    </div>
-                    <Button asChild variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
-                      <Link to={`/outages/${guide.slug}`}>{t('outages.discoSection.openGuide')}</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                      <Button asChild variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Link to={`/outages/${guide.slug}`}>{t('outages.discoSection.openGuide')}</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </ScrollReveal>
               ))}
             </div>
           </div>

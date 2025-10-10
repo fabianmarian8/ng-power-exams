@@ -60,6 +60,31 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        "trust-blue": {
+          DEFAULT: "hsl(210, 100%, 50%)",
+          light: "hsl(210, 100%, 95%)",
+          dark: "hsl(210, 100%, 30%)",
+        },
+        "nigeria-green": {
+          DEFAULT: "hsl(142, 76%, 36%)",
+          light: "hsl(142, 76%, 95%)",
+          dark: "hsl(142, 76%, 25%)",
+        },
+        "urgent-red": {
+          DEFAULT: "hsl(0, 84%, 60%)",
+          light: "hsl(0, 84%, 95%)",
+          dark: "hsl(0, 84%, 40%)",
+        },
+        "warning-orange": {
+          DEFAULT: "hsl(38, 92%, 50%)",
+          light: "hsl(38, 92%, 95%)",
+          dark: "hsl(38, 92%, 35%)",
+        },
+        "hope-yellow": {
+          DEFAULT: "hsl(48, 100%, 50%)",
+          light: "hsl(48, 100%, 95%)",
+          dark: "hsl(48, 100%, 40%)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -83,10 +108,30 @@ export default {
             height: "0",
           },
         },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 0 0 rgba(59, 130, 246, 0.7)" },
+          "50%": { opacity: "0.8", boxShadow: "0 0 20px 10px rgba(59, 130, 246, 0)" },
+        },
+        "slide-up": {
+          from: { opacity: "0", transform: "translateY(30px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "bounce-subtle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-1000px 0" },
+          "100%": { backgroundPosition: "1000px 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "slide-up": "slide-up 0.6s ease-out",
+        "bounce-subtle": "bounce-subtle 0.5s ease-in-out",
+        shimmer: "shimmer 2s linear infinite",
       },
     },
   },
