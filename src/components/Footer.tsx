@@ -16,36 +16,36 @@ const Footer = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
                 <Zap className="h-5 w-5 text-primary-foreground" />
               </div>
-              <span className="text-lg font-bold">{t('header.siteName')}</span>
+              <span className="text-lg font-bold">{t('header.siteName', 'NaijaInfo')}</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              {t('footer.tagline')}
+              {t('footer.tagline', 'Your trusted source for power outage updates and exam results in Nigeria.')}
             </p>
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">{t('footer.powerOutages')}</h3>
+            <h3 className="mb-4 text-sm font-semibold">{t('footer.powerOutages', 'Power Outages')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/outages/national-grid-status" className="text-muted-foreground hover:text-primary">
-                  {t('footer.nationalGridStatus')}
+                  {t('footer.nationalGridStatus', 'National Grid Status')}
                 </Link>
               </li>
               <li>
                 <Link to="/outages/outage-contacts-nigeria" className="text-muted-foreground hover:text-primary">
-                  {t('footer.discoCustomerCare')}
+                  {t('footer.discoCustomerCare', 'DisCo Customer Care List')}
                 </Link>
               </li>
               <li>
                 <Link to="/outages/safety-during-blackouts" className="text-muted-foreground hover:text-primary">
-                  {t('footer.safetyDuringBlackouts')}
+                  {t('footer.safetyDuringBlackouts', 'Safety During Blackouts')}
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="mb-4 text-sm font-semibold">{t('footer.examResults')}</h3>
+            <h3 className="mb-4 text-sm font-semibold">{t('footer.examResults', 'Exam Results')}</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/results/check-jamb-result-2025" className="text-muted-foreground hover:text-primary">
