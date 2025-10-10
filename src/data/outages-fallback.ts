@@ -1,50 +1,64 @@
 import type { OutagesPayload } from '@/lib/outages-types';
 
 export const OUTAGES_FALLBACK: OutagesPayload = {
-  generatedAt: '2025-01-08T22:30:00.000Z',
+  generatedAt: '2025-10-01T08:05:00.000Z',
+  lastSourceUpdate: '2025-10-01T07:30:00.000Z',
   events: [
     {
-      id: 'tcn-2025-01-08-lagos-maintenance',
+      id: 'tcn-2025-10-01-jebba-maintenance',
       source: 'TCN',
       category: 'planned',
-      title: 'Scheduled maintenance on Lagos–Abeokuta 132kV line',
+      title: 'TCN schedules OPGW upgrade between Jebba and Osogbo',
       description:
-        'The Transmission Company of Nigeria will conduct maintenance on the Lagos–Abeokuta 132kV transmission line. Customers on affected feeders may experience supply interruptions while crews replace protective relays and re-string conductors.',
-      areas: ['Lagos', 'Abeokuta'],
+        'The Transmission Company of Nigeria will execute an Optical Ground Wire (OPGW) upgrade on the Jebba–Osogbo 330kV corridor. Load will be shifted temporarily while crews string the new fibre pair and recalibrate protection relays.',
+      areas: ['Jebba', 'Osogbo', 'Ilorin'],
       window: {
-        start: '2025-01-09T07:00:00.000Z',
-        end: '2025-01-09T16:00:00.000Z'
+        start: '2025-10-01T09:00:00.000Z',
+        end: '2025-10-01T17:00:00.000Z'
       },
-      publishedAt: '2025-01-08T18:15:00.000Z',
-      detectedAt: '2025-01-08T21:55:00.000Z',
-      sourceUrl: 'https://tcn.org.ng/blog/scheduled-maintenance-lagos-abeokuta-132kv-line'
+      publishedAt: '2025-10-01T07:30:00.000Z',
+      detectedAt: '2025-10-01T07:45:00.000Z',
+      sourceUrl: 'https://www.tcn.org.ng/latest-news/tcn-schedules-opgw-upgrade-between-jebba-and-osogbo/',
+      verifiedBy: 'TCN'
     },
     {
-      id: 'ikedc-2025-01-08-ikeja-unplanned',
-      source: 'IKEDC',
-      category: 'unplanned',
-      title: 'Fault on Ikeja West 33kV feeder',
+      id: 'jed-2025-10-01-rayfield-band-a',
+      source: 'JED',
+      category: 'advisory',
+      title: 'Rayfield Band A feeder downgraded to 4 hours availability',
       description:
-        'Ikeja Electric reports a fault on the Ikeja West 33kV feeder affecting Alimosho, Shasha, and Egbeda districts. Technicians are isolating the faulted section to restore supply to unaffected customers.',
-      areas: ['Ikeja', 'Alimosho', 'Egbeda', 'Shasha'],
-      window: {
-        end: '2025-01-09T01:00:00.000Z'
-      },
-      publishedAt: '2025-01-08T20:45:00.000Z',
-      detectedAt: '2025-01-08T21:10:00.000Z',
-      sourceUrl: 'https://www.ikejaelectric.com/news/fault-on-ikeja-west-33kv-feeder'
+        'Jos Electricity Distribution Plc reports that the Rayfield Band A feeder recorded only four hours of supply during the latest review window. Customers within Rayfield and Bukuru should expect load management while TCN rectifies upstream constraints.',
+      areas: ['Rayfield', 'Bukuru'],
+      publishedAt: '2025-10-01T06:50:00.000Z',
+      detectedAt: '2025-10-01T07:40:00.000Z',
+      sourceUrl: 'https://jedplc.com/feeder-availability.php',
+      verifiedBy: 'DisCo'
     },
     {
-      id: 'kaduna-2025-01-08-restoration',
+      id: 'kaduna-2025-09-21-kaduna-metropolis-update',
       source: 'KADUNA',
-      category: 'restoration',
-      title: 'Restoration update for Zaria axis',
+      category: 'unplanned',
+      title: 'Update on prolonged outage across Kaduna metropolis',
       description:
-        'Kaduna Electric confirms that supply has been restored to the Zaria axis after emergency repairs on the 33kV feeder. Customers should report any persisting outage via the contact centre.',
-      areas: ['Zaria'],
-      publishedAt: '2025-01-08T19:20:00.000Z',
-      detectedAt: '2025-01-08T21:30:00.000Z',
-      sourceUrl: 'https://kadunaelectric.com/news/restoration-update-zaria-axis'
+        'Kaduna Electric says TCN maintenance on the 33kV Mando line is still ongoing, keeping parts of Kaduna metropolis without supply. Teams are on site with TCN to complete replacement of the faulty isolators.',
+      areas: ['Kaduna North', 'Kaduna South'],
+      publishedAt: '2025-09-21T16:20:00.000Z',
+      detectedAt: '2025-09-21T17:10:00.000Z',
+      sourceUrl: 'https://kadunaelectric.com/an-update-on-the-power-supply-situation-in-kaduna-metropolis/',
+      verifiedBy: 'DisCo'
+    },
+    {
+      id: 'ekedc-2025-07-05-lekki-maintenance',
+      source: 'EKEDC',
+      category: 'planned',
+      title: 'Lekki business unit: 25-day day-time maintenance by TCN',
+      description:
+        'Eko Disco informs customers in Lekki, Ajah, and Ibeju-Lekki that TCN will carry out critical maintenance between 9 a.m. and 6 p.m. daily for 25 days. Customers are advised to top up energy credits ahead of the exercise.',
+      areas: ['Lekki', 'Ajah', 'Ibeju-Lekki'],
+      publishedAt: '2025-07-05T09:10:00.000Z',
+      detectedAt: '2025-07-05T09:30:00.000Z',
+      sourceUrl: 'https://ekedp.com/news/ekedc-set-for-operational-system-upgrade-urges-customers-to-recharge-and-pay-their-bills-to-avoid-service-disruption-4927',
+      verifiedBy: 'DisCo'
     }
   ]
 };

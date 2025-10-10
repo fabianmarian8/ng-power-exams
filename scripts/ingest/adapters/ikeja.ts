@@ -34,7 +34,8 @@ function createEvent(params: {
     feeder: params.feeder,
     publishedAt,
     detectedAt: new Date().toISOString(),
-    sourceUrl: params.sourceUrl
+    sourceUrl: params.sourceUrl,
+    verifiedBy: 'DisCo'
   };
 }
 

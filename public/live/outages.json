@@ -1,38 +1,58 @@
 {
   "events": [
     {
-      "id": "abd7c142d6b7816dce8f472eed693ff4",
-      "source": "EKEDC",
-      "category": "unplanned",
-      "title": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
-      "description": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
-      "areas": [],
-      "publishedAt": "2025-10-10T06:54:03.442Z",
-      "detectedAt": "2025-10-10T06:54:03.443Z",
-      "sourceUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504"
+      "id": "tcn-2025-10-01-jebba-maintenance",
+      "source": "TCN",
+      "category": "planned",
+      "title": "TCN schedules OPGW upgrade between Jebba and Osogbo",
+      "description": "The Transmission Company of Nigeria will execute an Optical Ground Wire (OPGW) upgrade on the Jebba–Osogbo 330kV corridor. Load will be shifted temporarily while crews string the new fibre pair and recalibrate protection relays.",
+      "areas": ["Jebba", "Osogbo", "Ilorin"],
+      "window": {
+        "start": "2025-10-01T09:00:00.000Z",
+        "end": "2025-10-01T17:00:00.000Z"
+      },
+      "publishedAt": "2025-10-01T07:30:00.000Z",
+      "detectedAt": "2025-10-01T07:45:00.000Z",
+      "sourceUrl": "https://www.tcn.org.ng/latest-news/tcn-schedules-opgw-upgrade-between-jebba-and-osogbo/",
+      "verifiedBy": "TCN"
     },
     {
-      "id": "3f0e9fbd184e7fbfc9fdae326dbd99b8",
+      "id": "jed-2025-10-01-rayfield-band-a",
+      "source": "JED",
+      "category": "advisory",
+      "title": "Rayfield Band A feeder downgraded to 4 hours availability",
+      "description": "Jos Electricity Distribution Plc reports that the Rayfield Band A feeder recorded only four hours of supply during the latest review window. Customers within Rayfield and Bukuru should expect load management while TCN rectifies upstream constraints.",
+      "areas": ["Rayfield", "Bukuru"],
+      "publishedAt": "2025-10-01T06:50:00.000Z",
+      "detectedAt": "2025-10-01T07:40:00.000Z",
+      "sourceUrl": "https://jedplc.com/feeder-availability.php",
+      "verifiedBy": "DisCo"
+    },
+    {
+      "id": "kaduna-2025-09-21-kaduna-metropolis-update",
+      "source": "KADUNA",
+      "category": "unplanned",
+      "title": "Update on prolonged outage across Kaduna metropolis",
+      "description": "Kaduna Electric says TCN maintenance on the 33kV Mando line is still ongoing, keeping parts of Kaduna metropolis without supply. Teams are on site with TCN to complete replacement of the faulty isolators.",
+      "areas": ["Kaduna North", "Kaduna South"],
+      "publishedAt": "2025-09-21T16:20:00.000Z",
+      "detectedAt": "2025-09-21T17:10:00.000Z",
+      "sourceUrl": "https://kadunaelectric.com/an-update-on-the-power-supply-situation-in-kaduna-metropolis/",
+      "verifiedBy": "DisCo"
+    },
+    {
+      "id": "ekedc-2025-07-05-lekki-maintenance",
       "source": "EKEDC",
       "category": "planned",
-      "title": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
-      "description": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
-      "areas": [],
-      "publishedAt": "2025-10-10T06:54:03.443Z",
-      "detectedAt": "2025-10-10T06:54:03.443Z",
-      "sourceUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354"
-    },
-    {
-      "id": "907e93263c35474d92f40c8daff61b69",
-      "source": "EKEDC",
-      "category": "unplanned",
-      "title": "Report A Fault",
-      "description": "Report A Fault",
-      "areas": [],
-      "publishedAt": "2025-10-10T06:54:03.444Z",
-      "detectedAt": "2025-10-10T06:54:03.444Z",
-      "sourceUrl": "https://ekedp.com/whistleblowing"
+      "title": "Lekki business unit: 25-day day-time maintenance by TCN",
+      "description": "Eko Disco informs customers in Lekki, Ajah, and Ibeju-Lekki that TCN will carry out critical maintenance between 9 a.m. and 6 p.m. daily for 25 days. Customers are advised to top up energy credits ahead of the exercise.",
+      "areas": ["Lekki", "Ajah", "Ibeju-Lekki"],
+      "publishedAt": "2025-07-05T09:10:00.000Z",
+      "detectedAt": "2025-07-05T09:30:00.000Z",
+      "sourceUrl": "https://ekedp.com/news/ekedc-set-for-operational-system-upgrade-urges-customers-to-recharge-and-pay-their-bills-to-avoid-service-disruption-4927",
+      "verifiedBy": "DisCo"
     }
   ],
-  "generatedAt": "2025-10-10T06:54:03.702Z"
+  "generatedAt": "2025-10-01T08:05:00.000Z",
+  "lastSourceUpdate": "2025-10-01T07:30:00.000Z"
 }

@@ -13,7 +13,7 @@ const validate = ajv.compile(schema);
 const USER_AGENT = 'NaijaInfo-Ingest/1.0 (+https://ng-power-exams.local)';
 
 async function main() {
-  const { events, stats } = await fromAdapters({ axios, cheerio, userAgent: USER_AGENT });
+  const { events, stats, lastPublishedAtByAdapter } = await fromAdapters({ axios, cheerio, userAgent: USER_AGENT });
   const uniqueById = new Map<string, typeof events[number]>();
   for (const event of events) {
     if (!uniqueById.has(event.id)) {
@@ -21,18 +21,26 @@ async function main() {
     }
   }
 
+  const sortedEvents = Array.from(uniqueById.values()).sort((a, b) =>
+    new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf()
+  );
+
+  const lastSourceUpdate = sortedEvents[0]?.publishedAt ?? null;
   const payload = {
-    events: Array.from(uniqueById.values()),
-    generatedAt: new Date().toISOString()
+    events: sortedEvents,
+    generatedAt: new Date().toISOString(),
+    lastSourceUpdate
   };
 
   const summaryLog = {
     TCN: stats.tcn,
     Ikeja: stats.ikeja,
     Eko: stats.eko,
-    Kaduna: stats.kaduna
+    Kaduna: stats.kaduna,
+    JED: stats.jed
   };
   console.log('Adapters summary:', summaryLog);
+  console.log('Last published per adapter:', lastPublishedAtByAdapter);
   const totalEvents = Object.values(stats).reduce((sum, count) => sum + count, 0);
   if (totalEvents === 0) {
     console.warn('No data from adapters — writing empty outages.json');

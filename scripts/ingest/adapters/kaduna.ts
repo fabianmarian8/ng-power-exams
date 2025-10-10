@@ -32,7 +32,8 @@ export const kaduna: Adapter = async (ctx) => {
         areas: [],
         publishedAt,
         detectedAt: new Date().toISOString(),
-        sourceUrl: href
+        sourceUrl: href,
+        verifiedBy: 'DisCo'
       });
     });
   } catch (error) {

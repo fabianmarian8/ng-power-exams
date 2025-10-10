@@ -35,7 +35,8 @@ export const eko: Adapter = async (ctx) => {
         areas: [],
         publishedAt,
         detectedAt: new Date().toISOString(),
-        sourceUrl: absoluteUrl
+        sourceUrl: absoluteUrl,
+        verifiedBy: 'DisCo'
       });
     });
   } catch (error) {
