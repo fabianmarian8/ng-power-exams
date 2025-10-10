@@ -7,21 +7,36 @@ import { parsePlannedWindow, type PlanWindow } from '../lib/planWindow';
 const DEFAULT_TIMEZONE = 'Africa/Lagos';
 
 const PLANNED_KEYWORDS = [
-  'planned',
-  'maintenance',
-  'upgrade',
-  'scheduled',
-  'shutdown',
-  'outage window',
-  'downtime',
+  'planned maintenance',
+  'scheduled maintenance',
+  'planned outage',
+  'scheduled outage',
+  'shutdown window',
   'feeder maintenance',
-  'system upgrade',
-  'rehabilitation'
+  'line maintenance',
+  'transmission upgrade',
+  'system rehabilitation',
+  'transformer maintenance'
 ];
 
-const RESTORED_KEYWORDS = ['restored', 'restoration complete', 'supply restored'];
+const RESTORED_KEYWORDS = [
+  'restored',
+  'restoration complete',
+  'supply restored',
+  'power restored',
+  'service resumed'
+];
 
-const UNPLANNED_KEYWORDS = ['fault', 'outage', 'blackout', 'trip', 'interruption', 'loss of supply'];
+const UNPLANNED_KEYWORDS = [
+  'fault',
+  'unplanned outage',
+  'blackout',
+  'trip',
+  'service interruption',
+  'supply loss',
+  'grid collapse',
+  'feeder trip'
+];
 
 export async function fetchHtml(ctx: AdapterContext, url: string): Promise<string> {
   const response = await ctx.axios.get<string>(url, {
@@ -39,16 +54,19 @@ export function load(html: string, cheerio: AdapterContext['cheerio'], options: 
   return cheerio.load(html, { xmlMode: false, ...options });
 }
 
-export function classifyStatus(title: string, body = ''): OutageStatus {
+export function classifyStatus(title: string, body = '', plannedWindow?: PlanWindow | undefined): OutageStatus {
   const haystack = `${title} ${body}`.toLowerCase();
-  if (PLANNED_KEYWORDS.some((keyword) => haystack.includes(keyword))) {
-    return 'PLANNED';
-  }
   if (RESTORED_KEYWORDS.some((keyword) => haystack.includes(keyword))) {
     return 'RESTORED';
   }
+  if (PLANNED_KEYWORDS.some((keyword) => haystack.includes(keyword))) {
+    return 'PLANNED';
+  }
   if (UNPLANNED_KEYWORDS.some((keyword) => haystack.includes(keyword))) {
     return 'UNPLANNED';
+  }
+  if (plannedWindow?.start || plannedWindow?.end) {
+    return 'PLANNED';
   }
   return 'UNPLANNED';
 }
@@ -67,9 +85,9 @@ export function buildOutageItem(partial: Omit<OutageItem, 'id' | 'status' | 'pub
   publishedAt?: string;
   status?: OutageStatus;
 }): OutageItem {
-  const status = partial.status ?? classifyStatus(partial.title, partial.summary ?? '');
-  const publishedAt = partial.publishedAt ?? new Date().toISOString();
   const plannedWindow = partial.plannedWindow;
+  const status = partial.status ?? classifyStatus(partial.title, partial.summary ?? '', plannedWindow);
+  const publishedAt = partial.publishedAt ?? new Date().toISOString();
 
   return {
     ...partial,

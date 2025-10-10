@@ -6,6 +6,8 @@ const BASE_URL = 'https://www.ikejaelectric.com';
 const CNN_URL = `${BASE_URL}/cnn/`;
 const BUSINESS_UNITS = ['ABULE', 'AKOWONJO', 'IKEJA', 'IKORODU', 'OSHODI', 'SHOMOLU'];
 
+const BLACKLIST_PATTERNS = [/customer notice/i, /payment/i, /vending/i, /meter/i];
+
 function extractAreas(text: string): string[] {
   const match = text.match(/AREAS\s+AFFECTED:?([^\n]+)/i);
   if (!match) return [];
@@ -42,8 +44,7 @@ function createItem(params: {
     officialUrl: params.sourceUrl,
     verifiedBy: 'DISCO',
     plannedWindow: plannedWindow ?? undefined,
-    publishedAt: params.publishedAt,
-    status: 'PLANNED'
+    publishedAt: params.publishedAt
   });
 }
 
@@ -59,7 +60,7 @@ export const ikeja: Adapter = async (ctx) => {
       const el$ = $(el);
       const card = el$.closest('a, div, li');
       const title = card.text().replace(/\s+/g, ' ').trim();
-      if (!title) {
+      if (!title || title.length < 15) {
         return;
       }
       if (processed.has(title)) return;
@@ -67,6 +68,9 @@ export const ikeja: Adapter = async (ctx) => {
 
       const href = card.find('a').attr('href') ?? CNN_URL;
       const url = new URL(href, CNN_URL).toString();
+      if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) {
+        return;
+      }
       const areas = extractAreas(title);
       const publishedAt = parsePublishedAt(title);
 
@@ -91,7 +95,8 @@ export const ikeja: Adapter = async (ctx) => {
       const $ = load(html, ctx.cheerio);
       $('table tr').each((_, row) => {
         const text = $(row).text().replace(/\s+/g, ' ').trim();
-        if (!text) return;
+        if (!text || text.length < 15) return;
+        if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(text))) return;
         const areas = extractAreas(text);
         const publishedAt = parsePublishedAt(text);
 
