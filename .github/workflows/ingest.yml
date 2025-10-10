@@ -21,22 +21,27 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Yarn install (offline)
+      - name: Yarn install (immutable, offline)
         run: yarn install --immutable --immutable-cache
 
-      - name: Generate live JSON
+      - name: Run ingest script
         run: yarn ingest
 
-      - name: Commit data
+      - name: Commit generated files
         run: |
           git config user.name "bot"
-          git config user.email "bot@users.noreply.github.com"
-          git add public/live/*.json
-          git commit -m "chore: update outages data [skip ci]" || echo "no changes"
-          git push
+          git config user.email "actions@users.noreply.github.com"
+          git add public/live/*.json || true
+          git commit -m "chore(ingest): update outages.json [skip ci]" || echo "No changes to commit"
+          git push || echo "Nothing to push"
 
-      - name: Trigger deploy (Vercel)
-        if: ${{ env.VERCEL_DEPLOY_HOOK != '' }}
-        run: curl -sS -X POST "$VERCEL_DEPLOY_HOOK"
+      - name: Trigger redeploy (Lovable/Vercel)
+        if: ${{ success() }}
         env:
-          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+          REDEPLOY_HOOK_URL: ${{ secrets.REDEPLOY_HOOK_URL }}
+        run: |
+          if [ -n "$REDEPLOY_HOOK_URL" ]; then
+            curl -sS -X POST "$REDEPLOY_HOOK_URL"
+          else
+            echo "No redeploy hook configured"
+          fi

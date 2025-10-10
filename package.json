@@ -8,6 +8,7 @@
   },
   "type": "module",
   "scripts": {
+    "preinstall": "node -e \"if ((process.env.npm_config_user_agent||'').startsWith('npm/')) { console.error('Use Yarn (Zero-Install).'); process.exit(1) }\"",
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
