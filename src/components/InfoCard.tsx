@@ -10,13 +10,14 @@ interface InfoCardProps {
   icon: LucideIcon;
   href: string;
   items?: string[];
+  className?: string;
 }
 
-const InfoCard = ({ title, description, icon: Icon, href, items }: InfoCardProps) => {
+const InfoCard = ({ title, description, icon: Icon, href, items, className }: InfoCardProps) => {
   const { t } = useLanguage();
   
   return (
-    <Card className="group transition-all hover:shadow-lg hover:border-primary/50">
+    <Card className={`group transition-all hover:shadow-lg hover:border-primary/50 ${className || ''}`}>
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">

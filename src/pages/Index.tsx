@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import InfoCard from "@/components/InfoCard";
-import { Zap, GraduationCap, MapPin, Phone, AlertCircle, Compass } from "lucide-react";
+import { Zap, GraduationCap, MapPin, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +20,6 @@ const Index = () => {
   usePageMetadata("meta.homepage.title", "meta.homepage.description");
 
   const featuredOutages = outageGuides.filter((guide) => guide.category === "disco").slice(0, 6);
-  const highlightedHowTos = outageGuides.filter((guide) => guide.category !== "disco").slice(0, 3);
   const jambHighlights = resultGuides.filter((guide) => guide.category === "jamb").slice(0, 2);
   const waecHighlight = resultGuides.find((guide) => guide.slug === "waec-result-checker");
   const necoHighlight = resultGuides.find((guide) => guide.slug === "neco-result-checker");
@@ -38,7 +37,7 @@ const Index = () => {
             backgroundPosition: 'center',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background" />
           <div className="container relative py-16 md:py-24">
             <ScrollReveal className="mx-auto max-w-3xl text-center space-y-6">
               <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
@@ -89,6 +88,7 @@ const Index = () => {
                 title={t('index.powerCard.title')}
                 description={t('index.powerCard.description')}
                 href="/outages"
+                className="border-l-4 border-l-urgent-red"
                 items={[
                   t('index.powerCard.items.0'),
                   t('index.powerCard.items.1'),
@@ -101,6 +101,7 @@ const Index = () => {
                 title={t('index.examCard.title')}
                 description={t('index.examCard.description')}
                 href="/results"
+                className="border-l-4 border-l-nigeria-green"
                 items={[
                   t('index.examCard.items.0'),
                   t('index.examCard.items.1'),
@@ -115,17 +116,29 @@ const Index = () => {
         <section className="border-t bg-muted/40">
           <div className="container py-12 space-y-6">
             <ScrollReveal>
+              <div className="text-center space-y-2">
+                <h2 className="text-2xl font-bold">{t('index.featuredGuides.title')}</h2>
+                <p className="text-muted-foreground">{t('index.featuredGuides.subtitle')}</p>
+              </div>
+            </ScrollReveal>
+            
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">{t('index.quickAccess.title')}</h2>
-                <Button asChild variant="ghost" className="text-primary hover:text-primary">
+                <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-urgent-red" />
+                  {t('header.powerOutages')}
+                </h3>
+                <Button asChild variant="ghost" size="sm">
                   <Link to="/outages">{t('index.quickAccess.viewAll')}</Link>
                 </Button>
               </div>
-            </ScrollReveal>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredOutages.map((guide, idx) => (
-                <ScrollReveal key={guide.slug} delay={idx * 50}>
-                  <Card className="rounded-lg border bg-card hover:shadow-lg transition-shadow h-full">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {featuredOutages.map((guide, idx) => (
+                  <Card 
+                    key={guide.slug}
+                    className="rounded-lg border border-l-4 border-l-urgent-red bg-card hover:shadow-lg transition-all h-full animate-fade-in"
+                    style={{ animationDelay: `${idx * 100}ms` }}
+                  >
                     <CardHeader>
                       <CardTitle className="text-lg">{guide.title}</CardTitle>
                     </CardHeader>
@@ -146,104 +159,42 @@ const Index = () => {
                       </Button>
                     </CardContent>
                   </Card>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="container py-12 space-y-6">
-          <ScrollReveal>
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">{t('index.examShortcuts.title')}</h2>
-              <Button asChild variant="ghost" className="text-primary hover:text-primary">
-                <Link to="/results">{t('index.examShortcuts.browse')}</Link>
-              </Button>
-            </div>
-          </ScrollReveal>
-          <div className="grid gap-6 md:grid-cols-3">
-            {[...(jambHighlights ?? []), waecHighlight, necoHighlight]
-              .filter(Boolean)
-              .map((guide, idx) => (
-                <ScrollReveal key={guide!.slug} delay={idx * 100}>
-                  <Card className="rounded-lg border bg-card hover:shadow-lg transition-shadow h-full">
-                    <CardHeader>
-                      <CardTitle className="text-lg">{guide!.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3 text-sm text-muted-foreground">
-                      <p>{guide!.heroDescription}</p>
-                      <Button asChild variant="outline" size="sm">
-                        <Link to={`/results/${guide!.slug}`}>{t('index.examShortcuts.openGuide')}</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </ScrollReveal>
-              ))}
-          </div>
-        </section>
-
-        <section className="border-t bg-muted/40">
-          <div className="container py-12">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {highlightedHowTos.map((guide) => (
-                <Card key={guide.slug} className="rounded-lg border bg-card">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{guide.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    <p>{guide.heroDescription}</p>
-                    <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
-                      <Link to={`/outages/${guide.slug}`}>{t('index.howToSection.readHowTo')}</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="container py-12">
-          <div className="rounded-lg border bg-card p-8">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-              <div className="space-y-2 max-w-2xl">
-                <h2 className="text-xl font-bold flex items-center gap-2">
-                  <Phone className="h-6 w-6 text-primary" />
-                  {t('index.emergency.title')}
-                </h2>
-                <p className="text-muted-foreground">
-                  {t('index.emergency.description')}
-                </p>
+                ))}
               </div>
-              <Button asChild variant="outline">
-                <Link to="/outages/outage-contacts-nigeria">{t('index.emergency.saveNumbers')}</Link>
-              </Button>
             </div>
-          </div>
-        </section>
 
-        <section className="border-t bg-muted/40">
-          <div className="container py-12">
-            <ScrollReveal>
-              <Card className="bg-gradient-to-r from-primary/10 via-accent/20 to-background">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Compass className="h-5 w-5 text-primary" />
-                    {t('index.knowledgeBase.title')}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3 text-muted-foreground">
-                  <p>{t('index.knowledgeBase.description')}</p>
-                  <div className="flex flex-wrap gap-3">
-                    <Button asChild>
-                      <Link to="/outages">{t('index.knowledgeBase.powerGuides')}</Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                      <Link to="/results">{t('index.knowledgeBase.resultGuides')}</Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </ScrollReveal>
+            <div className="space-y-4 pt-8">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <GraduationCap className="h-5 w-5 text-nigeria-green" />
+                  {t('header.examResults')}
+                </h3>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/results">{t('index.examShortcuts.browse')}</Link>
+                </Button>
+              </div>
+              <div className="grid gap-6 md:grid-cols-3">
+                {[...(jambHighlights ?? []), waecHighlight, necoHighlight]
+                  .filter(Boolean)
+                  .map((guide, idx) => (
+                    <Card 
+                      key={guide!.slug}
+                      className="rounded-lg border border-l-4 border-l-nigeria-green bg-card hover:shadow-lg transition-all h-full animate-fade-in"
+                      style={{ animationDelay: `${idx * 100}ms` }}
+                    >
+                      <CardHeader>
+                        <CardTitle className="text-lg">{guide!.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3 text-sm text-muted-foreground">
+                        <p>{guide!.heroDescription}</p>
+                        <Button asChild variant="outline" size="sm">
+                          <Link to={`/results/${guide!.slug}`}>{t('index.examShortcuts.openGuide')}</Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+              </div>
+            </div>
           </div>
         </section>
 
