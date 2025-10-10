@@ -1,0 +1,42 @@
+name: Ingest outages & redeploy
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Yarn install (offline)
+        run: yarn install --immutable --immutable-cache
+
+      - name: Generate live JSON
+        run: yarn ingest
+
+      - name: Commit data
+        run: |
+          git config user.name "bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add public/live/*.json
+          git commit -m "chore: update outages data [skip ci]" || echo "no changes"
+          git push
+
+      - name: Trigger deploy (Vercel)
+        if: ${{ env.VERCEL_DEPLOY_HOOK != '' }}
+        run: curl -sS -X POST "$VERCEL_DEPLOY_HOOK"
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
