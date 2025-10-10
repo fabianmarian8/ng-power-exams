@@ -75,7 +75,6 @@ function createItem(params: {
     verifiedBy: 'TCN',
     publishedAt: params.publishedAt,
     plannedWindow: plannedWindow ?? undefined,
-    status: 'PLANNED',
     raw: params.raw
   });
 }

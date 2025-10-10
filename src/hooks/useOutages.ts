@@ -25,9 +25,7 @@ const ZONE = 'Africa/Lagos';
 export type PlannedRange = 'today' | 'next7' | 'all';
 
 export function selectPlanned(items: OutageItem[], range: PlannedRange): OutageItem[] {
-  const planned = items.filter((item) => item.status === 'PLANNED');
-  const withStart = planned.filter((item) => item.plannedWindow?.start);
-  const withoutStart = planned.filter((item) => !item.plannedWindow?.start);
+  const withStart = items.filter((item) => item.status === 'PLANNED' && item.plannedWindow?.start);
 
   let filtered = withStart;
   const now = DateTime.now().setZone(ZONE);
@@ -60,7 +58,7 @@ export function selectPlanned(items: OutageItem[], range: PlannedRange): OutageI
     return startA.toMillis() - startB.toMillis();
   });
 
-  return range === 'all' ? [...sorted, ...withoutStart] : sorted;
+  return sorted;
 }
 
 export function useOutages(): UseOutagesResult {

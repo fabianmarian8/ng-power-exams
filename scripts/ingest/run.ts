@@ -9,6 +9,7 @@ import { fromAdapters } from './adapters/index.js';
 import schema from './schema/outages.schema.json' assert { type: 'json' };
 import type { OutageItem } from '../../src/lib/outages-types';
 import { ingestNews } from './news.js';
+import { deduplicateOutages } from './lib/deduplication.js';
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
@@ -76,30 +77,6 @@ function normalizeItem(item: OutageItem): OutageItem {
   };
 }
 
-function dedupeItems(items: OutageItem[]): OutageItem[] {
-  const seen = new Map<string, OutageItem>();
-  for (const item of items) {
-    const key = [
-      item.source,
-      normalizeWhitespace(item.title)?.toLowerCase() ?? '',
-      item.plannedWindow?.start ?? '',
-      item.plannedWindow?.end ?? ''
-    ].join('|');
-    if (!seen.has(key)) {
-      seen.set(key, item);
-      continue;
-    }
-
-    const existing = seen.get(key)!;
-    const existingDate = new Date(existing.publishedAt).valueOf();
-    const incomingDate = new Date(item.publishedAt).valueOf();
-    if (incomingDate > existingDate) {
-      seen.set(key, item);
-    }
-  }
-  return Array.from(seen.values());
-}
-
 function sortItems(items: OutageItem[]): OutageItem[] {
   const rank: Record<OutageItem['status'], number> = {
     UNPLANNED: 0,
@@ -129,8 +106,9 @@ async function main() {
   });
 
   const normalizedItems = items.map(normalizeItem);
+  const deduped = deduplicateOutages(normalizedItems);
   const now = DateTime.now().setZone('Africa/Lagos');
-  for (const item of normalizedItems) {
+  for (const item of deduped) {
     if (item.status !== 'PLANNED' || !item.plannedWindow?.start) {
       continue;
     }
@@ -157,7 +135,6 @@ async function main() {
       timezone: 'Africa/Lagos'
     };
   }
-  const deduped = dedupeItems(normalizedItems);
   const sortedItems = sortItems(deduped);
   const latestSourceAt = sortedItems
     .map((item) => item.publishedAt)

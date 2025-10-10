@@ -8,11 +8,18 @@ const KEYWORDS = /(power outage|service interruption|scheduled maintenance|unpla
 
 const BLACKLIST_PATTERNS = [
   /prepaid meter/i,
+  /meter upgrade/i,
   /contact.*team/i,
+  /rapid response/i,
   /report.*fault/i,
+  /whistle.*blow/i,
   /upgraded.*downgraded.*feeders/i,
   /customer.*service/i,
-  /whistle.*blowing/i
+  /payment/i,
+  /bill/i,
+  /tariff/i,
+  /sts\s*$/i,
+  /^\s*$/
 ];
 
 function createItem(params: {
@@ -30,8 +37,7 @@ function createItem(params: {
     officialUrl: params.url,
     verifiedBy: 'DISCO',
     publishedAt: params.publishedAt,
-    plannedWindow: plannedWindow ?? undefined,
-    status: 'PLANNED'
+    plannedWindow: plannedWindow ?? undefined
   });
 }
 
@@ -48,16 +54,23 @@ export const eko: Adapter = async (ctx) => {
       const titleNode = node.find('h1, h2, h3').first();
       const title = (titleNode.text() || node.text()).replace(/\s+/g, ' ').trim();
       const href = (link.attr('href') ?? node.attr('href')) ?? '';
-      if (!title || !href || !KEYWORDS.test(title)) return;
-      if (BLACKLIST_PATTERNS.some(pattern => pattern.test(title))) return;
+      if (!title || title.length < 10 || !href || !KEYWORDS.test(title)) return;
+      if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) return;
 
       const absoluteUrl = new URL(href, NEWS_URL).toString();
       const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
       const parsedDate = dateText ? Date.parse(dateText) : NaN;
       const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
 
-      // Skip if no date or older than 90 days
-      if (!publishedAt || Date.now() - Date.parse(publishedAt) > 90 * 24 * 60 * 60 * 1000) return;
+      if (!publishedAt) {
+        console.log(`[EKEDC] Skipping item without date: ${title}`);
+        return;
+      }
+
+      if (Date.now() - Date.parse(publishedAt) > 90 * 24 * 60 * 60 * 1000) {
+        console.log(`[EKEDC] Skipping old item: ${title}`);
+        return;
+      }
 
       const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
 

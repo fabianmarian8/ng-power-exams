@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { DateTime } from 'luxon';
-import { differenceInCalendarDays } from 'date-fns';
 import { CalendarPlus, ExternalLink, Zap, Radio } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -12,7 +11,6 @@ import type { OutageItem, OutageSource } from '@/lib/outages-types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatNewsDateTime } from '@/lib/utils';
 import { NewsStrip } from '@/components/NewsStrip';
-import { LastVerifiedLabel } from '@/components/LastVerifiedLabel';
 import { OutagesFilter } from '@/components/OutagesFilter';
 
 const SOURCE_LABELS: Partial<Record<OutageItem['source'], string>> = {
@@ -89,6 +87,42 @@ function getVerificationBadge(item: OutageItem) {
   );
 }
 
+function renderQualityBadge(
+  item: OutageItem,
+  t: (key: string, fallback: string) => string
+) {
+  let score = 0;
+  if (item.source === 'TCN') score += 2;
+  if (item.plannedWindow?.start) score += 2;
+  if (item.affectedAreas && item.affectedAreas.length > 0) score += 1;
+  const isRecent = item.publishedAt
+    ? Date.now() - Date.parse(item.publishedAt) < 7 * 24 * 60 * 60 * 1000
+    : false;
+  if (isRecent) score += 1;
+
+  if (score >= 5) {
+    return (
+      <Badge className="bg-nigeria-green text-white">
+        {t('qualityBadge.highConfidence', 'High Confidence')}
+      </Badge>
+    );
+  }
+
+  if (score >= 3) {
+    return (
+      <Badge variant="secondary">
+        {t('qualityBadge.verified', 'Verified')}
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge variant="outline" className="border-warning-orange text-warning-orange">
+      {t('qualityBadge.unverified', 'Unverified')}
+    </Badge>
+  );
+}
+
 function isPlannedOngoing(item: OutageItem, now: DateTime) {
   if (item.status !== 'PLANNED' || !item.plannedWindow?.start) return false;
   const start = DateTime.fromISO(item.plannedWindow.start, { zone: TIMEZONE });
@@ -110,10 +144,22 @@ function toICalDate(iso: string): string {
 function buildCalendarLink(item: OutageItem): string | null {
   const windowStart = item.plannedWindow?.start ?? item.plannedWindow?.end ?? item.publishedAt;
   if (!windowStart) return null;
-  const startIso = new Date(windowStart).toISOString();
-  const endIso = item.plannedWindow?.end
-    ? new Date(item.plannedWindow.end).toISOString()
-    : new Date(new Date(windowStart).getTime() + 2 * 60 * 60 * 1000).toISOString();
+  const start = DateTime.fromISO(windowStart, { zone: TIMEZONE });
+  if (!start.isValid) {
+    return null;
+  }
+
+  const end = item.plannedWindow?.end
+    ? DateTime.fromISO(item.plannedWindow.end, { zone: TIMEZONE })
+    : start.plus({ hours: 2 });
+  const now = DateTime.now().setZone(TIMEZONE);
+
+  if (end.isValid && end < now.minus({ hours: 6 })) {
+    return null;
+  }
+
+  const startIso = start.toJSDate().toISOString();
+  const endIso = end.isValid ? end.toJSDate().toISOString() : start.plus({ hours: 2 }).toJSDate().toISOString();
 
   const lines = [
     'BEGIN:VCALENDAR',
@@ -161,6 +207,7 @@ function PlannedCard({ item, t }: { item: OutageItem; t: (key: string, fallback?
               </Badge>
             )}
             {getVerificationBadge(item)}
+            {renderQualityBadge(item, t)}
           </div>
         </div>
         <CardTitle className="text-base leading-tight">{item.title}</CardTitle>
@@ -215,11 +262,17 @@ function PlannedCard({ item, t }: { item: OutageItem; t: (key: string, fallback?
 
 function LiveCard({ item, t }: { item: OutageItem; t: (key: string, fallback?: string) => string }) {
   const SourceIcon = item.source === 'TCN' ? Radio : Zap;
-  const borderColor = 
-    item.status === 'UNPLANNED' ? 'border-l-urgent-red' :
-    item.status === 'RESTORED' ? 'border-l-nigeria-green' :
-    item.source === 'TCN' ? 'border-l-blue-500' : 'border-l-orange-500';
-  
+  const isUnverified = item.status === 'PLANNED' && !item.plannedWindow?.start;
+  const borderColor = isUnverified
+    ? 'border-l-border'
+    : item.status === 'UNPLANNED'
+    ? 'border-l-urgent-red'
+    : item.status === 'RESTORED'
+    ? 'border-l-nigeria-green'
+    : item.source === 'TCN'
+    ? 'border-l-blue-500'
+    : 'border-l-orange-500';
+
   return (
     <Card className={`h-full hover:shadow-lg transition-shadow border-l-4 ${borderColor}`}>
       <CardHeader className="pb-3">
@@ -239,7 +292,13 @@ function LiveCard({ item, t }: { item: OutageItem; t: (key: string, fallback?: s
                 {t('badge.restored', 'Restored')}
               </Badge>
             )}
+            {isUnverified && (
+              <Badge variant="outline" className="border-muted-foreground text-muted-foreground">
+                {t('badge.unverified', 'Unverified')}
+              </Badge>
+            )}
             {getVerificationBadge(item)}
+            {renderQualityBadge(item, t)}
           </div>
         </div>
         <CardTitle className="text-base leading-tight">{item.title}</CardTitle>
@@ -276,9 +335,9 @@ function LiveCard({ item, t }: { item: OutageItem; t: (key: string, fallback?: s
 
 export function OutagesBoard() {
   const { t } = useLanguage();
-  const { all, planned, active, restored, lastIngest, isLoading, error, isRefetching } = useOutages();
+  const { all, planned, lastIngest, isLoading, error, isRefetching } = useOutages();
   const [plannedFilter, setPlannedFilter] = useState<PlannedRange>('next7');
-  
+
   const [selectedSources, setSelectedSources] = useState<OutageSource[]>([
     'TCN', 'EKEDC', 'IKEJA', 'KADUNA', 'JED', 'AEDC', 'IBEDC'
   ]);
@@ -286,45 +345,56 @@ export function OutagesBoard() {
 
   const availableSources = useMemo(() => {
     const sources = new Set<OutageSource>();
-    [...planned, ...active, ...restored].forEach((item) => sources.add(item.source));
+    all.forEach((item) => sources.add(item.source));
     return Array.from(sources);
-  }, [planned, active, restored]);
+  }, [all]);
+
+  const matchesFilters = useCallback(
+    (item: OutageItem) => {
+      if (!selectedSources.includes(item.source)) return false;
+      if (!searchQuery) return true;
+      const query = searchQuery.toLowerCase();
+      if (item.title.toLowerCase().includes(query)) return true;
+      if (item.summary && item.summary.toLowerCase().includes(query)) return true;
+      if (item.affectedAreas?.some((area) => area.toLowerCase().includes(query))) return true;
+      return false;
+    },
+    [selectedSources, searchQuery]
+  );
 
   const filteredPlanned = useMemo(() => {
-    let items = selectPlanned(planned, plannedFilter);
-    
-    items = items.filter((item) => selectedSources.includes(item.source));
-    
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      items = items.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.summary?.toLowerCase().includes(query) ||
-          item.affectedAreas?.some((area) => area.toLowerCase().includes(query))
-      );
-    }
-    
-    return items;
-  }, [planned, plannedFilter, selectedSources, searchQuery]);
+    const items = selectPlanned(planned, plannedFilter);
+    return items.filter(matchesFilters);
+  }, [planned, plannedFilter, matchesFilters]);
 
-  const filteredLive = useMemo(() => {
-    let items = [...active, ...restored];
-    
-    items = items.filter((item) => selectedSources.includes(item.source));
-    
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      items = items.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.summary?.toLowerCase().includes(query) ||
-          item.affectedAreas?.some((area) => area.toLowerCase().includes(query))
-      );
-    }
-    
-    return items;
-  }, [active, restored, selectedSources, searchQuery]);
+  const unplannedOutages = useMemo(
+    () => all.filter((item) => item.status === 'UNPLANNED'),
+    [all]
+  );
+  const restoredOutages = useMemo(
+    () => all.filter((item) => item.status === 'RESTORED'),
+    [all]
+  );
+  const unverifiedReports = useMemo(
+    () => planned.filter((item) => !item.plannedWindow?.start),
+    [planned]
+  );
+
+  const filteredUnplanned = useMemo(
+    () => unplannedOutages.filter(matchesFilters),
+    [unplannedOutages, matchesFilters]
+  );
+  const filteredRestored = useMemo(
+    () => restoredOutages.filter(matchesFilters),
+    [restoredOutages, matchesFilters]
+  );
+  const filteredUnverified = useMemo(
+    () => unverifiedReports.filter(matchesFilters),
+    [unverifiedReports, matchesFilters]
+  );
+
+  const hasLiveReports =
+    filteredUnplanned.length > 0 || filteredRestored.length > 0 || filteredUnverified.length > 0;
 
   if (isLoading) {
     return (
@@ -449,7 +519,7 @@ export function OutagesBoard() {
             </p>
           </div>
 
-          {filteredLive.length === 0 ? (
+          {!hasLiveReports ? (
             <Alert>
               <AlertTitle>{t('outagesBoard.noNewAnnouncements', 'No New Announcements')}</AlertTitle>
               <AlertDescription>
@@ -457,10 +527,53 @@ export function OutagesBoard() {
               </AlertDescription>
             </Alert>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {filteredLive.map((item) => (
-                <LiveCard key={item.id} item={item} t={t} />
-              ))}
+            <div className="space-y-6">
+              {filteredUnplanned.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-lg font-semibold">
+                    {t('outagesBoard.unplannedHeading', 'Unplanned Outages')}
+                  </h4>
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {filteredUnplanned.map((item) => (
+                      <LiveCard key={item.id} item={item} t={t} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {filteredRestored.length > 0 && (
+                <div className="space-y-3">
+                  <h4 className="text-lg font-semibold">
+                    {t('outagesBoard.restoredHeading', 'Restored Power')}
+                  </h4>
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {filteredRestored.map((item) => (
+                      <LiveCard key={item.id} item={item} t={t} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {filteredUnverified.length > 0 && (
+                <div className="space-y-3">
+                  <div className="space-y-1">
+                    <h4 className="text-lg font-semibold">
+                      {t('outagesBoard.unverifiedHeading', 'Unverified Reports')}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {t(
+                        'outagesBoard.unverifiedDescription',
+                        'These reports lack schedule details. Check official sources for updates.'
+                      )}
+                    </p>
+                  </div>
+                  <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {filteredUnverified.map((item) => (
+                      <LiveCard key={item.id} item={item} t={t} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </section>
