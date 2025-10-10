@@ -1,5 +1,5 @@
 import type { CheerioAPI } from 'cheerio';
-import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -64,7 +64,7 @@ function createItem(params: {
   areas: string[];
   raw?: Record<string, unknown>;
 }): OutageItem {
-  const plannedWindow = extractPlannedWindow(`${params.title} ${params.summary}`);
+  const plannedWindow = resolvePlannedWindow(`${params.title} ${params.summary}`, params.publishedAt);
   return buildOutageItem({
     source: 'TCN',
     sourceName: 'Transmission Company of Nigeria',
@@ -74,7 +74,8 @@ function createItem(params: {
     officialUrl: params.url,
     verifiedBy: 'TCN',
     publishedAt: params.publishedAt,
-    plannedWindow,
+    plannedWindow: plannedWindow ?? undefined,
+    status: 'PLANNED',
     raw: params.raw
   });
 }
@@ -134,6 +135,8 @@ export const tcn: Adapter = async (ctx) => {
       console.error(`TCN article fetch failed: ${url}`, error);
     }
   }
+
+  console.log(`[TCN] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length}`);
 
   return items;
 };

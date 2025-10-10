@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react';
+import { DateTime } from 'luxon';
 import { differenceInCalendarDays } from 'date-fns';
 import { CalendarPlus, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useOutages } from '@/hooks/useOutages';
+import { useOutages, selectPlanned, type PlannedRange } from '@/hooks/useOutages';
 import { useNews } from '@/hooks/useNews';
 import type { OutageItem } from '@/lib/outages-types';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -42,19 +43,35 @@ const PORS_LINKS = [
   }
 ];
 
-type PlannedFilter = 'today' | 'sevenDays' | 'all';
+const TIMEZONE = 'Africa/Lagos';
 
 function formatDateTime(iso: string | undefined): string {
   if (!iso) return 'Neznámy čas';
-  const date = new Date(iso);
-  if (Number.isNaN(date.valueOf())) return 'Neznámy čas';
-  return date.toLocaleString(undefined, {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  const dt = DateTime.fromISO(iso, { zone: TIMEZONE });
+  if (!dt.isValid) return 'Neznámy čas';
+  return dt.toFormat('dd LLL yyyy, HH:mm');
+}
+
+function formatScheduledRange(startIso?: string, endIso?: string): string | null {
+  const start = startIso ? DateTime.fromISO(startIso, { zone: TIMEZONE }) : null;
+  const end = endIso ? DateTime.fromISO(endIso, { zone: TIMEZONE }) : null;
+
+  if (start?.isValid && end?.isValid) {
+    if (start.hasSame(end, 'day')) {
+      return `${start.toFormat('dd LLL yyyy, HH:mm')} – ${end.toFormat('HH:mm')}`;
+    }
+    return `${start.toFormat('dd LLL yyyy, HH:mm')} – ${end.toFormat('dd LLL yyyy, HH:mm')}`;
+  }
+
+  if (start?.isValid) {
+    return start.toFormat('dd LLL yyyy, HH:mm');
+  }
+
+  if (end?.isValid) {
+    return end.toFormat('dd LLL yyyy, HH:mm');
+  }
+
+  return null;
 }
 
 function getSourceBadgeLabel(item: OutageItem): string {
@@ -71,50 +88,17 @@ function getVerificationBadge(item: OutageItem) {
   );
 }
 
-function isPlannedOngoing(item: OutageItem, now: Date) {
-  if (item.status !== 'PLANNED') return false;
-  const start = item.plannedWindow?.start ? new Date(item.plannedWindow.start) : undefined;
-  const end = item.plannedWindow?.end ? new Date(item.plannedWindow.end) : undefined;
-  if (start && end) {
+function isPlannedOngoing(item: OutageItem, now: DateTime) {
+  if (item.status !== 'PLANNED' || !item.plannedWindow?.start) return false;
+  const start = DateTime.fromISO(item.plannedWindow.start, { zone: TIMEZONE });
+  if (!start.isValid) return false;
+  const end = item.plannedWindow.end
+    ? DateTime.fromISO(item.plannedWindow.end, { zone: TIMEZONE })
+    : null;
+  if (end?.isValid) {
     return start <= now && now <= end;
   }
-  if (start && !end) {
-    return start <= now;
-  }
-  return false;
-}
-
-function getWindowReference(item: OutageItem): { start?: Date; end?: Date } {
-  const start = item.plannedWindow?.start ? new Date(item.plannedWindow.start) : undefined;
-  const end = item.plannedWindow?.end ? new Date(item.plannedWindow.end) : undefined;
-  return { start, end };
-}
-
-function matchesPlannedFilter(item: OutageItem, filter: PlannedFilter, now: Date): boolean {
-  if (filter === 'all') return true;
-  const { start, end } = getWindowReference(item);
-  const reference = start ?? end;
-
-  if (filter === 'today') {
-    if (start && end && now >= start && now <= end) {
-      return true;
-    }
-    if (!reference) return false;
-    return reference.toDateString() === now.toDateString();
-  }
-
-  if (filter === 'sevenDays') {
-    const windowEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    if (end && end < now) {
-      return false;
-    }
-    if (!reference) {
-      return true;
-    }
-    return reference >= now && reference <= windowEnd;
-  }
-
-  return true;
+  return start <= now;
 }
 
 function toICalDate(iso: string): string {
@@ -155,7 +139,10 @@ function PlannedCard({
   plannedLabel,
   ongoingLabel,
   officialSourceLabel,
-  addToCalendarLabel
+  addToCalendarLabel,
+  scheduledLabel,
+  noScheduleLabel,
+  publishedLabel
 }: {
   item: OutageItem;
   ongoing: boolean;
@@ -163,11 +150,15 @@ function PlannedCard({
   ongoingLabel: string;
   officialSourceLabel: string;
   addToCalendarLabel: string;
+  scheduledLabel: string;
+  noScheduleLabel: string;
+  publishedLabel: string;
 }) {
   const windowStart = item.plannedWindow?.start;
   const windowEnd = item.plannedWindow?.end;
   const areas = item.affectedAreas ?? [];
   const calendarLink = buildCalendarLink(item);
+  const scheduledRange = formatScheduledRange(windowStart, windowEnd);
 
   return (
     <Card key={item.id} className="h-full hover:shadow-lg transition-shadow">
@@ -185,27 +176,24 @@ function PlannedCard({
           {getVerificationBadge(item)}
         </div>
         <CardTitle className="text-lg leading-tight">{item.title}</CardTitle>
-        <CardDescription>Publikované {formatDateTime(item.publishedAt)}</CardDescription>
+        <div className="space-y-1 text-sm text-muted-foreground">
+          {scheduledRange ? (
+            <div>
+              <span className="font-medium text-foreground">{scheduledLabel}</span>{' '}
+              <span>{scheduledRange}</span>
+            </div>
+          ) : (
+            <Badge variant="outline" className="bg-muted text-muted-foreground">
+              {noScheduleLabel}
+            </Badge>
+          )}
+          <div className="text-xs text-muted-foreground">
+            {publishedLabel} {formatDateTime(item.publishedAt)}
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4 text-sm">
         {item.summary && <p className="text-muted-foreground">{item.summary}</p>}
-        {(windowStart || windowEnd) && (
-          <div className="grid gap-2">
-            {windowStart && (
-              <div className="flex gap-2 text-sm">
-                <span className="font-medium text-foreground">Od:</span>
-                <span>{formatDateTime(windowStart)}</span>
-              </div>
-            )}
-            {windowEnd && (
-              <div className="flex gap-2 text-sm">
-                <span className="font-medium text-foreground">Do:</span>
-                <span>{formatDateTime(windowEnd)}</span>
-              </div>
-            )}
-            {!windowEnd && !windowStart && <p>Časové okno nebolo špecifikované.</p>}
-          </div>
-        )}
         {areas.length > 0 && (
           <div>
             <p className="font-medium">Dotknuté oblasti</p>
@@ -301,20 +289,10 @@ export function OutagesBoard() {
   const awaitingPowerUpdate = latestPowerOfficial
     ? differenceInCalendarDays(new Date(), new Date(latestPowerOfficial)) > 14
     : false;
-  const [plannedFilter, setPlannedFilter] = useState<PlannedFilter>('sevenDays');
+  const [plannedFilter, setPlannedFilter] = useState<PlannedRange>('next7');
 
-  const filteredPlanned = useMemo(() => {
-    const now = new Date();
-    return planned
-      .filter((item) => matchesPlannedFilter(item, plannedFilter, now))
-      .sort((a, b) => {
-        const aRef = a.plannedWindow?.start ?? a.plannedWindow?.end ?? a.publishedAt;
-        const bRef = b.plannedWindow?.start ?? b.plannedWindow?.end ?? b.publishedAt;
-        const aValue = aRef ? new Date(aRef).valueOf() : Number.POSITIVE_INFINITY;
-        const bValue = bRef ? new Date(bRef).valueOf() : Number.POSITIVE_INFINITY;
-        return aValue - bValue;
-      });
-  }, [planned, plannedFilter]);
+  const filteredPlanned = useMemo(() => selectPlanned(planned, plannedFilter), [planned, plannedFilter]);
+  const now = DateTime.now().setZone(TIMEZONE);
 
   const header = (
     <div className="space-y-6">
@@ -417,9 +395,9 @@ export function OutagesBoard() {
             </Button>
             <Button
               type="button"
-              variant={plannedFilter === 'sevenDays' ? 'default' : 'outline'}
+              variant={plannedFilter === 'next7' ? 'default' : 'outline'}
               size="sm"
-              onClick={() => setPlannedFilter('sevenDays')}
+              onClick={() => setPlannedFilter('next7')}
             >
               {t('plannedOutages.filter.sevenDays', 'Najbližších 7 dní')}
             </Button>
@@ -446,11 +424,14 @@ export function OutagesBoard() {
               <PlannedCard
                 key={item.id}
                 item={item}
-                ongoing={isPlannedOngoing(item, new Date())}
+                ongoing={isPlannedOngoing(item, now)}
                 plannedLabel={t('badge.planned', 'Plánovaná odstávka')}
                 ongoingLabel={t('badge.ongoing', 'Prebieha')}
                 officialSourceLabel={t('common.officialSource', 'Oficiálny zdroj')}
                 addToCalendarLabel={t('cta.addToCalendar', 'Pridať do kalendára')}
+                scheduledLabel={t('plannedOutages.scheduledLabel', 'Scheduled:')}
+                noScheduleLabel={t('plannedOutages.noScheduleProvided', 'No schedule provided')}
+                publishedLabel={t('plannedOutages.publishedLabel', 'Published:')}
               />
             ))}
           </div>

@@ -1,4 +1,4 @@
-import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -12,7 +12,7 @@ function createItem(params: {
   url: string;
   publishedAt?: string;
 }): OutageItem {
-  const plannedWindow = extractPlannedWindow(`${params.title} ${params.summary}`);
+  const plannedWindow = resolvePlannedWindow(`${params.title} ${params.summary}`, params.publishedAt);
   return buildOutageItem({
     source: 'EKEDC',
     sourceName: 'Eko Electricity Distribution Company',
@@ -21,7 +21,8 @@ function createItem(params: {
     officialUrl: params.url,
     verifiedBy: 'DISCO',
     publishedAt: params.publishedAt,
-    plannedWindow
+    plannedWindow: plannedWindow ?? undefined,
+    status: 'PLANNED'
   });
 }
 
@@ -58,6 +59,8 @@ export const eko: Adapter = async (ctx) => {
   } catch (error) {
     console.error('EKEDC scrape failed', error);
   }
+
+  console.log(`[EKEDC] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length}`);
 
   return items;
 };

@@ -65,7 +65,10 @@
       "today": "Lónìí",
       "sevenDays": "Ọjọ́ méje tó ń bọ",
       "all": "Gbogbo rẹ̀"
-    }
+    },
+    "scheduledLabel": "Àkókò tí a ṣètò:",
+    "noScheduleProvided": "A kò fún ní àkókò pípa",
+    "publishedLabel": "Atẹjade:"
   },
   "meta": {
     "homepage": {

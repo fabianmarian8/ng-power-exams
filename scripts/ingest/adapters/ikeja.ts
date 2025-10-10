@@ -1,4 +1,4 @@
-import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -32,7 +32,7 @@ function createItem(params: {
   publishedAt?: string;
   affectedAreas?: string[];
 }): OutageItem {
-  const plannedWindow = extractPlannedWindow(params.summary);
+  const plannedWindow = resolvePlannedWindow(params.summary, params.publishedAt);
   return buildOutageItem({
     source: 'IKEJA',
     sourceName: 'Ikeja Electric',
@@ -41,8 +41,9 @@ function createItem(params: {
     affectedAreas: params.affectedAreas,
     officialUrl: params.sourceUrl,
     verifiedBy: 'DISCO',
-    plannedWindow,
-    publishedAt: params.publishedAt
+    plannedWindow: plannedWindow ?? undefined,
+    publishedAt: params.publishedAt,
+    status: 'PLANNED'
   });
 }
 
@@ -108,6 +109,10 @@ export const ikeja: Adapter = async (ctx) => {
       console.error(`IKEDC BU scrape failed (${unit})`, error);
     }
   }
+
+  console.log(
+    `[IKEJA] items=${collected.length} windows=${collected.filter((item) => item.plannedWindow?.start).length}`
+  );
 
   return collected;
 };

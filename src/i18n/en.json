@@ -65,7 +65,10 @@
       "today": "Today",
       "sevenDays": "Next 7 days",
       "all": "All"
-    }
+    },
+    "scheduledLabel": "Scheduled:",
+    "noScheduleProvided": "No schedule provided",
+    "publishedLabel": "Published:"
   },
   "meta": {
     "homepage": {
