@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2025-10-10T12:20:07.366Z",
+  "generatedAt": "2025-10-10T13:01:43.753Z",
   "items": [
+    {
+      "id": "b691b1bb3c7a4a4d55d8d0a07dc0c64ba47eee7d",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Kano police raid criminal hideouts, rescue kidnap victims",
+      "summary": "The Kano State Police Command has rescued three kidnap victims in two coordinated operations spanning Kano and Kaduna States, as part of efforts to clamp down on criminal networks threatening public safety. According to a statement by the Command’s Public Relations Officer (PRO), SP Abdullahi Haruna Kiyawa, the operations were carried out between October 7 […]",
+      "publishedAt": "2025-10-10T12:51:00+01:00",
+      "officialUrl": "https://dailytrust.com/kano-police-raid-criminal-hideouts-rescue-kidnap-victims/"
+    },
     {
       "id": "9dd5ac6003ff6ff27580f351996e929909b2190a",
       "domain": "POWER",
@@ -40,16 +50,6 @@
       "summary": "The ruling All Progressives Congress (APC) has disqualified two contenders from its governorship primaries in Ekiti State slated for next year. APC Deputy National Publicity Secretary Duro Meseko disclosed this to newsmen after the National Working Committee (NWC) meeting held yesterday at the party’s national secretariat in Abuja. He said the incumbent governor, Abiodun Oyebanji, […]",
       "publishedAt": "2025-10-10T07:55:00+01:00",
       "officialUrl": "https://dailytrust.com/apc-disqualifies-2-ekiti-govship-aspirants-dissolves-enugu-exco/"
-    },
-    {
-      "id": "ae9aeffde0051b0e9611d41759f92b70b21d7546",
-      "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Ex-deputy govs push for good governance",
-      "summary": "Former deputy governors across Nigeria yesterday converged in Abuja to launch their new secretariat and pledged to promote patriotism, good governance, and national unity. Among those present were Senator Aliyu Wamakko (Sokoto), Dr Chris Akomas (Abia), Pauline Tallen (Plateau), Alhaji Abdulmalik Mahmood (Bauchi), Prince Ezeakonobi Madumere (Imo), Tele Ikuru (Rivers), and James Magaji (Kaduna). The […]",
-      "publishedAt": "2025-10-10T07:46:00+01:00",
-      "officialUrl": "https://dailytrust.com/ex-deputy-govs-push-for-good-governance/"
     },
     {
       "id": "9fcd1e2387a3a1e5c9f9aeb6e0183f52636c2586",
