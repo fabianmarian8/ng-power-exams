@@ -1,42 +1,42 @@
 {
   "events": [
     {
-      "id": "48d8246dd55416f339e44511c9409ef6",
+      "id": "0bff04e38c44f94a02d6ccee0701a3ea",
       "source": "EKEDC",
       "category": "unplanned",
       "title": "Report A Fault",
       "description": "Report A Fault",
       "areas": [],
-      "publishedAt": "2025-10-10T07:27:18.068Z",
-      "detectedAt": "2025-10-10T07:27:18.068Z",
+      "publishedAt": "2025-10-10T07:35:54.606Z",
+      "detectedAt": "2025-10-10T07:35:54.606Z",
       "sourceUrl": "https://ekedp.com/whistleblowing",
       "verifiedBy": "DisCo"
     },
     {
-      "id": "5584ad446be9de8569240d9c286d12a0",
+      "id": "1e4a760bc45e7e06ff07b8d125ccb860",
       "source": "EKEDC",
       "category": "planned",
       "title": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
       "description": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
       "areas": [],
-      "publishedAt": "2025-10-10T07:27:18.067Z",
-      "detectedAt": "2025-10-10T07:27:18.067Z",
+      "publishedAt": "2025-10-10T07:35:54.604Z",
+      "detectedAt": "2025-10-10T07:35:54.605Z",
       "sourceUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354",
       "verifiedBy": "DisCo"
     },
     {
-      "id": "89d067e6e14f126f6496c7cba552ffbb",
+      "id": "2d2d869bc9e695c605e30e166e704176",
       "source": "EKEDC",
       "category": "unplanned",
       "title": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
       "description": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
       "areas": [],
-      "publishedAt": "2025-10-10T07:27:18.066Z",
-      "detectedAt": "2025-10-10T07:27:18.066Z",
+      "publishedAt": "2025-10-10T07:35:54.603Z",
+      "detectedAt": "2025-10-10T07:35:54.604Z",
       "sourceUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504",
       "verifiedBy": "DisCo"
     }
   ],
-  "generatedAt": "2025-10-10T07:27:18.789Z",
-  "lastSourceUpdate": "2025-10-10T07:27:18.068Z"
+  "generatedAt": "2025-10-10T07:35:55.204Z",
+  "lastSourceUpdate": "2025-10-10T07:35:54.606Z"
 }
