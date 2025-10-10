@@ -36,6 +36,23 @@
     "home": "Ilé",
     "backTo": "Padà sí"
   },
+  "badge": {
+    "planned": "Ìpẹ̀yà tí a ti ṣètò",
+    "ongoing": "Níṣíṣe",
+    "unplanned": "Ìpẹ̀yà tí a kò ṣètò",
+    "restored": "Ina ti padà wá"
+  },
+  "cta": {
+    "addToCalendar": "Fi kun kalẹ́ńdà"
+  },
+  "plannedOutages": {
+    "header": "Ìpẹ̀yà tí a ti ṣètò",
+    "filter": {
+      "today": "Lónìí",
+      "sevenDays": "Ọjọ́ méje tó ń bọ",
+      "all": "Gbogbo rẹ̀"
+    }
+  },
   "meta": {
     "homepage": {
       "title": "Nigeria Power & Exam Results Hub",

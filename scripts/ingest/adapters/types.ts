@@ -1,4 +1,4 @@
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 type AxiosExport = typeof import('axios')['default'];
 
@@ -8,4 +8,4 @@ export interface AdapterContext {
   userAgent: string;
 }
 
-export type Adapter = (ctx: AdapterContext) => Promise<OutageEvent[]>;
+export type Adapter = (ctx: AdapterContext) => Promise<OutageItem[]>;

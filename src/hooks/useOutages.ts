@@ -1,13 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 import { OUTAGES_FALLBACK } from '@/data/outages-fallback';
-import type { OutagesPayload } from '@/lib/outages-types';
+import type { OutagesPayload, OutageItem } from '@/lib/outages-types';
 
 function cloneFallback(): OutagesPayload {
   return JSON.parse(JSON.stringify(OUTAGES_FALLBACK)) as OutagesPayload;
 }
 
-export function useOutages() {
-  return useQuery<OutagesPayload>({
+interface UseOutagesResult {
+  data?: OutagesPayload;
+  isLoading: boolean;
+  error: unknown;
+  isRefetching: boolean;
+  all: OutageItem[];
+  planned: OutageItem[];
+  active: OutageItem[];
+  restored: OutageItem[];
+  lastIngest?: string;
+  lastSourceUpdate?: string;
+}
+
+export function useOutages(): UseOutagesResult {
+  const query = useQuery<OutagesPayload>({
     queryKey: ['outages'],
     queryFn: async () => {
       const queryString = `v=${Date.now()}`;
@@ -38,4 +51,21 @@ export function useOutages() {
     refetchOnWindowFocus: true,
     staleTime: 30_000
   });
+
+  const payload = query.data ?? cloneFallback();
+  const all = payload.items ?? [];
+  const planned = all.filter((item) => item.status === 'PLANNED');
+  const active = all.filter((item) => item.status === 'UNPLANNED');
+  const restored = all.filter((item) => item.status === 'RESTORED');
+
+  return {
+    ...query,
+    all,
+    planned,
+    active,
+    restored,
+    lastIngest: payload.generatedAt,
+    lastSourceUpdate: payload.latestSourceAt,
+    data: payload
+  };
 }

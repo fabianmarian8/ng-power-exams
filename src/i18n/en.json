@@ -36,6 +36,23 @@
     "home": "Home",
     "backTo": "Back to"
   },
+  "badge": {
+    "planned": "Planned outage",
+    "ongoing": "Ongoing",
+    "unplanned": "Unplanned outage",
+    "restored": "Restored supply"
+  },
+  "cta": {
+    "addToCalendar": "Add to calendar"
+  },
+  "plannedOutages": {
+    "header": "Planned outages",
+    "filter": {
+      "today": "Today",
+      "sevenDays": "Next 7 days",
+      "all": "All"
+    }
+  },
   "meta": {
     "homepage": {
       "title": "Nigeria Power & Exam Results Hub",

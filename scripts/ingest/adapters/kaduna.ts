@@ -1,12 +1,12 @@
-import { classifyEvent, fetchHtml, load, makeId, toIso } from './utils';
+import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
 import type { Adapter } from './types';
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 const CATEGORY_URL = 'https://kadunaelectric.com/category/outage-information/';
-const KEYWORDS = /(outage|fault|interruption|maintenance|shutdown|restoration)/i;
+const KEYWORDS = /(outage|fault|interruption|maintenance|shutdown|restoration|upgrade)/i;
 
 export const kaduna: Adapter = async (ctx) => {
-  const events: OutageEvent[] = [];
+  const items: OutageItem[] = [];
 
   try {
     const html = await fetchHtml(ctx, CATEGORY_URL);
@@ -20,30 +20,27 @@ export const kaduna: Adapter = async (ctx) => {
       if (!href || !title || !KEYWORDS.test(title)) return;
 
       const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
-      const publishedAt = toIso(dateText) ?? new Date().toISOString();
-      const description = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
+      const parsedDate = dateText ? Date.parse(dateText) : NaN;
+      const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
+      const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
+      const plannedWindow = extractPlannedWindow(`${title} ${summary}`);
 
-      events.push({
-        id: makeId(href, title, publishedAt),
-        source: 'KADUNA',
-        category: classifyEvent(title, description),
-        title,
-        description,
-        areas: [],
-        publishedAt,
-        detectedAt: new Date().toISOString(),
-        sourceUrl: href,
-        verifiedBy: 'DisCo'
-      });
+      items.push(
+        buildOutageItem({
+          source: 'KADUNA',
+          sourceName: 'Kaduna Electric',
+          title,
+          summary,
+          officialUrl: href,
+          verifiedBy: 'DISCO',
+          publishedAt,
+          plannedWindow
+        })
+      );
     });
   } catch (error) {
     console.error('Kaduna scrape failed', error);
   }
 
-  const seen = new Set<string>();
-  return events.filter((event) => {
-    if (seen.has(event.id)) return false;
-    seen.add(event.id);
-    return true;
-  });
+  return items;
 };

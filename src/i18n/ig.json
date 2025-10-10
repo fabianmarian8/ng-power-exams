@@ -36,6 +36,23 @@
     "home": "Ụlọ",
     "backTo": "Laghachi na"
   },
+  "badge": {
+    "planned": "Mkpochapụ ọkụ akwadoro",
+    "ongoing": "Na-aga n’ihu",
+    "unplanned": "Mkpochapụ ọkụ na-atụghị anya",
+    "restored": "A weghachila ọkụ"
+  },
+  "cta": {
+    "addToCalendar": "Tinye na kalenda"
+  },
+  "plannedOutages": {
+    "header": "Mkpochapụ ọkụ akwadoro",
+    "filter": {
+      "today": "Taa",
+      "sevenDays": "Ụbọchị 7 na-abịa",
+      "all": "Ihe niile"
+    }
+  },
   "meta": {
     "homepage": {
       "title": "Nigeria Power & Exam Results Hub",

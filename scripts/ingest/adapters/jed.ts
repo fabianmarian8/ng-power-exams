@@ -1,6 +1,6 @@
-import { fetchHtml, load, makeId, toIso } from './utils';
+import { fetchHtml, load } from './utils';
 import type { Adapter } from './types';
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 const PAGES = [
   'https://jedplc.com/feeder-availability.php',
@@ -27,20 +27,24 @@ function extractPublishedAt(html: string, $: ReturnType<typeof load>): string | 
   const candidates = [
     timeNode.attr('datetime'),
     timeNode.text(),
-    $('h1, h2, h3, p').filter((_, el) => /\b\d{1,2}(st|nd|rd|th)?\s+[A-Za-z]+\s+20\d{2}\b/.test($(el).text())).first().text(),
+    $('h1, h2, h3, p')
+      .filter((_, el) => /\b\d{1,2}(st|nd|rd|th)?\s+[A-Za-z]+\s+20\d{2}\b/.test($(el).text()))
+      .first()
+      .text(),
     html.match(/\b\d{1,2}(st|nd|rd|th)?\s+[A-Za-z]+\s+20\d{2}\b/)?.[0],
     html.match(/20\d{2}-\d{2}-\d{2}/)?.[0]
   ];
   for (const candidate of candidates) {
-    const iso = toIso(candidate ?? undefined);
-    if (iso) {
-      return iso;
+    if (!candidate) continue;
+    const parsed = Date.parse(candidate);
+    if (!Number.isNaN(parsed)) {
+      return new Date(parsed).toISOString();
     }
   }
   return undefined;
 }
 
-function buildEvent(params: {
+function buildItem(params: {
   sourceUrl: string;
   feeder: string;
   businessUnit?: string;
@@ -48,7 +52,7 @@ function buildEvent(params: {
   hours?: number;
   remarks?: string;
   publishedAt: string;
-}): OutageEvent {
+}): OutageItem {
   const hoursText = params.hours === undefined ? 'downgraded supply levels' : `${params.hours} hour${params.hours === 1 ? '' : 's'}`;
   const title = params.hours === undefined
     ? `${params.feeder} feeder downgraded in ${params.businessUnit ?? 'service area'}`
@@ -69,27 +73,30 @@ function buildEvent(params: {
         .filter(Boolean)
     : [];
 
-  const baseDescription = descriptionParts.join(' ').trim();
-  const category: OutageEvent['category'] = params.hours === 0 ? 'unplanned' : 'advisory';
-
   return {
-    id: makeId(params.sourceUrl, title, params.publishedAt),
+    id: '',
     source: 'JED',
-    category,
+    sourceName: 'Jos Electricity Distribution Plc',
     title,
-    description: baseDescription,
-    areas,
-    feeder: params.feeder,
+    summary: descriptionParts.join(' ').trim(),
     publishedAt: params.publishedAt,
-    detectedAt: new Date().toISOString(),
-    sourceUrl: params.sourceUrl,
-    verifiedBy: 'DisCo'
-  };
+    status: 'UNPLANNED',
+    plannedWindow: undefined,
+    affectedAreas: areas,
+    verifiedBy: 'DISCO',
+    officialUrl: params.sourceUrl,
+    raw: {
+      feeder: params.feeder,
+      band: params.band,
+      remarks: params.remarks,
+      hours: params.hours
+    }
+  } satisfies OutageItem;
 }
 
 export const jed: Adapter = async (ctx) => {
-  const events: OutageEvent[] = [];
-  const seenIds = new Set<string>();
+  const items: OutageItem[] = [];
+  const seenTitles = new Set<string>();
 
   for (const pageUrl of PAGES) {
     let html: string;
@@ -146,7 +153,7 @@ export const jed: Adapter = async (ctx) => {
             return;
           }
 
-          const event = buildEvent({
+          const item = buildItem({
             sourceUrl: pageUrl,
             feeder,
             businessUnit,
@@ -156,13 +163,15 @@ export const jed: Adapter = async (ctx) => {
             publishedAt
           });
 
-          if (!seenIds.has(event.id)) {
-            events.push(event);
-            seenIds.add(event.id);
+          const key = `${item.title}-${item.summary}`;
+          if (seenTitles.has(key)) {
+            return;
           }
+          seenTitles.add(key);
+          items.push(item);
         });
     });
   }
 
-  return events;
+  return items;
 };
