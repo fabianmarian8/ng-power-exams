@@ -7,9 +7,9 @@
       "summary": "Prepaid Meter Upgrade Checker",
       "officialUrl": "https://ekedp.com/sts",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T15:38:29.904Z",
+      "publishedAt": "2025-10-10T15:47:11.332Z",
       "status": "PLANNED",
-      "id": "8116287b4a47"
+      "id": "372fd3914e77"
     },
     {
       "source": "EKEDC",
@@ -18,9 +18,9 @@
       "summary": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
       "officialUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T15:38:29.906Z",
+      "publishedAt": "2025-10-10T15:47:11.334Z",
       "status": "PLANNED",
-      "id": "5bb5956ace28"
+      "id": "31d16dc94dd6"
     },
     {
       "source": "EKEDC",
@@ -29,9 +29,9 @@
       "summary": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
       "officialUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T15:38:29.907Z",
+      "publishedAt": "2025-10-10T15:47:11.335Z",
       "status": "PLANNED",
-      "id": "828eeaf38402"
+      "id": "37c54102c476"
     },
     {
       "source": "EKEDC",
@@ -40,9 +40,9 @@
       "summary": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
       "officialUrl": "https://ekedp.com/news/public-notice-upgraded-and-downgraded-feeders-for-march-2025-5420",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T15:38:29.907Z",
+      "publishedAt": "2025-10-10T15:47:11.335Z",
       "status": "PLANNED",
-      "id": "e97ec853f72a"
+      "id": "53aa42cd814b"
     },
     {
       "source": "EKEDC",
@@ -51,11 +51,11 @@
       "summary": "Report A Fault",
       "officialUrl": "https://ekedp.com/whistleblowing",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T15:38:29.909Z",
+      "publishedAt": "2025-10-10T15:47:11.337Z",
       "status": "PLANNED",
-      "id": "b97206a8cfc8"
+      "id": "9fd899fbc7bd"
     }
   ],
-  "generatedAt": "2025-10-10T15:38:30.535Z",
-  "latestSourceAt": "2025-10-10T15:38:29.909Z"
+  "generatedAt": "2025-10-10T15:47:11.907Z",
+  "latestSourceAt": "2025-10-10T15:47:11.337Z"
 }

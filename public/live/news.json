@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2025-10-10T15:38:47.343Z",
+  "generatedAt": "2025-10-10T15:47:28.492Z",
   "items": [
+    {
+      "id": "c76f697e3cf5bcdd49cf86fa7400012cb83969be",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "BREAKING: Soldiers feared dead as Boko Haram hits Borno military base",
+      "summary": "Suspected Boko Haram insurgents have attacked a military base in Ngamdu, Kaga local government area of Borno State. Daily Trust gathered that the incident happened in the wee hours of Friday. The insurgents, in large numbers, attacked the troops at the camp along Maiduguri-Damaturu highway. Motorists and commercial drivers said as a result of the […]",
+      "publishedAt": "2025-10-10T15:40:00+01:00",
+      "officialUrl": "https://dailytrust.com/breaking-soldiers-feared-dead-as-boko-haram-hits-borno-military-base/"
+    },
     {
       "id": "b691b1bb3c7a4a4d55d8d0a07dc0c64ba47eee7d",
       "domain": "POWER",
