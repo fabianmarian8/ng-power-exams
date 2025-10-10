@@ -1,12 +1,32 @@
 {
-  "generatedAt": "2025-10-10T15:47:28.492Z",
+  "generatedAt": "2025-10-10T16:13:08.094Z",
   "items": [
+    {
+      "id": "e38f0e6e1b3405ebbd890a3c42d22eb641412016",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "ASUU: UNIJOS students back lecturers’ planned strike",
+      "summary": "Students of the University of Jos (UniJos) have described as timely the planned industrial action by the Academic Staff Union of Universities (ASUU). According to the students, the academic staff have done all they could, including issuing several warnings and ultimatums, to ensure their demands are met, but to no avail, hence their support for […]",
+      "publishedAt": "2025-10-10T16:08:00+01:00",
+      "officialUrl": "https://dailytrust.com/asuu-unijos-students-back-lecturers-planned-strike/"
+    },
+    {
+      "id": "d34acf9aa76cd37091909dabaedafa6a9553cc46",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "‘Uba Sani Has Protected Mental Health Against Discrimination’",
+      "summary": "Governor Uba Sani has made mental health a basic human right, by enacting the Kaduna State Mental Health Law on September 18, 2025, to replace the outdated Lunacy Act of 1958. The law protects every citizen living with mental health condition against discrimination and guarantees access to quality care, as well as restores dignity to […]",
+      "publishedAt": "2025-10-10T15:47:00+01:00",
+      "officialUrl": "https://dailytrust.com/uba-sani-has-protected-mental-health-against-discrimination/"
+    },
     {
       "id": "c76f697e3cf5bcdd49cf86fa7400012cb83969be",
       "domain": "EXAMS",
       "tier": "MEDIA",
       "source": "Daily Trust",
-      "title": "BREAKING: Soldiers feared dead as Boko Haram hits Borno military base",
+      "title": "Soldiers feared dead as Boko Haram hits Borno military base",
       "summary": "Suspected Boko Haram insurgents have attacked a military base in Ngamdu, Kaga local government area of Borno State. Daily Trust gathered that the incident happened in the wee hours of Friday. The insurgents, in large numbers, attacked the troops at the camp along Maiduguri-Damaturu highway. Motorists and commercial drivers said as a result of the […]",
       "publishedAt": "2025-10-10T15:40:00+01:00",
       "officialUrl": "https://dailytrust.com/breaking-soldiers-feared-dead-as-boko-haram-hits-borno-military-base/"
@@ -40,16 +60,6 @@
       "summary": "In the past, the idea of the perfect gaming device often revolved around powerful desktops and dedicated consoles. In 2025, Infinix is redefining that narrative with its latest innovation, the GT 30 Pro. More than just a smartphone, the GT 30 Pro is a flagship device crafted specifically for modern gamers, seamlessly blending performance with […]",
       "publishedAt": "2025-10-10T12:00:00+01:00",
       "officialUrl": "https://dailytrust.com/infinix-gt-30-pro-the-lifestyle-of-a-modern-gamer-redefined/"
-    },
-    {
-      "id": "9a6ae11ec890d27b380a0047b55bf77024b3fb6b",
-      "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Softbrite: A Trusted Path for Nigerians to Prosper",
-      "summary": "In a world that is ever changing, opportunities often emerge in unexpected places. While some chase volatile businesses or fleeting trends, others quietly leverage opportunities that have powered the internet since its inception: premium domain names. In Nigeria today, one platform is making it easier and more secure for ordinary people to tap into this […]",
-      "publishedAt": "2025-10-10T11:55:00+01:00",
-      "officialUrl": "https://dailytrust.com/softbrite-a-trusted-path-for-nigerians-to-prosper/"
     },
     {
       "id": "9fcd1e2387a3a1e5c9f9aeb6e0183f52636c2586",
