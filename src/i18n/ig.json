@@ -36,6 +36,13 @@
     "home": "Ụlọ",
     "backTo": "Laghachi na"
   },
+  "news": {
+    "latestExamUpdates": "Latest Exam Updates",
+    "latestPowerUpdates": "Latest Power Updates",
+    "official": "Official",
+    "media": "Media",
+    "awaitingNewOfficial": "Awaiting new official updates"
+  },
   "badge": {
     "planned": "Mkpochapụ ọkụ akwadoro",
     "ongoing": "Na-aga n’ihu",

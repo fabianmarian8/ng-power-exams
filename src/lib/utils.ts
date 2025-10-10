@@ -34,3 +34,26 @@ export function formatLocalizedDateTime(dateString: string, language: Language) 
     timeZone: "Africa/Lagos"
   }).format(parsedDate);
 }
+
+export function formatNewsDateTime(dateString: string): string {
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return dateString;
+  }
+  const formatter = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Africa/Lagos',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  const parts = Object.fromEntries(formatter.formatToParts(date).map((part) => [part.type, part.value]));
+  const day = parts.day ?? '';
+  const month = parts.month ?? '';
+  const year = parts.year ?? '';
+  const hour = parts.hour ?? '00';
+  const minute = parts.minute ?? '00';
+  return `${day} ${month} ${year}, ${hour}:${minute}`.trim();
+}

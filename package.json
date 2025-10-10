@@ -16,6 +16,7 @@
     "lint:fix": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx --config ./.eslintrc.cjs --fix",
     "preview": "vite preview",
     "ingest": "tsx scripts/ingest/run.ts",
+    "ingest:news": "tsx scripts/ingest/news.ts",
     "typecheck:ingest": "tsc -p scripts/tsconfig.json --noEmit"
   },
   "dependencies": {
