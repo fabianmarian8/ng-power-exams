@@ -1,4 +1,210 @@
 {
+
+  "generatedAt": "2025-10-10T10:21:07.590Z",
+  "items": [
+    {
+      "id": "c3d417c4289d726ba08d66a66e4c0b4270d37bd5",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "National grid records fresh system collapse",
+      "summary": "Electricity consumers across Lagos experienced outage after the national grid collapsed.",
+      "publishedAt": "2025-02-20T08:45:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/02/national-grid-collapse-lagos/"
+    },
+    {
+      "id": "a5322ac36533baf06922632d061ffe4464249e35",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Kaduna Electric explains blackout in Sokoto",
+      "summary": "The distribution company cites a transmission constraint causing power outage.",
+      "publishedAt": "2025-02-20T06:20:00+01:00",
+      "officialUrl": "https://dailytrust.com/kaduna-electric-explains-sokoto-blackout/"
+    },
+    {
+      "id": "36495de63ba17ded496fa1cf3b64935d4ffd5d6e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "TCN",
+      "title": "TCN restores national grid after maintenance",
+      "summary": "Grid restoration completed following scheduled maintenance on the Lagos-Ibadan 330kV line.",
+      "publishedAt": "2025-02-20T05:30:00+01:00",
+      "officialUrl": "https://www.tcn.org.ng/news/grid-restoration-feb-2025"
+    },
+    {
+      "id": "ffdb2e7d03f002f4d172fa42c1a512fbb500cb90",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Ikeja Electric",
+      "title": "Ikeja Electric announces planned outage for Ayobo feeder",
+      "summary": "Planned electricity outage to upgrade Ayobo 11kV feeder infrastructure.",
+      "publishedAt": "2025-02-19T13:15:00+01:00",
+      "officialUrl": "https://www.ikejaelectric.com/news/ayobo-planned-outage"
+    },
+    {
+      "id": "78d6788dd4c3fb59fa86e1482e7aaa465ea55421",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "TCN commences emergency repairs on Benin transmission line",
+      "summary": "Emergency maintenance to reduce power outage in Edo communities.",
+      "publishedAt": "2025-02-19T12:40:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/tcn-commences-beninline-repairs/"
+    },
+    {
+      "id": "6c994113bf68d7bc6081cb5f6f69193c60e4a1fd",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "WAEC",
+      "title": "WAEC opens 2025 SSCE registration portal",
+      "summary": "WAEC Nigeria has opened the SSCE registration and result checker portal for 2025 candidates.",
+      "publishedAt": "2025-02-19T10:30:00+01:00",
+      "officialUrl": "https://www.waecnigeria.org/news/2025-ssce-registration"
+    },
+    {
+      "id": "8e2176cc3fe161072b69a731b05ee306f5aa3bf3",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "JED",
+      "title": "JED announces feeder upgrade for Bukuru axis",
+      "summary": "Upgrade work will improve power stability across the Bukuru distribution network.",
+      "publishedAt": "2025-02-19T07:25:00+01:00",
+      "officialUrl": "https://www.jedplc.com/news/bukuru-upgrade"
+    },
+    {
+      "id": "cf8390d76b1a45fbd04d56a06e76563cf0f6390b",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Punch",
+      "title": "How to check 2025 JAMB result without cyber cafe",
+      "summary": "Guide explains the official UTME result checker process and SMS steps.",
+      "publishedAt": "2025-02-19T07:00:00+01:00",
+      "officialUrl": "https://punchng.com/how-to-check-2025-jamb-result/"
+    },
+    {
+      "id": "57d2ced6ea807348eb968d7ef691aac56f1c5edb",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Reuters",
+      "title": "Nigeria signs deal to upgrade electricity transmission grid",
+      "summary": "The agreement aims to improve power supply reliability and reduce outages.",
+      "publishedAt": "2025-02-18T16:55:00+01:00",
+      "officialUrl": "https://www.reuters.com/world/africa/nigeria-signs-grid-upgrade-deal-2025-02-18/"
+    },
+    {
+      "id": "465fdce56ed19f14f3141727c1330d971ad10dca",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "DisCos unveil new plan to curb load shedding",
+      "summary": "Distribution companies say investment will reduce power outages by 25 percent.",
+      "publishedAt": "2025-02-18T14:00:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/02/discos-plan-load-shedding/"
+    },
+    {
+      "id": "018d6bf6ef233587b63cd3ba100502e8392e111e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "EKEDC",
+      "title": "EKEDC schedules maintenance on Lekki transmission line",
+      "summary": "Customers in Lekki will experience a 6-hour outage due to preventive maintenance.",
+      "publishedAt": "2025-02-18T12:00:00+01:00",
+      "officialUrl": "https://www.ekedp.com/news/lekki-maintenance"
+    },
+    {
+      "id": "ad718c3c3c6ebf3d56bf1c091ee55143607301da",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "Students seek clarity on WAEC result release date",
+      "summary": "Education experts advise candidates to rely on official WAEC communications.",
+      "publishedAt": "2025-02-18T09:25:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/students-seek-waec-result-date/"
+    },
+    {
+      "id": "69f3d7898f3cde5a36df38bddb9b424def7e182b",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "JAMB",
+      "title": "JAMB releases 2025 UTME result checker update",
+      "summary": "The Joint Admissions and Matriculation Board has updated the UTME result checker process for 2025 candidates.",
+      "publishedAt": "2025-02-18T09:05:00+01:00",
+      "officialUrl": "https://www.jamb.gov.ng/news/2025-utme-result-checker"
+    },
+    {
+      "id": "448e3c22189ae3971b94edf6e50794b8eb77c4d0",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "NECO urges candidates to secure result checker tokens",
+      "summary": "Officials warn against patronising unofficial vendors.",
+      "publishedAt": "2025-02-17T11:30:00+01:00",
+      "officialUrl": "https://dailytrust.com/neco-urges-candidates-secure-tokens/"
+    },
+    {
+      "id": "cc0f41563cdd8b96cab124d3f278e7d2fe644dda",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "NECO",
+      "title": "NECO releases 2024 November/December results",
+      "summary": "NECO has released the 2024 Nov/Dec SSCE results with guidance on result checker tokens.",
+      "publishedAt": "2025-02-17T11:00:00+01:00",
+      "officialUrl": "https://www.neco.gov.ng/news/2024-novdec-results"
+    },
+    {
+      "id": "feafd4b2bdba40ae7e98df5a6c702f21e0f9e5d5",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "Universities urge JAMB to extend UTME registration",
+      "summary": "Calls grow for more time to complete UTME registration.",
+      "publishedAt": "2025-02-17T09:10:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/02/universities-urge-jamb-extension/"
+    },
+    {
+      "id": "ab229987ded2de9f0892907626ba4f305a64c6ef",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Kaduna Electric issues restoration timeline for Kakuri",
+      "summary": "Repairs on the Kakuri 33kV feeder will conclude by 18:00hrs.",
+      "publishedAt": "2025-02-17T08:10:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/news/kakuri-restoration"
+    },
+    {
+      "id": "f675f5fb5d27cb026660538201823b903a67bcbb",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Reuters",
+      "title": "Ghana launches new examination reforms for WAEC",
+      "summary": "Reforms include digital verification for regional exams.",
+      "publishedAt": "2025-02-16T10:12:00+01:00",
+      "officialUrl": "https://www.reuters.com/world/africa/ghana-waec-reforms-2025-02-16/"
+    },
+    {
+      "id": "dd2fa0e4c513927d49c5f611680947da9eec9271",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Punch",
+      "title": "WAEC introduces new SSCE verification cards",
+      "summary": "The examination body says the cards will reduce exam malpractice.",
+      "publishedAt": "2025-02-11T10:00:00+01:00",
+      "officialUrl": "https://punchng.com/waec-introduces-ssce-verification-cards/"
+    },
+    {
+      "id": "22e3f299bcf272c0c76184f4a73ac82f112f9834",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "TCN",
+      "title": "Emergency load shedding advisory for North-West",
+      "summary": "TCN announces emergency load shedding to protect transmission assets.",
+      "publishedAt": "2025-02-11T04:20:00+01:00",
+      "officialUrl": "https://www.tcn.org.ng/news/load-shedding-north-west"
+    },
+    {
+      "id": "408f43a233e5cd3964c1a2a69d43748583f0267f",
+=======
   "generatedAt": "2025-10-10T10:33:50.357Z",
   "items": [
     {
@@ -84,7 +290,88 @@
     {
       "id": "105ff6b4ab986948e2c9b1bad7887cbed29087fd",
       "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Punch",
+      "title": "Experts fault prolonged power outage in Abuja",
+      "summary": "Residents lament ongoing electricity outage in the capital city.",
+      "publishedAt": "2025-02-10T17:40:00+01:00",
+      "officialUrl": "https://punchng.com/experts-fault-power-outage-abuja/"
+    },
+    {
+      "id": "5e21cafb7930d1751e1563358fc7c74404bced77",
+      "domain": "EXAMS",
       "tier": "OFFICIAL",
+
+      "source": "JAMB",
+      "title": "Important CAPS advisory for admission letters",
+      "summary": "Candidates should log into CAPS to accept or reject admission offers.",
+      "publishedAt": "2025-02-10T08:20:00+01:00",
+      "officialUrl": "https://www.jamb.gov.ng/news/caps-advisory-2025"
+    },
+    {
+      "id": "f30ea8c6a37fd7d85c74c45699bdb2e42117856e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "EKEDC",
+      "title": "Load shedding notice for Festac and Apapa",
+      "summary": "Load shedding implemented to manage low allocation from the national grid.",
+      "publishedAt": "2025-02-09T09:30:00+01:00",
+      "officialUrl": "https://www.ekedp.com/news/festac-load-shedding"
+    },
+    {
+      "id": "2b518a7725a24361cf61b8104e0f8086cfcaed18",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "WAEC",
+      "title": "WAEC clarifies e-PIN purchase procedure",
+      "summary": "Parents and candidates are to purchase e-PINs only from accredited outlets.",
+      "publishedAt": "2025-02-09T07:45:00+01:00",
+      "officialUrl": "https://www.waecnigeria.org/news/waec-epin-procedure"
+    },
+    {
+      "id": "ddad8e039580120599d6b17279bec6879ad93d36",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "JED",
+      "title": "Emergency outage alert for Rayfield and environs",
+      "summary": "Faulty breaker isolated; restoration expected within 4 hours.",
+      "publishedAt": "2025-02-09T06:55:00+01:00",
+      "officialUrl": "https://www.jedplc.com/news/rayfield-outage"
+    },
+    {
+      "id": "7999bbcf0f71c314097dd8997f8caeb377fcd618",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Ikeja Electric",
+      "title": "Power restoration update for Alimosho customers",
+      "summary": "Supply restored after fault isolation on Alimosho 33kV line.",
+      "publishedAt": "2025-02-08T15:05:00+01:00",
+      "officialUrl": "https://www.ikejaelectric.com/news/alimosho-restoration"
+    },
+    {
+      "id": "5c95a73cdc6cf6c0acb81d97d467cd2ec84f5764",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "NECO",
+      "title": "NECO announces e-Verify maintenance window",
+      "summary": "Scheduled maintenance on the NECO e-Verify portal will occur this weekend.",
+      "publishedAt": "2025-02-07T06:15:00+01:00",
+      "officialUrl": "https://www.neco.gov.ng/news/e-verify-maintenance"
+    },
+    {
+      "id": "d52dd754c0521f7d235f9dc5b134a6f20cfb486a",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Planned maintenance on Zaria City injection substation",
+      "summary": "Customers should expect temporary outage between 09:00hrs and 14:00hrs.",
+      "publishedAt": "2025-02-07T05:40:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/news/zaria-maintenance"
+    }
+  ],
+  "latestOfficialByDomain": {
+    "POWER": "2025-02-20T05:30:00+01:00",
+    "EXAMS": "2025-02-19T10:30:00+01:00"
       "source": "Kaduna Electric",
       "title": "FG Targets Market Stability, Infrastructure Upgrade In Power Reforms",
       "summary": "The Federal Government says ongoing reforms in Nigeria’s electricity market are focused on stabilising revenue, improving supply reliability, and upgrading key infrastructure to support industrial growth…. Read More",

@@ -34,10 +34,12 @@ const Results = () => {
 
   const highlighted = jambGuides.find((guide) => guide.slug === "check-jamb-result-2025") ?? jambGuides[0];
   const latestExamOfficial = news.data.latestOfficialByDomain.EXAMS;
-  const heroLastVerified = latestExamOfficial ?? highlighted?.lastVerified ?? DEFAULT_RESULT_LAST_VERIFIED;
-  const heroLastVerifiedLabel = formatLocalizedDateTime(heroLastVerified, language);
-  const heroAwaitingUpdate = heroLastVerified
-    ? differenceInCalendarDays(new Date(), new Date(heroLastVerified)) > 14
+  const heroLastVerifiedIso = latestExamOfficial ?? null;
+  const heroLastVerifiedLabel = heroLastVerifiedIso
+    ? formatLocalizedDateTime(heroLastVerifiedIso, language)
+    : t('news.noOfficialUpdateYet', 'No official update yet');
+  const heroAwaitingUpdate = heroLastVerifiedIso
+    ? differenceInCalendarDays(new Date(), new Date(heroLastVerifiedIso)) > 14
     : false;
   const siteUrl = "https://naijainfo.ng";
   const resultsUrl = `${siteUrl}/results`;

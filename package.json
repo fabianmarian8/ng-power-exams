@@ -12,11 +12,13 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx --config ./.eslintrc.cjs --max-warnings=0",
-    "lint:fix": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx --config ./.eslintrc.cjs --fix",
+    "lint": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx --config ./.eslintrc.cjs --max-warnings=0",
+    "lint:fix": "ESLINT_USE_FLAT_CONFIG=false eslint . --ext .ts,.tsx --config ./.eslintrc.cjs --fix",
     "preview": "vite preview",
     "ingest": "tsx scripts/ingest/run.ts",
     "ingest:news": "tsx scripts/ingest/news.ts",
+    "ingest:news:offline": "NEWS_OFFLINE=1 tsx scripts/ingest/news.ts",
+    "test:adapters": "NEWS_OFFLINE=1 tsx scripts/ingest/news.ts && echo 'Adapters OK (offline)'",
     "typecheck:ingest": "tsc -p scripts/tsconfig.json --noEmit"
   },
   "dependencies": {

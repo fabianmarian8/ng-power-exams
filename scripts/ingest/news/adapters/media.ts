@@ -1,4 +1,5 @@
 import type { AdapterContext, AdapterNewsItem, RegisteredAdapter } from './types';
+import { fetchHtml, isOfflineMode } from '../../lib/fetchHtml';
 import { parsePublishedDate, sanitizeHtml } from './utils';
 
 const EXAMS_REGEX = /(JAMB|WAEC|NECO|UTME|SSCE|BECE|result|slip|checker)/i;
@@ -7,14 +8,15 @@ const POWER_REGEX = /(power|grid|outage|electricity|disco|transmission|TCN|Ikeja
 interface MediaSource {
   name: string;
   url: string;
+  fixture: string;
 }
 
 const MEDIA_SOURCES: MediaSource[] = [
-  { name: 'Vanguard', url: 'https://www.vanguardngr.com/feed/' },
-  { name: 'Punch', url: 'https://punchng.com/feed/' },
-  { name: 'Daily Trust', url: 'https://dailytrust.com/feed/' },
-  { name: 'Tribune', url: 'https://tribuneonlineng.com/feed/' },
-  { name: 'Reuters', url: 'https://www.reuters.com/rssFeed/world/africa' }
+  { name: 'Vanguard', url: 'https://www.vanguardngr.com/feed/', fixture: 'vanguard_power.html' },
+  { name: 'Punch', url: 'https://punchng.com/feed/', fixture: 'punch_exams.html' },
+  { name: 'Daily Trust', url: 'https://dailytrust.com/feed/', fixture: 'dailytrust_power.html' },
+  { name: 'Tribune', url: 'https://tribuneonlineng.com/feed/', fixture: 'tribune_power.html' },
+  { name: 'Reuters', url: 'https://www.reuters.com/rssFeed/world/africa', fixture: 'reuters_africa.html' }
 ];
 
 function classifyDomain(title: string, summary?: string): AdapterNewsItem['domain'] | null {
@@ -30,16 +32,7 @@ function classifyDomain(title: string, summary?: string): AdapterNewsItem['domai
 
 async function fetchMediaFeed(ctx: AdapterContext, source: MediaSource): Promise<AdapterNewsItem[]> {
   try {
-    const { status, body, ok } = await ctx.fetch(source.url, {
-      headers: {
-        Accept: 'application/rss+xml, application/xml;q=0.9, */*;q=0.8'
-      }
-    });
-    if (!ok) {
-      console.warn(`[news][${source.name}] statusCode=${status} itemsFound=0 firstTitles=`);
-      return [];
-    }
-    const xml = body;
+    const xml = await fetchHtml(source.url, source.fixture);
     const $ = ctx.cheerio.load(xml, { xmlMode: true });
     const items: AdapterNewsItem[] = [];
     $('item').each((_, element) => {
@@ -47,11 +40,11 @@ async function fetchMediaFeed(ctx: AdapterContext, source: MediaSource): Promise
       const title = node.find('title').first().text().trim();
       const link = node.find('link').first().text().trim() || node.find('guid').first().text().trim();
       if (!title || !link) return;
-      const descriptionNode = node.find('description').first().text() || node.find('content\\:encoded').first().text() || '';
+      const descriptionNode = node.find('description').first().text() || node.find('content\:encoded').first().text() || '';
       const summary = descriptionNode ? sanitizeHtml(descriptionNode, ctx.cheerio) : undefined;
       const pubDate =
         node.find('pubDate').first().text().trim() ||
-        node.find('dc\\:date').first().text().trim() ||
+        node.find('dc\:date').first().text().trim() ||
         node.find('updated').first().text().trim();
       const domain = classifyDomain(title, summary);
       if (!domain) return;
@@ -68,7 +61,7 @@ async function fetchMediaFeed(ctx: AdapterContext, source: MediaSource): Promise
       });
     });
     console.log(
-      `[news][${source.name}] statusCode=${status} itemsFound=${items.length} firstTitles=${items
+      `[news][${source.name}] mode=${isOfflineMode ? 'offline' : 'online'} itemsFound=${items.length} firstTitles=${items
         .slice(0, 3)
         .map((item) => item.title)
         .join(' | ')}`

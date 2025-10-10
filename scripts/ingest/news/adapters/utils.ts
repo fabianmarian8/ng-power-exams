@@ -1,4 +1,5 @@
 import type { AdapterContext, AdapterNewsItem } from './types';
+import { fetchHtml, isOfflineMode } from '../../lib/fetchHtml';
 
 export function sanitizeHtml(input: string, cheerio: AdapterContext['cheerio']): string {
   const $ = cheerio.load(input);
@@ -149,21 +150,14 @@ interface RssAdapterConfig {
   source: string;
   keywords?: RegExp;
   limit?: number;
+  fixture?: string;
 }
+
 
 export function createRssAdapter(config: RssAdapterConfig) {
   return async (ctx: AdapterContext): Promise<AdapterNewsItem[]> => {
     try {
-      const { status, body, ok } = await ctx.fetch(config.url, {
-        headers: {
-          Accept: 'application/rss+xml, application/xml;q=0.9, */*;q=0.8'
-        }
-      });
-      if (!ok) {
-        console.warn(`[news][${config.source}] statusCode=${status} itemsFound=0 firstTitles=`);
-        return [];
-      }
-      const xml = body;
+      const xml = await fetchHtml(config.url, config.fixture);
       const $ = ctx.cheerio.load(xml, { xmlMode: true });
       const items: AdapterNewsItem[] = [];
       $('item').each((_, element) => {
@@ -175,10 +169,10 @@ export function createRssAdapter(config: RssAdapterConfig) {
         const link = node.find('link').first().text().trim() || node.find('guid').first().text().trim();
         const pubDate =
           node.find('pubDate').first().text().trim() ||
-          node.find('dc\\:date').first().text().trim() ||
+          node.find('dc\:date').first().text().trim() ||
           node.find('updated').first().text().trim();
         const descriptionNode =
-          node.find('description').first().text() || node.find('content\\:encoded').first().text() || '';
+          node.find('description').first().text() || node.find('content\:encoded').first().text() || '';
         const summary = descriptionNode ? sanitizeHtml(descriptionNode, ctx.cheerio) : undefined;
         if (!title || !link) {
           return;
@@ -197,8 +191,9 @@ export function createRssAdapter(config: RssAdapterConfig) {
           publishedAt: parsedDate ? parsedDate.toISOString() : new Date().toISOString()
         });
       });
+      const mode = isOfflineMode ? 'offline' : 'online';
       console.log(
-        `[news][${config.source}] statusCode=${status} itemsFound=${items.length} firstTitles=${items
+        `[news][${config.source}] mode=${mode} itemsFound=${items.length} firstTitles=${items
           .slice(0, 3)
           .map((item) => item.title)
           .join(' | ')}`
@@ -210,7 +205,6 @@ export function createRssAdapter(config: RssAdapterConfig) {
     }
   };
 }
-
 export function selectTopItems(items: AdapterNewsItem[], limit: number): AdapterNewsItem[] {
   return items
     .sort((a, b) => new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf())

@@ -1,0 +1,22 @@
+name: CI (lint & offline tests)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Enable Corepack
+        run: corepack enable
+      - name: Yarn install (immutable, offline)
+        run: yarn install --immutable --immutable-cache
+      - name: Lint
+        run: yarn lint
+      - name: Adapter offline tests
+        run: yarn test:adapters
