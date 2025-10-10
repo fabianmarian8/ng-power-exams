@@ -1,5 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { OUTAGES_FALLBACK } from '@/data/outages-fallback';
 import type { OutagesPayload } from '@/lib/outages-types';
+
+function cloneFallback(): OutagesPayload {
+  return JSON.parse(JSON.stringify(OUTAGES_FALLBACK)) as OutagesPayload;
+}
 
 export function useOutages() {
   return useQuery<OutagesPayload>({
@@ -12,6 +17,10 @@ export function useOutages() {
         try {
           const response = await fetch(`/live/outages.json?${queryString}`, { cache: 'no-store' });
           if (!response.ok) {
+            if (response.status === 404) {
+              console.warn('Live outages file missing — returning fallback payload');
+              return cloneFallback();
+            }
             throw new Error(`Failed to fetch outages (status ${response.status})`);
           }
           return response.json();
@@ -23,7 +32,8 @@ export function useOutages() {
           await new Promise((resolve) => setTimeout(resolve, 1500));
         }
       }
-      throw lastError ?? new Error('Failed to fetch outages');
+      console.warn('Failed to fetch live outages, using fallback payload', lastError);
+      return cloneFallback();
     },
     refetchOnWindowFocus: true,
     staleTime: 30_000
