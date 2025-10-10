@@ -1,0 +1,45 @@
+{
+  "events": [
+    {
+      "id": "tcn-2025-01-08-lagos-maintenance",
+      "source": "TCN",
+      "category": "planned",
+      "title": "Scheduled maintenance on Lagos–Abeokuta 132kV line",
+      "description": "The Transmission Company of Nigeria will conduct maintenance on the Lagos–Abeokuta 132kV transmission line. Customers on affected feeders may experience supply interruptions while crews replace protective relays and re-string conductors.",
+      "areas": ["Lagos", "Abeokuta"],
+      "window": {
+        "start": "2025-01-09T07:00:00.000Z",
+        "end": "2025-01-09T16:00:00.000Z"
+      },
+      "publishedAt": "2025-01-08T18:15:00.000Z",
+      "detectedAt": "2025-01-08T21:55:00.000Z",
+      "sourceUrl": "https://tcn.org.ng/blog/scheduled-maintenance-lagos-abeokuta-132kv-line"
+    },
+    {
+      "id": "ikedc-2025-01-08-ikeja-unplanned",
+      "source": "IKEDC",
+      "category": "unplanned",
+      "title": "Fault on Ikeja West 33kV feeder",
+      "description": "Ikeja Electric reports a fault on the Ikeja West 33kV feeder affecting Alimosho, Shasha, and Egbeda districts. Technicians are isolating the faulted section to restore supply to unaffected customers.",
+      "areas": ["Ikeja", "Alimosho", "Egbeda", "Shasha"],
+      "window": {
+        "end": "2025-01-09T01:00:00.000Z"
+      },
+      "publishedAt": "2025-01-08T20:45:00.000Z",
+      "detectedAt": "2025-01-08T21:10:00.000Z",
+      "sourceUrl": "https://www.ikejaelectric.com/news/fault-on-ikeja-west-33kv-feeder"
+    },
+    {
+      "id": "kaduna-2025-01-08-restoration",
+      "source": "KADUNA",
+      "category": "restoration",
+      "title": "Restoration update for Zaria axis",
+      "description": "Kaduna Electric confirms that supply has been restored to the Zaria axis after emergency repairs on the 33kV feeder. Customers should report any persisting outage via the contact centre.",
+      "areas": ["Zaria"],
+      "publishedAt": "2025-01-08T19:20:00.000Z",
+      "detectedAt": "2025-01-08T21:30:00.000Z",
+      "sourceUrl": "https://kadunaelectric.com/news/restoration-update-zaria-axis"
+    }
+  ],
+  "generatedAt": "2025-01-08T22:30:00.000Z"
+}
