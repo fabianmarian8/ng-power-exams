@@ -1,6 +1,7 @@
-import { classifyEvent, fetchHtml, load, makeId, toIso } from './utils';
+import type { CheerioAPI } from 'cheerio';
+import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
 import type { Adapter } from './types';
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 const LISTING_URLS = [
   'https://www.tcn.org.ng/category/latest-news/',
@@ -37,8 +38,49 @@ function extractAreas(body: string): string[] {
   return Array.from(normalized);
 }
 
+function summarise(text: string): string {
+  return text.split('. ').slice(0, 2).join('. ').slice(0, 320);
+}
+
+function extractPublishedAt(articleHtml: string, cheerioInstance: CheerioAPI): string {
+  const time = cheerioInstance('time.published, time.entry-date, time').first();
+  const dateSource =
+    time.attr('datetime') ??
+    time.text() ??
+    articleHtml.match(/\b\d{1,2}\s+[A-Za-z]+\s+\d{4}\b/)?.[0] ??
+    articleHtml.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0];
+  const parsed = dateSource ? Date.parse(dateSource) : NaN;
+  if (!Number.isNaN(parsed)) {
+    return new Date(parsed).toISOString();
+  }
+  return new Date().toISOString();
+}
+
+function createItem(params: {
+  title: string;
+  summary: string;
+  url: string;
+  publishedAt: string;
+  areas: string[];
+  raw?: Record<string, unknown>;
+}): OutageItem {
+  const plannedWindow = extractPlannedWindow(`${params.title} ${params.summary}`);
+  return buildOutageItem({
+    source: 'TCN',
+    sourceName: 'Transmission Company of Nigeria',
+    title: params.title,
+    summary: params.summary,
+    affectedAreas: params.areas,
+    officialUrl: params.url,
+    verifiedBy: 'TCN',
+    publishedAt: params.publishedAt,
+    plannedWindow,
+    raw: params.raw
+  });
+}
+
 export const tcn: Adapter = async (ctx) => {
-  const events: OutageEvent[] = [];
+  const items: OutageItem[] = [];
   const articleLinks = new Set<string>();
 
   for (const listingUrl of LISTING_URLS) {
@@ -69,41 +111,29 @@ export const tcn: Adapter = async (ctx) => {
         article('h1.entry-title, h1.post-title, h1, h2').first().text().replace(/\s+/g, ' ').trim() ||
         article('title').text().trim();
       if (!heading || !KEYWORDS.test(heading)) continue;
-      const time = article('time.published, time.entry-date, time').first();
-      const dateSource =
-        time.attr('datetime') ??
-        time.text() ??
-        articleHtml.match(/\b\d{1,2}\s+[A-Za-z]+\s+\d{4}\b/)?.[0] ??
-        articleHtml.match(/\b\d{4}-\d{2}-\d{2}\b/)?.[0];
-      const publishedAt = toIso(dateSource) ?? new Date().toISOString();
-      const articleBody =
+
+      const bodyHtml =
         article('article .entry-content').text() || article('article').text() || article('.entry-content').text();
       const fallbackBody = article('p').text();
-      const bodyText = (articleBody || fallbackBody).replace(/\s+/g, ' ').trim();
+      const bodyText = (bodyHtml || fallbackBody).replace(/\s+/g, ' ').trim();
       const areas = extractAreas(bodyText);
+      const summary = summarise(bodyText || heading);
+      const publishedAt = extractPublishedAt(articleHtml, article);
 
-      events.push({
-        id: makeId(url, heading, publishedAt),
-        source: 'TCN',
-        category: classifyEvent(heading, bodyText),
-        title: heading,
-        description: bodyText.slice(0, 1200),
-        areas,
-        publishedAt,
-        detectedAt: new Date().toISOString(),
-        sourceUrl: url,
-        verifiedBy: 'TCN'
-      });
+      items.push(
+        createItem({
+          title: heading,
+          summary,
+          url,
+          publishedAt,
+          areas,
+          raw: { bodyText }
+        })
+      );
     } catch (error) {
       console.error(`TCN article fetch failed: ${url}`, error);
     }
   }
 
-  const seen = new Set<string>();
-  return events.filter((event) => {
-    const key = `${event.source}:${event.title}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  return items;
 };

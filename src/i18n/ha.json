@@ -36,6 +36,23 @@
     "home": "Gida",
     "backTo": "Koma zuwa"
   },
+  "badge": {
+    "planned": "Tsayar da wuta da aka tsara",
+    "ongoing": "Na ci gaba",
+    "unplanned": "Katse wuta ba tare da shiri ba",
+    "restored": "An dawo da wuta"
+  },
+  "cta": {
+    "addToCalendar": "Ƙara zuwa kalanda"
+  },
+  "plannedOutages": {
+    "header": "Tsayar da wuta da aka tsara",
+    "filter": {
+      "today": "Yau",
+      "sevenDays": "Kwanaki 7 masu zuwa",
+      "all": "Duka"
+    }
+  },
   "meta": {
     "homepage": {
       "title": "Nigeria Power & Exam Results Hub",

@@ -1,42 +1,64 @@
 {
-  "events": [
+  "items": [
     {
-      "id": "0aff377bdccf902e00538cc879a94888",
-      "source": "EKEDC",
-      "category": "unplanned",
-      "title": "Report A Fault",
-      "description": "Report A Fault",
-      "areas": [],
-      "publishedAt": "2025-10-10T07:46:52.032Z",
-      "detectedAt": "2025-10-10T07:46:52.032Z",
-      "sourceUrl": "https://ekedp.com/whistleblowing",
-      "verifiedBy": "DisCo"
+      "id": "demo-tcn-maint",
+      "source": "TCN",
+      "sourceName": "Transmission Company of Nigeria",
+      "title": "Scheduled maintenance on the Jebba–Osogbo 330kV corridor",
+      "summary": "TCN crews will execute OPGW replacement and relay calibration between Jebba and Osogbo.",
+      "publishedAt": "2025-10-10T06:30:00.000Z",
+      "status": "PLANNED",
+      "plannedWindow": {
+        "start": "2025-10-11T08:00:00.000Z",
+        "end": "2025-10-11T16:00:00.000Z",
+        "timezone": "Africa/Lagos"
+      },
+      "affectedAreas": ["Jebba", "Osogbo", "Ilorin"],
+      "verifiedBy": "TCN",
+      "officialUrl": "https://www.tcn.org.ng/latest-news/jebba-osogbo-maintenance"
     },
     {
-      "id": "09eb1f9d755dcfc0e6a5f22e4fbf5899",
+      "id": "demo-ekedc-lekki-upgrade",
       "source": "EKEDC",
-      "category": "planned",
-      "title": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
-      "description": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
-      "areas": [],
-      "publishedAt": "2025-10-10T07:46:52.031Z",
-      "detectedAt": "2025-10-10T07:46:52.031Z",
-      "sourceUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354",
-      "verifiedBy": "DisCo"
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "Lekki business unit daytime upgrade schedule",
+      "summary": "Eko Disco advises customers in Lekki, Ajah and Ibeju-Lekki about planned daytime maintenance with TCN.",
+      "publishedAt": "2025-10-09T09:15:00.000Z",
+      "status": "PLANNED",
+      "plannedWindow": {
+        "start": "2025-10-12T09:00:00.000Z",
+        "end": "2025-10-12T17:00:00.000Z",
+        "timezone": "Africa/Lagos"
+      },
+      "affectedAreas": ["Lekki", "Ajah", "Ibeju-Lekki"],
+      "verifiedBy": "DISCO",
+      "officialUrl": "https://ekedp.com/news/lekki-upgrade"
     },
     {
-      "id": "0b3f89c5c082a03c2237f97bb853c172",
-      "source": "EKEDC",
-      "category": "unplanned",
-      "title": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
-      "description": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
-      "areas": [],
-      "publishedAt": "2025-10-10T07:46:52.030Z",
-      "detectedAt": "2025-10-10T07:46:52.030Z",
-      "sourceUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504",
-      "verifiedBy": "DisCo"
+      "id": "demo-kaduna-outage",
+      "source": "KADUNA",
+      "sourceName": "Kaduna Electric",
+      "title": "Emergency outage in Kaduna metropolis",
+      "summary": "Load remains off on the 33kV Mando line while TCN replaces faulty isolators.",
+      "publishedAt": "2025-10-08T16:45:00.000Z",
+      "status": "UNPLANNED",
+      "affectedAreas": ["Kaduna North", "Kaduna South"],
+      "verifiedBy": "DISCO",
+      "officialUrl": "https://kadunaelectric.com/emergency-update-kaduna"
+    },
+    {
+      "id": "demo-jed-restored",
+      "source": "JED",
+      "sourceName": "Jos Electricity Distribution Plc",
+      "title": "Rayfield feeder supply restored",
+      "summary": "Jos Electricity Distribution Plc confirms that supply to Rayfield Band A feeder has been restored to normal schedule.",
+      "publishedAt": "2025-10-07T11:20:00.000Z",
+      "status": "RESTORED",
+      "affectedAreas": ["Rayfield", "Bukuru"],
+      "verifiedBy": "DISCO",
+      "officialUrl": "https://jedplc.com/rayfield-update"
     }
   ],
-  "generatedAt": "2025-10-10T07:46:52.874Z",
-  "lastSourceUpdate": "2025-10-10T07:46:52.032Z"
+  "generatedAt": "2025-10-10T08:07:08.761Z",
+  "latestSourceAt": "2025-10-10T06:30:00.000Z"
 }

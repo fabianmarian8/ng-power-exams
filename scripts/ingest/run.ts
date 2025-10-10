@@ -3,8 +3,10 @@ import * as cheerio from 'cheerio';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { fromAdapters } from './adapters/index.js';
 import schema from './schema/outages.schema.json' assert { type: 'json' };
+import type { OutageItem } from '../../src/lib/outages-types';
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
@@ -12,24 +14,134 @@ const validate = ajv.compile(schema);
 
 const USER_AGENT = 'NaijaInfo-Ingest/1.0 (+https://ng-power-exams.local)';
 
-async function main() {
-  const { events, stats, lastPublishedAtByAdapter } = await fromAdapters({ axios, cheerio, userAgent: USER_AGENT });
-  const uniqueById = new Map<string, typeof events[number]>();
-  for (const event of events) {
-    if (!uniqueById.has(event.id)) {
-      uniqueById.set(event.id, event);
+function normalizeWhitespace(input: string | undefined | null): string | undefined {
+  if (!input) return input ?? undefined;
+  const trimmed = input.replace(/\s+/g, ' ').trim();
+  return trimmed.length ? trimmed : undefined;
+}
+
+function uniqAreas(areas: string[] | undefined): string[] | undefined {
+  if (!areas || areas.length === 0) return undefined;
+  const seen = new Set<string>();
+  const result: string[] = [];
+  for (const area of areas) {
+    const normalized = normalizeWhitespace(area);
+    if (!normalized) continue;
+    const key = normalized.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    result.push(normalized);
+  }
+  return result.length ? result : undefined;
+}
+
+function makeId(item: OutageItem): string {
+  const key = [
+    item.source,
+    normalizeWhitespace(item.title) ?? '',
+    item.plannedWindow?.start ?? '',
+    item.plannedWindow?.end ?? '',
+    item.publishedAt ?? ''
+  ].join('|');
+  return createHash('sha1').update(key).digest('hex').slice(0, 12);
+}
+
+function normalizeItem(item: OutageItem): OutageItem {
+  const normalizedTitle = normalizeWhitespace(item.title) ?? '';
+  const normalizedSummary = normalizeWhitespace(item.summary);
+  const normalizedAreas = uniqAreas(item.affectedAreas);
+
+  const plannedWindow = item.plannedWindow
+    ? {
+        ...item.plannedWindow,
+        timezone:
+          item.plannedWindow.timezone ??
+          (item.plannedWindow.start || item.plannedWindow.end ? 'Africa/Lagos' : undefined)
+      }
+    : undefined;
+
+  return {
+    ...item,
+    id: makeId(item),
+    title: normalizedTitle,
+    summary: normalizedSummary,
+    affectedAreas: normalizedAreas,
+    plannedWindow,
+    sourceName: normalizeWhitespace(item.sourceName),
+    officialUrl: item.officialUrl,
+    raw: item.raw,
+    _score: item._score
+  };
+}
+
+function dedupeItems(items: OutageItem[]): OutageItem[] {
+  const seen = new Map<string, OutageItem>();
+  for (const item of items) {
+    const key = [
+      item.source,
+      normalizeWhitespace(item.title)?.toLowerCase() ?? '',
+      item.plannedWindow?.start ?? '',
+      item.plannedWindow?.end ?? ''
+    ].join('|');
+    if (!seen.has(key)) {
+      seen.set(key, item);
+      continue;
+    }
+
+    const existing = seen.get(key)!;
+    const existingDate = new Date(existing.publishedAt).valueOf();
+    const incomingDate = new Date(item.publishedAt).valueOf();
+    if (incomingDate > existingDate) {
+      seen.set(key, item);
     }
   }
+  return Array.from(seen.values());
+}
 
-  const sortedEvents = Array.from(uniqueById.values()).sort((a, b) =>
-    new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf()
-  );
+function sortItems(items: OutageItem[]): OutageItem[] {
+  const rank: Record<OutageItem['status'], number> = {
+    UNPLANNED: 0,
+    RESTORED: 1,
+    PLANNED: 2
+  };
 
-  const lastSourceUpdate = sortedEvents[0]?.publishedAt ?? null;
+  return [...items].sort((a, b) => {
+    const rankDiff = rank[a.status] - rank[b.status];
+    if (rankDiff !== 0) return rankDiff;
+
+    if (a.status === 'PLANNED' && b.status === 'PLANNED') {
+      const startA = a.plannedWindow?.start ?? a.plannedWindow?.end ?? a.publishedAt;
+      const startB = b.plannedWindow?.start ?? b.plannedWindow?.end ?? b.publishedAt;
+      return new Date(startB).valueOf() - new Date(startA).valueOf();
+    }
+
+    return new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf();
+  });
+}
+
+async function main() {
+  const { items, stats, lastPublishedAtByAdapter } = await fromAdapters({
+    axios,
+    cheerio,
+    userAgent: USER_AGENT
+  });
+
+  const normalizedItems = items.map(normalizeItem);
+  const deduped = dedupeItems(normalizedItems);
+  const sortedItems = sortItems(deduped);
+  const latestSourceAt = sortedItems
+    .map((item) => item.publishedAt)
+    .filter(Boolean)
+    .reduce<string | undefined>((latest, current) => {
+      if (!current) return latest;
+      if (!latest) return current;
+      return new Date(current) > new Date(latest) ? current : latest;
+    }, undefined);
+
   const payload = {
-    events: sortedEvents,
+    items: sortedItems,
     generatedAt: new Date().toISOString(),
-    lastSourceUpdate
+    latestSourceAt
   };
 
   const summaryLog = {
@@ -41,8 +153,8 @@ async function main() {
   };
   console.log('Adapters summary:', summaryLog);
   console.log('Last published per adapter:', lastPublishedAtByAdapter);
-  const totalEvents = Object.values(stats).reduce((sum, count) => sum + count, 0);
-  if (totalEvents === 0) {
+  const totalItems = Object.values(stats).reduce((sum, count) => sum + count, 0);
+  if (totalItems === 0) {
     console.warn('No data from adapters — writing empty outages.json');
   }
 
@@ -55,7 +167,7 @@ async function main() {
   await mkdir('public/live', { recursive: true });
   await writeFile('public/live/outages.json', JSON.stringify(payload, null, 2));
   await writeFile('public/live/version.json', JSON.stringify({ updatedAt: payload.generatedAt }, null, 2));
-  console.log(`Generated ${payload.events.length} outages @ ${payload.generatedAt}`);
+  console.log(`Generated ${payload.items.length} outages @ ${payload.generatedAt}`);
 }
 
 main().catch((error) => {

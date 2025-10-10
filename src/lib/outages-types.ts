@@ -1,24 +1,40 @@
-export type SourceId = 'TCN' | 'IKEDC' | 'EKEDC' | 'KADUNA' | 'JED';
-export type Category = 'planned' | 'unplanned' | 'restoration' | 'advisory';
-export type VerificationSource = 'TCN' | 'DisCo' | 'Media' | 'Community';
+export type OutageSource =
+  | 'TCN'
+  | 'EKEDC'
+  | 'KADUNA'
+  | 'JED'
+  | 'AEDC'
+  | 'IBEDC'
+  | 'IKEJA'
+  | 'OTHER';
 
-export interface OutageEvent {
+export type OutageStatus = 'PLANNED' | 'UNPLANNED' | 'RESTORED';
+
+export type VerificationSource = 'DISCO' | 'TCN' | 'MEDIA' | 'COMMUNITY' | 'UNKNOWN';
+
+export interface OutageItem {
   id: string;
-  source: SourceId;
-  category: Category;
+  source: OutageSource;
+  sourceName?: string;
   title: string;
-  description: string;
-  areas: string[];
-  feeder?: string;
-  window?: { start?: string; end?: string };
+  summary?: string;
   publishedAt: string;
-  detectedAt: string;
-  sourceUrl: string;
-  verifiedBy: VerificationSource;
+  status: OutageStatus;
+  plannedWindow?: {
+    start?: string;
+    end?: string;
+    timezone?: string;
+  };
+  affectedAreas?: string[];
+  verifiedBy?: VerificationSource;
+  officialUrl?: string;
+  raw?: Record<string, any>;
+  _score?: number;
 }
 
 export interface OutagesPayload {
-  events: OutageEvent[];
   generatedAt: string;
-  lastSourceUpdate: string | null;
+  latestSourceAt?: string;
+  items: OutageItem[];
+  planned?: OutageItem[];
 }

@@ -1,13 +1,32 @@
-import { classifyEvent, fetchHtml, load, makeId, toIso } from './utils';
+import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
 import type { Adapter } from './types';
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 const BASE_URL = 'https://ekedp.com';
 const NEWS_URL = `${BASE_URL}/news`;
-const KEYWORDS = /(outage|blackout|maintenance|shutdown|fault|restoration|tcn|330kv|132kv)/i;
+const KEYWORDS = /(outage|blackout|maintenance|shutdown|fault|restoration|tcn|330kv|132kv|upgrade|planned)/i;
+
+function createItem(params: {
+  title: string;
+  summary: string;
+  url: string;
+  publishedAt?: string;
+}): OutageItem {
+  const plannedWindow = extractPlannedWindow(`${params.title} ${params.summary}`);
+  return buildOutageItem({
+    source: 'EKEDC',
+    sourceName: 'Eko Electricity Distribution Company',
+    title: params.title,
+    summary: params.summary,
+    officialUrl: params.url,
+    verifiedBy: 'DISCO',
+    publishedAt: params.publishedAt,
+    plannedWindow
+  });
+}
 
 export const eko: Adapter = async (ctx) => {
-  const events: OutageEvent[] = [];
+  const items: OutageItem[] = [];
 
   try {
     const html = await fetchHtml(ctx, NEWS_URL);
@@ -23,30 +42,22 @@ export const eko: Adapter = async (ctx) => {
 
       const absoluteUrl = new URL(href, NEWS_URL).toString();
       const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
-      const publishedAt = toIso(dateText) ?? new Date().toISOString();
-      const description = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
+      const parsedDate = dateText ? Date.parse(dateText) : NaN;
+      const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
+      const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
 
-      events.push({
-        id: makeId(absoluteUrl, title, publishedAt),
-        source: 'EKEDC',
-        category: classifyEvent(title, description),
-        title,
-        description,
-        areas: [],
-        publishedAt,
-        detectedAt: new Date().toISOString(),
-        sourceUrl: absoluteUrl,
-        verifiedBy: 'DisCo'
-      });
+      items.push(
+        createItem({
+          title,
+          summary,
+          url: absoluteUrl,
+          publishedAt
+        })
+      );
     });
   } catch (error) {
     console.error('EKEDC scrape failed', error);
   }
 
-  const seen = new Set<string>();
-  return events.filter((event) => {
-    if (seen.has(event.id)) return false;
-    seen.add(event.id);
-    return true;
-  });
+  return items;
 };

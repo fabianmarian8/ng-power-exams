@@ -1,6 +1,6 @@
-import { dedupeEvents, fetchHtml, load, makeId, classifyEvent, toIso } from './utils';
+import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
 import type { Adapter } from './types';
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 const BASE_URL = 'https://www.ikejaelectric.com';
 const CNN_URL = `${BASE_URL}/cnn/`;
@@ -15,32 +15,39 @@ function extractAreas(text: string): string[] {
     .filter(Boolean);
 }
 
-function createEvent(params: {
+function parsePublishedAt(text: string): string | undefined {
+  const dateMatch = text.match(/\b\d{1,2}[-\/]\w{3,9}[-\/]\d{2,4}\b/);
+  if (!dateMatch) return undefined;
+  const parsed = Date.parse(dateMatch[0]);
+  if (!Number.isNaN(parsed)) {
+    return new Date(parsed).toISOString();
+  }
+  return undefined;
+}
+
+function createItem(params: {
   sourceUrl: string;
   title: string;
-  description: string;
+  summary: string;
   publishedAt?: string;
-  feeder?: string;
-  areas?: string[];
-}): OutageEvent {
-  const publishedAt = params.publishedAt ?? new Date().toISOString();
-  return {
-    id: makeId(params.sourceUrl, params.title, publishedAt),
-    source: 'IKEDC',
-    category: classifyEvent(params.title, params.description),
+  affectedAreas?: string[];
+}): OutageItem {
+  const plannedWindow = extractPlannedWindow(params.summary);
+  return buildOutageItem({
+    source: 'IKEJA',
+    sourceName: 'Ikeja Electric',
     title: params.title,
-    description: params.description,
-    areas: params.areas ?? [],
-    feeder: params.feeder,
-    publishedAt,
-    detectedAt: new Date().toISOString(),
-    sourceUrl: params.sourceUrl,
-    verifiedBy: 'DisCo'
-  };
+    summary: params.summary,
+    affectedAreas: params.affectedAreas,
+    officialUrl: params.sourceUrl,
+    verifiedBy: 'DISCO',
+    plannedWindow,
+    publishedAt: params.publishedAt
+  });
 }
 
 export const ikeja: Adapter = async (ctx) => {
-  const collected: OutageEvent[] = [];
+  const collected: OutageItem[] = [];
 
   try {
     const html = await fetchHtml(ctx, CNN_URL);
@@ -54,25 +61,21 @@ export const ikeja: Adapter = async (ctx) => {
       if (!title) {
         return;
       }
-      if (!/(fault|outage|restoration)/i.test(title)) return;
       if (processed.has(title)) return;
       processed.add(title);
 
       const href = card.find('a').attr('href') ?? CNN_URL;
       const url = new URL(href, CNN_URL).toString();
       const areas = extractAreas(title);
-      const feeder = title.match(/\b([0-9]{2}-[A-Z0-9-]+)\b/)?.[1];
-      const dateMatch = title.match(/\b\d{1,2}[-\/]\w{3,9}[-\/]\d{2,4}\b/);
-      const publishedAt = toIso(dateMatch?.[0]);
+      const publishedAt = parsePublishedAt(title);
 
       collected.push(
-        createEvent({
+        createItem({
           sourceUrl: url,
           title,
-          description: title,
+          summary: title,
           publishedAt,
-          feeder,
-          areas
+          affectedAreas: areas
         })
       );
     });
@@ -88,19 +91,16 @@ export const ikeja: Adapter = async (ctx) => {
       $('table tr').each((_, row) => {
         const text = $(row).text().replace(/\s+/g, ' ').trim();
         if (!text) return;
-        if (!/(fault|outage|restoration)/i.test(text)) return;
         const areas = extractAreas(text);
-        const feeder = text.match(/\b([0-9]{2}-[A-Z0-9-]+)\b/)?.[1];
-        const publishedAt = toIso(text.match(/\b\d{1,2}[-\/]\w{3,9}[-\/]\d{2,4}\b/)?.[0]);
+        const publishedAt = parsePublishedAt(text);
 
         collected.push(
-          createEvent({
+          createItem({
             sourceUrl: url,
             title: text,
-            description: text,
+            summary: text,
             publishedAt,
-            feeder,
-            areas
+            affectedAreas: areas
           })
         );
       });
@@ -109,5 +109,5 @@ export const ikeja: Adapter = async (ctx) => {
     }
   }
 
-  return dedupeEvents(collected);
+  return collected;
 };

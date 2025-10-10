@@ -4,18 +4,18 @@ import { kaduna } from './kaduna';
 import { jed } from './jed';
 import { tcn } from './tcn';
 import type { AdapterContext } from './types';
-import type { OutageEvent } from '../../../src/lib/outages-types';
+import type { OutageItem } from '../../../src/lib/outages-types';
 
 type AdapterName = 'tcn' | 'ikeja' | 'eko' | 'kaduna' | 'jed';
 
 interface AdapterResult {
-  events: OutageEvent[];
+  items: OutageItem[];
   stats: Record<AdapterName, number>;
   lastPublishedAtByAdapter: Record<AdapterName, string | null>;
 }
 
 export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> {
-  const adapters: Record<AdapterName, () => Promise<OutageEvent[]>> = {
+  const adapters: Record<AdapterName, () => Promise<OutageItem[]>> = {
     tcn: () => tcn(ctx),
     ikeja: () => ikeja(ctx),
     eko: () => eko(ctx),
@@ -39,18 +39,19 @@ export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> 
     jed: null
   };
 
-  const events: OutageEvent[] = [];
+  const items: OutageItem[] = [];
 
   await Promise.all(
     Object.entries(adapters).map(async ([name, adapter]) => {
       const adapterName = name as AdapterName;
       try {
-        const adapterEvents = await adapter();
-        stats[adapterName] = adapterEvents.length;
-        events.push(...adapterEvents);
-        const latest = adapterEvents.reduce<string | null>((acc, event) => {
-          if (!acc) return event.publishedAt;
-          return new Date(event.publishedAt) > new Date(acc) ? event.publishedAt : acc;
+        const adapterItems = await adapter();
+        stats[adapterName] = adapterItems.length;
+        items.push(...adapterItems);
+        const latest = adapterItems.reduce<string | null>((acc, item) => {
+          if (!item.publishedAt) return acc;
+          if (!acc) return item.publishedAt;
+          return new Date(item.publishedAt) > new Date(acc) ? item.publishedAt : acc;
         }, null);
         lastPublishedAtByAdapter[adapterName] = latest;
       } catch (error) {
@@ -60,5 +61,5 @@ export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> 
     })
   );
 
-  return { events, stats, lastPublishedAtByAdapter };
+  return { items, stats, lastPublishedAtByAdapter };
 }
