@@ -1,8 +1,9 @@
-import type { AxiosInstance } from 'axios';
 import type { NewsItem, NewsDomain, NewsTier } from '../../../../src/shared/types';
 
+type FetchInit = Parameters<typeof fetch>[1];
+
 export interface AdapterContext {
-  axios: AxiosInstance;
+  fetch: (url: string, init?: FetchInit) => Promise<{ status: number; body: string; ok: boolean }>;
   cheerio: typeof import('cheerio');
   userAgent: string;
 }

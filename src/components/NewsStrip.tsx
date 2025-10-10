@@ -1,10 +1,12 @@
 import { ExternalLink } from 'lucide-react';
+import { differenceInCalendarDays, differenceInHours } from 'date-fns';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useNews } from '@/hooks/useNews';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatNewsDateTime } from '@/lib/utils';
 import type { NewsDomain } from '@/shared/types';
+import { LastVerifiedLabel } from '@/components/LastVerifiedLabel';
 
 interface NewsStripProps {
   domain: NewsDomain;
@@ -12,7 +14,7 @@ interface NewsStripProps {
 }
 
 export function NewsStrip({ domain, max = 3 }: NewsStripProps) {
-  const { items, isLoading } = useNews();
+  const { items, data, isLoading } = useNews();
   const { t } = useLanguage();
   const domainItems = items.filter((item) => item.domain === domain);
   const official = domainItems.filter((item) => item.tier === 'OFFICIAL');
@@ -21,15 +23,31 @@ export function NewsStrip({ domain, max = 3 }: NewsStripProps) {
   const displayed = prioritized.slice(0, max);
   const isPower = domain === 'POWER';
   const heading = domain === 'EXAMS' ? t('news.latestExamUpdates') : t('news.latestPowerUpdates');
+  const latestOfficial = data.latestOfficialByDomain[domain];
+  const awaitingUpdate = latestOfficial
+    ? differenceInCalendarDays(new Date(), new Date(latestOfficial)) > 14
+    : false;
+  const lastVerifiedLabel = latestOfficial
+    ? formatNewsDateTime(latestOfficial)
+    : t('news.awaitingFirstOfficial', 'Awaiting first official update');
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h3 className="text-lg font-semibold">{heading}</h3>
-        {isLoading && <span className="text-xs text-muted-foreground">Načítavam…</span>}
+        {isLoading && <span className="text-xs text-muted-foreground">{t('news.loading', 'Loading…')}</span>}
+      </div>
+      <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+        <LastVerifiedLabel />
+        <span>{lastVerifiedLabel}</span>
+        {awaitingUpdate && (
+          <Badge className="bg-amber-200 text-amber-900 border-amber-300">
+            {t('news.awaitingNewOfficial')}
+          </Badge>
+        )}
       </div>
       {displayed.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No recent updates yet.</p>
+        <p className="text-sm text-muted-foreground">{t('news.noRecentUpdates', 'No recent updates yet.')}</p>
       ) : (
         <div
           className={
@@ -54,10 +72,20 @@ export function NewsStrip({ domain, max = 3 }: NewsStripProps) {
                     </Badge>
                     <span className="text-xs text-muted-foreground">{item.source}</span>
                   </div>
+                  {differenceInHours(new Date(), new Date(item.publishedAt)) < 48 && (
+                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                      {t('news.newBadge', 'NEW')}
+                    </span>
+                  )}
                 </div>
                 <CardTitle className="text-base leading-tight">{item.title}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 pt-0 text-sm">
+                {item.tier === 'MEDIA' && (
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                    {t('news.reportedBy', { source: item.source })}
+                  </p>
+                )}
                 {item.summary && <p className="text-muted-foreground">{item.summary}</p>}
                 <div className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>{formatNewsDateTime(item.publishedAt)}</span>

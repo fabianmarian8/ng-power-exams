@@ -1,4 +1,5 @@
 import type { AdapterContext, AdapterNewsItem, RegisteredAdapter } from './types';
+import { parsePublishedDate, sanitizeHtml } from './utils';
 
 const EXAMS_REGEX = /(JAMB|WAEC|NECO|UTME|SSCE|BECE|result|slip|checker)/i;
 const POWER_REGEX = /(power|grid|outage|electricity|disco|transmission|TCN|Ikeja|Kaduna|Eko|Jos|EKEDC|PHCN|load shedding)/i;
@@ -29,14 +30,16 @@ function classifyDomain(title: string, summary?: string): AdapterNewsItem['domai
 
 async function fetchMediaFeed(ctx: AdapterContext, source: MediaSource): Promise<AdapterNewsItem[]> {
   try {
-    const response = await ctx.axios.get(source.url, {
+    const { status, body, ok } = await ctx.fetch(source.url, {
       headers: {
-        'User-Agent': ctx.userAgent,
         Accept: 'application/rss+xml, application/xml;q=0.9, */*;q=0.8'
-      },
-      timeout: 15_000
+      }
     });
-    const xml = response.data as string;
+    if (!ok) {
+      console.warn(`[news][${source.name}] statusCode=${status} itemsFound=0 firstTitles=`);
+      return [];
+    }
+    const xml = body;
     const $ = ctx.cheerio.load(xml, { xmlMode: true });
     const items: AdapterNewsItem[] = [];
     $('item').each((_, element) => {
@@ -45,16 +48,15 @@ async function fetchMediaFeed(ctx: AdapterContext, source: MediaSource): Promise
       const link = node.find('link').first().text().trim() || node.find('guid').first().text().trim();
       if (!title || !link) return;
       const descriptionNode = node.find('description').first().text() || node.find('content\\:encoded').first().text() || '';
-      const summary = descriptionNode
-        ? ctx.cheerio.load(`<div>${descriptionNode}</div>`).root().text().replace(/\s+/g, ' ').trim()
-        : undefined;
+      const summary = descriptionNode ? sanitizeHtml(descriptionNode, ctx.cheerio) : undefined;
       const pubDate =
         node.find('pubDate').first().text().trim() ||
         node.find('dc\\:date').first().text().trim() ||
         node.find('updated').first().text().trim();
       const domain = classifyDomain(title, summary);
       if (!domain) return;
-      const publishedAt = pubDate && pubDate.trim().length ? new Date(pubDate).toISOString() : new Date().toISOString();
+      const parsedDate = pubDate && pubDate.trim().length ? parsePublishedDate(pubDate) : undefined;
+      const publishedAt = parsedDate ? parsedDate.toISOString() : new Date().toISOString();
       items.push({
         domain,
         tier: 'MEDIA',
@@ -65,6 +67,12 @@ async function fetchMediaFeed(ctx: AdapterContext, source: MediaSource): Promise
         publishedAt
       });
     });
+    console.log(
+      `[news][${source.name}] statusCode=${status} itemsFound=${items.length} firstTitles=${items
+        .slice(0, 3)
+        .map((item) => item.title)
+        .join(' | ')}`
+    );
     return items;
   } catch (error) {
     console.error(`Media RSS fetch failed for ${source.name}`, error);

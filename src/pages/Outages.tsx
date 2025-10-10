@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,10 +13,14 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { formatLocalizedDateTime } from "@/lib/utils";
 import OutagesBoard from "@/components/OutagesBoard";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { LastVerifiedLabel } from "@/components/LastVerifiedLabel";
+import { useNews } from "@/hooks/useNews";
+import { useJsonLd } from "@/hooks/useJsonLd";
 
 const Outages = () => {
   const { t, language } = useLanguage();
   usePageMetadata("meta.outages.title", "meta.outages.description");
+  const news = useNews();
 
   const nationalGuides = outageGuides.filter((guide) => guide.category === "national");
   const discoGuides = outageGuides.filter((guide) => guide.category === "disco");
@@ -29,6 +34,60 @@ const Outages = () => {
     formatLocalizedDateTime(guide.lastVerified ?? DEFAULT_OUTAGE_LAST_VERIFIED, language);
 
   const nationalHighlight = nationalGuides.find((guide) => guide.slug === "national-grid-status") ?? nationalGuides[0];
+  const siteUrl = "https://naijainfo.ng";
+  const outagesUrl = `${siteUrl}/outages`;
+  const firstPowerOfficial = news.items.find((item) => item.domain === "POWER" && item.tier === "OFFICIAL");
+
+  const newsArticleLd = useMemo(() => {
+    if (!firstPowerOfficial) {
+      return null;
+    }
+    return {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      headline: firstPowerOfficial.title,
+      datePublished: firstPowerOfficial.publishedAt,
+      dateModified: firstPowerOfficial.publishedAt,
+      mainEntityOfPage: firstPowerOfficial.officialUrl,
+      url: outagesUrl,
+      articleSection: "Power",
+      author: {
+        "@type": "Organization",
+        name: firstPowerOfficial.source
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "NaijaInfo",
+        url: siteUrl
+      },
+      description: firstPowerOfficial.summary ?? undefined
+    };
+  }, [firstPowerOfficial, outagesUrl, siteUrl]);
+
+  const breadcrumbLd = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: t("common.home"),
+          item: siteUrl
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: t("meta.outages.title"),
+          item: outagesUrl
+        }
+      ]
+    }),
+    [outagesUrl, siteUrl, t]
+  );
+
+  useJsonLd("ld-json-outages-article", newsArticleLd);
+  useJsonLd("ld-json-outages-breadcrumb", breadcrumbLd);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -78,8 +137,9 @@ const Outages = () => {
                     <p>
                       <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(nationalHighlight)}
                     </p>
-                    <p>
-                      <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(nationalHighlight)}
+                    <p className="flex items-center gap-1">
+                      <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                      <span>{resolveLastVerified(nationalHighlight)}</span>
                     </p>
                   </div>
                 </div>
@@ -129,8 +189,9 @@ const Outages = () => {
                         <p>
                           <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
                         </p>
-                        <p>
-                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        <p className="flex items-center gap-1">
+                          <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                          <span>{resolveLastVerified(guide)}</span>
                         </p>
                       </div>
                       <Button asChild variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground">
@@ -161,8 +222,9 @@ const Outages = () => {
                         <p>
                           <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
                         </p>
-                        <p>
-                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        <p className="flex items-center gap-1">
+                          <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                          <span>{resolveLastVerified(guide)}</span>
                         </p>
                       </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
@@ -191,8 +253,9 @@ const Outages = () => {
                         <p>
                           <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
                         </p>
-                        <p>
-                          <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                        <p className="flex items-center gap-1">
+                          <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                          <span>{resolveLastVerified(guide)}</span>
                         </p>
                       </div>
                       <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">

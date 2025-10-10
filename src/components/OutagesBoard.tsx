@@ -11,6 +11,7 @@ import type { OutageItem } from '@/lib/outages-types';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { formatNewsDateTime } from '@/lib/utils';
 import { NewsStrip } from '@/components/NewsStrip';
+import { LastVerifiedLabel } from '@/components/LastVerifiedLabel';
 
 const SOURCE_LABELS: Partial<Record<OutageItem['source'], string>> = {
   TCN: 'Transmission Company of Nigeria (TCN)',
@@ -296,7 +297,7 @@ export function OutagesBoard() {
   const latestPowerOfficial = news.data.latestOfficialByDomain.POWER;
   const powerLastUpdateLabel = latestPowerOfficial
     ? formatNewsDateTime(latestPowerOfficial)
-    : 'Čakáme na prvé oficiálne hlásenie…';
+    : t('news.awaitingFirstOfficial', 'Awaiting first official update');
   const awaitingPowerUpdate = latestPowerOfficial
     ? differenceInCalendarDays(new Date(), new Date(latestPowerOfficial)) > 14
     : false;
@@ -330,7 +331,7 @@ export function OutagesBoard() {
               {isRefetching && <span className="text-primary">(prebieha aktualizácia…)</span>}
             </div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-medium text-foreground">Posledné oficiálne hlásenie:</span>
+              <LastVerifiedLabel className="text-xs text-muted-foreground" />
               <span>{powerLastUpdateLabel}</span>
               {awaitingPowerUpdate && (
                 <Badge className="bg-amber-200 text-amber-900 border-amber-300">
@@ -351,7 +352,7 @@ export function OutagesBoard() {
           ))}
         </div>
       </div>
-      <NewsStrip domain="POWER" max={5} />
+      <NewsStrip domain="POWER" />
     </div>
   );
 
