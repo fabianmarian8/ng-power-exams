@@ -1,7 +1,9 @@
 import type { OutageEvent } from '../../../src/lib/outages-types';
 
+type AxiosExport = typeof import('axios')['default'];
+
 export interface AdapterContext {
-  axios: typeof import('axios');
+  axios: AxiosExport;
   cheerio: typeof import('cheerio');
   userAgent: string;
 }

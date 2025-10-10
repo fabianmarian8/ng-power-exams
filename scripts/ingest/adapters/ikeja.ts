@@ -50,7 +50,9 @@ export const ikeja: Adapter = async (ctx) => {
       const el$ = $(el);
       const card = el$.closest('a, div, li');
       const title = card.text().replace(/\s+/g, ' ').trim();
-      if (!title) continue;
+      if (!title) {
+        return;
+      }
       if (!/(fault|outage|restoration)/i.test(title)) return;
       if (processed.has(title)) return;
       processed.add(title);
