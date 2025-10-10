@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2025-10-10T16:36:27.554Z",
+  "generatedAt": "2025-10-10T16:50:54.968Z",
   "items": [
+    {
+      "id": "32a5efdf65244a09414046043cefc00d69c56ddd",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "Police Rescue Nine Kidnapped Victims in Kaduna",
+      "summary": "Police Rescue Nine Kidnapped Victims in Kaduna Vanguard News",
+      "publishedAt": "2025-10-10T16:44:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/10/police-rescue-nine-kidnapped-victims-in-kaduna/"
+    },
     {
       "id": "e38f0e6e1b3405ebbd890a3c42d22eb641412016",
       "domain": "POWER",
