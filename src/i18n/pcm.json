@@ -36,6 +36,13 @@
     "home": "Home",
     "backTo": "Back to"
   },
+  "news": {
+    "latestExamUpdates": "Latest Exam Updates",
+    "latestPowerUpdates": "Latest Power Updates",
+    "official": "Official",
+    "media": "Media",
+    "awaitingNewOfficial": "Awaiting new official updates"
+  },
   "badge": {
     "planned": "Planned outage",
     "ongoing": "Ongoing",

@@ -36,6 +36,13 @@
     "home": "Ilé",
     "backTo": "Padà sí"
   },
+  "news": {
+    "latestExamUpdates": "Latest Exam Updates",
+    "latestPowerUpdates": "Latest Power Updates",
+    "official": "Official",
+    "media": "Media",
+    "awaitingNewOfficial": "Awaiting new official updates"
+  },
   "badge": {
     "planned": "Ìpẹ̀yà tí a ti ṣètò",
     "ongoing": "Níṣíṣe",

@@ -36,6 +36,13 @@
     "home": "Gida",
     "backTo": "Koma zuwa"
   },
+  "news": {
+    "latestExamUpdates": "Latest Exam Updates",
+    "latestPowerUpdates": "Latest Power Updates",
+    "official": "Official",
+    "media": "Media",
+    "awaitingNewOfficial": "Awaiting new official updates"
+  },
   "badge": {
     "planned": "Tsayar da wuta da aka tsara",
     "ongoing": "Na ci gaba",

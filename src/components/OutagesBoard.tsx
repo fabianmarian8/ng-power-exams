@@ -1,12 +1,16 @@
 import { useMemo, useState } from 'react';
+import { differenceInCalendarDays } from 'date-fns';
 import { CalendarPlus, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useOutages } from '@/hooks/useOutages';
+import { useNews } from '@/hooks/useNews';
 import type { OutageItem } from '@/lib/outages-types';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { formatNewsDateTime } from '@/lib/utils';
+import { NewsStrip } from '@/components/NewsStrip';
 
 const SOURCE_LABELS: Partial<Record<OutageItem['source'], string>> = {
   TCN: 'Transmission Company of Nigeria (TCN)',
@@ -287,7 +291,15 @@ function LiveCard({
 
 export function OutagesBoard() {
   const { t } = useLanguage();
-  const { data, isLoading, error, isRefetching, planned, active, restored, lastIngest, lastSourceUpdate } = useOutages();
+  const { data, isLoading, error, isRefetching, planned, active, restored, lastIngest } = useOutages();
+  const news = useNews();
+  const latestPowerOfficial = news.data.latestOfficialByDomain.POWER;
+  const powerLastUpdateLabel = latestPowerOfficial
+    ? formatNewsDateTime(latestPowerOfficial)
+    : 'Čakáme na prvé oficiálne hlásenie…';
+  const awaitingPowerUpdate = latestPowerOfficial
+    ? differenceInCalendarDays(new Date(), new Date(latestPowerOfficial)) > 14
+    : false;
   const [plannedFilter, setPlannedFilter] = useState<PlannedFilter>('sevenDays');
 
   const filteredPlanned = useMemo(() => {
@@ -304,34 +316,42 @@ export function OutagesBoard() {
   }, [planned, plannedFilter]);
 
   const header = (
-    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-semibold">Živý prehľad porúch</h2>
-        <p className="text-sm text-muted-foreground">
-          Údaje sú preberané z oficiálnych oznamov TCN a distribučných spoločností. Pre hlásenie novej poruchy použite aplikáciu PORS od NERC.
-        </p>
-        <div className="flex flex-col gap-2 text-xs text-muted-foreground md:flex-row md:flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-foreground">Posledný ingest:</span>
-            <span>{lastIngest ? formatDateTime(lastIngest) : 'Čakáme na prvý import údajov…'}</span>
-            {isRefetching && <span className="text-primary">(prebieha aktualizácia…)</span>}
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-foreground">Posledné hlásenie zo zdrojov:</span>
-            <span>{lastSourceUpdate ? formatDateTime(lastSourceUpdate) : 'Žiadne hlásenia v sledovanom období'}</span>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold">Živý prehľad porúch</h2>
+          <p className="text-sm text-muted-foreground">
+            Údaje sú preberané z oficiálnych oznamov TCN a distribučných spoločností. Pre hlásenie novej poruchy použite aplikáciu PORS od NERC.
+          </p>
+          <div className="flex flex-col gap-2 text-xs text-muted-foreground md:flex-row md:flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="font-medium text-foreground">Posledný ingest:</span>
+              <span>{lastIngest ? formatDateTime(lastIngest) : 'Čakáme na prvý import údajov…'}</span>
+              {isRefetching && <span className="text-primary">(prebieha aktualizácia…)</span>}
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-medium text-foreground">Posledné oficiálne hlásenie:</span>
+              <span>{powerLastUpdateLabel}</span>
+              {awaitingPowerUpdate && (
+                <Badge className="bg-amber-200 text-amber-900 border-amber-300">
+                  {t('news.awaitingNewOfficial')}
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {PORS_LINKS.map((link) => (
+            <Button key={link.href} asChild variant="outline" size="sm" className="inline-flex items-center gap-2">
+              <a href={link.href} target="_blank" rel="noreferrer">
+                {link.label}
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            </Button>
+          ))}
+        </div>
       </div>
-      <div className="flex flex-wrap items-center gap-2">
-        {PORS_LINKS.map((link) => (
-          <Button key={link.href} asChild variant="outline" size="sm" className="inline-flex items-center gap-2">
-            <a href={link.href} target="_blank" rel="noreferrer">
-              {link.label}
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          </Button>
-        ))}
-      </div>
+      <NewsStrip domain="POWER" max={5} />
     </div>
   );
 

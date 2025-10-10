@@ -1,0 +1,55 @@
+import type { NewsPayload } from '@/shared/types';
+
+export const NEWS_FALLBACK: NewsPayload = {
+  generatedAt: '2025-01-10T09:00:00+01:00',
+  items: [
+    {
+      id: 'sample-jamb-2025',
+      domain: 'EXAMS',
+      tier: 'OFFICIAL',
+      source: 'JAMB',
+      title: 'JAMB confirms 2025 UTME result release schedule',
+      summary: 'The Joint Admissions and Matriculation Board reaffirmed the timeline for releasing 2025 UTME scores and advised candidates to monitor the e-Facility portal.',
+      publishedAt: '2025-01-08T09:00:00+01:00',
+      officialUrl: 'https://www.jamb.gov.ng/',
+      tags: ['UTME', 'Results']
+    },
+    {
+      id: 'sample-waec-2025',
+      domain: 'EXAMS',
+      tier: 'MEDIA',
+      source: 'Vanguard',
+      title: 'WAEC opens January 2025 e-PIN sales for SSCE candidates',
+      summary: 'Prospective WAEC candidates can now purchase e-PINs via the official channels and should guard their tokens against fraud.',
+      publishedAt: '2025-01-07T12:30:00+01:00',
+      officialUrl: 'https://www.vanguardngr.com/',
+      tags: ['WAEC', 'e-PIN']
+    },
+    {
+      id: 'sample-tcn-2025',
+      domain: 'POWER',
+      tier: 'OFFICIAL',
+      source: 'TCN',
+      title: 'TCN schedules Lagos transmission maintenance',
+      summary: 'Transmission Company of Nigeria announced a six-hour maintenance window affecting Lagos Island and Mainland bulk supply feeders.',
+      publishedAt: '2025-01-09T09:00:00+01:00',
+      officialUrl: 'https://www.tcn.org.ng/',
+      tags: ['Grid', 'Maintenance']
+    },
+    {
+      id: 'sample-power-media-2025',
+      domain: 'POWER',
+      tier: 'MEDIA',
+      source: 'Punch',
+      title: 'Kaduna Electric restores supply after overnight outage',
+      summary: 'Power supply has been restored to key feeders after emergency repairs on a failed transformer, Kaduna Electric confirmed.',
+      publishedAt: '2025-01-08T15:45:00+01:00',
+      officialUrl: 'https://punchng.com/',
+      tags: ['Kaduna', 'Restoration']
+    }
+  ],
+  latestOfficialByDomain: {
+    EXAMS: '2025-01-08T09:00:00+01:00',
+    POWER: '2025-01-09T09:00:00+01:00'
+  }
+};

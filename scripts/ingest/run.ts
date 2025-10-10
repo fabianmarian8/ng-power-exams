@@ -7,6 +7,7 @@ import { createHash } from 'node:crypto';
 import { fromAdapters } from './adapters/index.js';
 import schema from './schema/outages.schema.json' assert { type: 'json' };
 import type { OutageItem } from '../../src/lib/outages-types';
+import { ingestNews } from './news.js';
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
@@ -166,8 +167,24 @@ async function main() {
 
   await mkdir('public/live', { recursive: true });
   await writeFile('public/live/outages.json', JSON.stringify(payload, null, 2));
-  await writeFile('public/live/version.json', JSON.stringify({ updatedAt: payload.generatedAt }, null, 2));
   console.log(`Generated ${payload.items.length} outages @ ${payload.generatedAt}`);
+
+  let newsGeneratedAt: string | null = null;
+  try {
+    const newsResult = await ingestNews();
+    newsGeneratedAt = newsResult.payload.generatedAt;
+    console.log('News summary (run.ts):', newsResult.summary);
+  } catch (error) {
+    console.error('News ingest failed from run.ts', error);
+  }
+
+  const versionPayload = {
+    updatedAt: newsGeneratedAt ?? payload.generatedAt,
+    outagesUpdatedAt: payload.generatedAt,
+    newsUpdatedAt: newsGeneratedAt
+  };
+
+  await writeFile('public/live/version.json', JSON.stringify(versionPayload, null, 2));
 }
 
 main().catch((error) => {

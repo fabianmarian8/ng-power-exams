@@ -11,10 +11,14 @@ import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatLocalizedDateTime } from "@/lib/utils";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { NewsStrip } from "@/components/NewsStrip";
+import { useNews } from "@/hooks/useNews";
+import { differenceInCalendarDays } from "date-fns";
 
 const Results = () => {
   const { t, language } = useLanguage();
   usePageMetadata("meta.results.title", "meta.results.description");
+  const news = useNews();
 
   const jambGuides = resultGuides.filter((guide) => guide.category === "jamb");
   const waecGuides = resultGuides.filter((guide) => guide.category === "waec");
@@ -26,6 +30,12 @@ const Results = () => {
     formatLocalizedDateTime(guide.lastVerified ?? DEFAULT_RESULT_LAST_VERIFIED, language);
 
   const highlighted = jambGuides.find((guide) => guide.slug === "check-jamb-result-2025") ?? jambGuides[0];
+  const latestExamOfficial = news.data.latestOfficialByDomain.EXAMS;
+  const heroLastVerified = latestExamOfficial ?? highlighted?.lastVerified ?? DEFAULT_RESULT_LAST_VERIFIED;
+  const heroLastVerifiedLabel = formatLocalizedDateTime(heroLastVerified, language);
+  const heroAwaitingUpdate = heroLastVerified
+    ? differenceInCalendarDays(new Date(), new Date(heroLastVerified)) > 14
+    : false;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -53,6 +63,8 @@ const Results = () => {
         </section>
 
         <section className="container py-10 space-y-10">
+          <NewsStrip domain="EXAMS" max={3} />
+
           {highlighted && (
             <ScrollReveal>
               <Card className="border-2 border-hope-yellow bg-hope-yellow/5 animate-pulse-glow">
@@ -75,8 +87,14 @@ const Results = () => {
                       <p>
                         <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(highlighted)}
                       </p>
-                      <p>
-                        <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(highlighted)}
+                      <p className="flex items-center gap-2">
+                        <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span>
+                        <span>{heroLastVerifiedLabel}</span>
+                        {heroAwaitingUpdate && (
+                          <Badge className="bg-amber-200 text-amber-900 border-amber-300">
+                            {t('news.awaitingNewOfficial')}
+                          </Badge>
+                        )}
                       </p>
                     </div>
                   </div>
