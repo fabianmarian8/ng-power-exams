@@ -94,6 +94,30 @@ function buildItem(params: {
   } satisfies OutageItem;
 }
 
+function aggregateDowngradedFeeders(items: OutageItem[]): OutageItem[] {
+  const downgraded = items.filter(
+    (item) => item.raw?.hours !== undefined && item.raw.hours < 4
+  );
+
+  if (downgraded.length === 0) return items;
+  if (downgraded.length <= 5) return items;
+
+  const aggregated: OutageItem = {
+    ...downgraded[0],
+    title: `${downgraded.length} feeders experiencing low supply hours`,
+    summary: `Currently tracking ${downgraded.length} feeders with reduced availability. Check official source for full list.`,
+    affectedAreas: Array.from(
+      new Set(downgraded.flatMap((item) => item.affectedAreas ?? []))
+    ).slice(0, 10)
+  };
+
+  const regular = items.filter(
+    (item) => !(item.raw?.hours !== undefined && item.raw.hours < 4)
+  );
+
+  return [aggregated, ...regular];
+}
+
 export const jed: Adapter = async (ctx) => {
   const items: OutageItem[] = [];
   const seenTitles = new Set<string>();
@@ -173,5 +197,5 @@ export const jed: Adapter = async (ctx) => {
     });
   }
 
-  return items;
+  return aggregateDowngradedFeeders(items);
 };

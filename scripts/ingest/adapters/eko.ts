@@ -4,7 +4,16 @@ import type { OutageItem } from '../../../src/lib/outages-types';
 
 const BASE_URL = 'https://ekedp.com';
 const NEWS_URL = `${BASE_URL}/news`;
-const KEYWORDS = /(outage|blackout|maintenance|shutdown|fault|restoration|tcn|330kv|132kv|upgrade|planned)/i;
+const KEYWORDS = /(power outage|service interruption|scheduled maintenance|unplanned shutdown|feeder fault|supply restoration|tcn outage|grid collapse)/i;
+
+const BLACKLIST_PATTERNS = [
+  /prepaid meter/i,
+  /contact.*team/i,
+  /report.*fault/i,
+  /upgraded.*downgraded.*feeders/i,
+  /customer.*service/i,
+  /whistle.*blowing/i
+];
 
 function createItem(params: {
   title: string;
@@ -40,11 +49,16 @@ export const eko: Adapter = async (ctx) => {
       const title = (titleNode.text() || node.text()).replace(/\s+/g, ' ').trim();
       const href = (link.attr('href') ?? node.attr('href')) ?? '';
       if (!title || !href || !KEYWORDS.test(title)) return;
+      if (BLACKLIST_PATTERNS.some(pattern => pattern.test(title))) return;
 
       const absoluteUrl = new URL(href, NEWS_URL).toString();
       const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
       const parsedDate = dateText ? Date.parse(dateText) : NaN;
       const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
+
+      // Skip if no date or older than 90 days
+      if (!publishedAt || Date.now() - Date.parse(publishedAt) > 90 * 24 * 60 * 60 * 1000) return;
+
       const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
 
       items.push(
