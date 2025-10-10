@@ -282,6 +282,10 @@ function LiveCard({
 
 export function OutagesBoard() {
   const { t } = useLanguage();
+  const translate = (key: string, fallback: string) => {
+    const value = t(key);
+    return value === key ? fallback : value;
+  };
   const { data, isLoading, error, isRefetching, planned, active, restored, lastIngest, lastSourceUpdate } = useOutages();
   const [plannedFilter, setPlannedFilter] = useState<PlannedFilter>('sevenDays');
 
@@ -359,9 +363,9 @@ export function OutagesBoard() {
   }
 
   const statusLabels: Record<OutageItem['status'], string> = {
-    UNPLANNED: t('badge.unplanned', 'Neplánovaná porucha'),
-    RESTORED: t('badge.restored', 'Obnovenie dodávky'),
-    PLANNED: t('badge.planned', 'Plánovaná odstávka')
+    UNPLANNED: translate('badge.unplanned', 'Neplánovaná porucha'),
+    RESTORED: translate('badge.restored', 'Obnovenie dodávky'),
+    PLANNED: translate('badge.planned', 'Plánovaná odstávka')
   };
 
   const liveItems = [...active, ...restored];
@@ -373,7 +377,7 @@ export function OutagesBoard() {
       <section className="space-y-4">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-xl font-semibold">{t('plannedOutages.header', 'Plánované odstávky')}</h3>
+            <h3 className="text-xl font-semibold">{translate('plannedOutages.header', 'Plánované odstávky')}</h3>
             <p className="text-sm text-muted-foreground">
               Sledujeme oficiálne harmonogramy údržby a plánovaných odstávok. Časy sú prepočítané do časovej zóny Africa/Lagos.
             </p>
@@ -385,7 +389,7 @@ export function OutagesBoard() {
               size="sm"
               onClick={() => setPlannedFilter('today')}
             >
-              {t('plannedOutages.filter.today', 'Dnes')}
+              {translate('plannedOutages.filter.today', 'Dnes')}
             </Button>
             <Button
               type="button"
@@ -393,7 +397,7 @@ export function OutagesBoard() {
               size="sm"
               onClick={() => setPlannedFilter('sevenDays')}
             >
-              {t('plannedOutages.filter.sevenDays', 'Najbližších 7 dní')}
+              {translate('plannedOutages.filter.sevenDays', 'Najbližších 7 dní')}
             </Button>
             <Button
               type="button"
@@ -401,7 +405,7 @@ export function OutagesBoard() {
               size="sm"
               onClick={() => setPlannedFilter('all')}
             >
-              {t('plannedOutages.filter.all', 'Všetko')}
+              {translate('plannedOutages.filter.all', 'Všetko')}
             </Button>
           </div>
         </div>
@@ -419,10 +423,10 @@ export function OutagesBoard() {
                 key={item.id}
                 item={item}
                 ongoing={isPlannedOngoing(item, new Date())}
-                plannedLabel={t('badge.planned', 'Plánovaná odstávka')}
-                ongoingLabel={t('badge.ongoing', 'Prebieha')}
-                officialSourceLabel={t('common.officialSource', 'Oficiálny zdroj')}
-                addToCalendarLabel={t('cta.addToCalendar', 'Pridať do kalendára')}
+                plannedLabel={translate('badge.planned', 'Plánovaná odstávka')}
+                ongoingLabel={translate('badge.ongoing', 'Prebieha')}
+                officialSourceLabel={translate('common.officialSource', 'Oficiálny zdroj')}
+                addToCalendarLabel={translate('cta.addToCalendar', 'Pridať do kalendára')}
               />
             ))}
           </div>
@@ -450,7 +454,7 @@ export function OutagesBoard() {
                 key={item.id}
                 item={item}
                 statusLabel={statusLabels[item.status]}
-                officialSourceLabel={t('common.officialSource', 'Oficiálny zdroj')}
+                officialSourceLabel={translate('common.officialSource', 'Oficiálny zdroj')}
               />
             ))}
           </div>
