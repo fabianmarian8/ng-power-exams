@@ -1,15 +1,35 @@
 {
-  "generatedAt": "2025-10-10T11:47:11.485Z",
+  "generatedAt": "2025-10-10T12:20:07.366Z",
   "items": [
     {
-      "id": "986fc1ef38764aa496d89a573a750e04d63e94ff",
+      "id": "9dd5ac6003ff6ff27580f351996e929909b2190a",
       "domain": "POWER",
       "tier": "MEDIA",
-      "source": "Vanguard",
-      "title": "Russia hits Ukraine with ‘massive’ strikes, power cuts in Kyiv",
-      "summary": "Russia hits Ukraine with ‘massive’ strikes, power cuts in Kyiv Vanguard News",
-      "publishedAt": "2025-10-10T08:16:00+01:00",
-      "officialUrl": "https://www.vanguardngr.com/2025/10/russia-hits-ukraine-with-massive-strikes-power-cuts-in-kyiv/"
+      "source": "Daily Trust",
+      "title": "Minister seeks stronger partnerships for girl-child empowerment",
+      "summary": "Minister of Women Affairs, Imaan Sulaiman-Ibrahim, has reaffirmed her commitment to advancing opportunities for Nigerian girls, emphasizing that “every girl deserves the chance to dream, grow, and lead.” Sulaiman-Ibrahim made the reaffirmation during a courtesy visit to the APC Youth House, Office of the National Youth Leader in Abuja. The visit brought together members of […]",
+      "publishedAt": "2025-10-10T12:06:00+01:00",
+      "officialUrl": "https://dailytrust.com/minister-seeks-stronger-partnerships-for-girl-child-empowerment/"
+    },
+    {
+      "id": "9776f75d5347cf77e45752297d18be18664c3267",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Infinix GT 30 Pro: The Lifestyle of a Modern Gamer, Redefined",
+      "summary": "In the past, the idea of the perfect gaming device often revolved around powerful desktops and dedicated consoles. In 2025, Infinix is redefining that narrative with its latest innovation, the GT 30 Pro. More than just a smartphone, the GT 30 Pro is a flagship device crafted specifically for modern gamers, seamlessly blending performance with […]",
+      "publishedAt": "2025-10-10T12:00:00+01:00",
+      "officialUrl": "https://dailytrust.com/infinix-gt-30-pro-the-lifestyle-of-a-modern-gamer-redefined/"
+    },
+    {
+      "id": "9a6ae11ec890d27b380a0047b55bf77024b3fb6b",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Softbrite: A Trusted Path for Nigerians to Prosper",
+      "summary": "In a world that is ever changing, opportunities often emerge in unexpected places. While some chase volatile businesses or fleeting trends, others quietly leverage opportunities that have powered the internet since its inception: premium domain names. In Nigeria today, one platform is making it easier and more secure for ordinary people to tap into this […]",
+      "publishedAt": "2025-10-10T11:55:00+01:00",
+      "officialUrl": "https://dailytrust.com/softbrite-a-trusted-path-for-nigerians-to-prosper/"
     },
     {
       "id": "4421587cf9b0ef4fa8f0c160122954b50ce624fd",
@@ -130,6 +150,16 @@
       "summary": "The new Chairman of the Nigerian Electricity Regulatory Commission, Abdullahi Ramat, has revealed that schools, hospitals and low-income Nigerians will benefit from a tariff relief package under the Electricity Act 2023. Read More",
       "publishedAt": "2025-10-06T09:29:00+01:00",
       "officialUrl": "https://kadunaelectric.com/electricity-act-poor-nigerians-others-to-get-tariff-relief/"
+    },
+    {
+      "id": "823a4bf2d9a39b2e651dc5e4f46a2ff4d8d6be4b",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "$2 billion for super grid: Financing light or darkness?",
+      "summary": "FOR 25 years, Nigeria has pursued electricity reform like a mirage—always visible, never attained. Today, installed generation capacity stands around 13 gigawatts (GW), yet only about a third reaches consumers. The rest drains away through gas shortages, technical leakages, sabotage, and recurring grid collapses—costing the economy between 2 per cent and 3 per cent of […]",
+      "publishedAt": "2025-10-10T24:30:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/2-billion-for-super-grid-financing-light-or-darkness/"
     }
   ],
   "latestOfficialByDomain": {
