@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 import { parseISO, isValid } from 'date-fns';
-import type { LoadOptions } from 'cheerio';
+import type { CheerioOptions } from 'cheerio';
 import type { AdapterContext } from './types';
 import type { OutageEvent } from '../../../src/lib/outages-types';
 
@@ -16,8 +16,8 @@ export async function fetchHtml(ctx: AdapterContext, url: string): Promise<strin
   return response.data;
 }
 
-export function load(html: string, cheerio: AdapterContext['cheerio'], options: LoadOptions = {}) {
-  return cheerio.load(html, { decodeEntities: true, xmlMode: false, ...options });
+export function load(html: string, cheerio: AdapterContext['cheerio'], options: CheerioOptions = {}) {
+  return cheerio.load(html, { xmlMode: false, ...options });
 }
 
 export function toIso(input: string | undefined | null): string | undefined {

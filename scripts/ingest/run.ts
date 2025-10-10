@@ -13,7 +13,7 @@ const validate = ajv.compile(schema);
 const USER_AGENT = 'NaijaInfo-Ingest/1.0 (+https://ng-power-exams.local)';
 
 async function main() {
-  const events = await fromAdapters({ axios, cheerio, userAgent: USER_AGENT });
+  const { events, stats } = await fromAdapters({ axios, cheerio, userAgent: USER_AGENT });
   const uniqueById = new Map<string, typeof events[number]>();
   for (const event of events) {
     if (!uniqueById.has(event.id)) {
@@ -25,6 +25,18 @@ async function main() {
     events: Array.from(uniqueById.values()),
     generatedAt: new Date().toISOString()
   };
+
+  const summaryLog = {
+    TCN: stats.tcn,
+    Ikeja: stats.ikeja,
+    Eko: stats.eko,
+    Kaduna: stats.kaduna
+  };
+  console.log('Adapters summary:', summaryLog);
+  const totalEvents = Object.values(stats).reduce((sum, count) => sum + count, 0);
+  if (totalEvents === 0) {
+    console.warn('No data from adapters — writing empty outages.json');
+  }
 
   if (!validate(payload)) {
     console.error('Validation failed', validate.errors);
