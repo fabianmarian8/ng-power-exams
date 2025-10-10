@@ -7,9 +7,9 @@
       "summary": "Report A Fault",
       "officialUrl": "https://ekedp.com/whistleblowing",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T08:14:22.818Z",
+      "publishedAt": "2025-10-10T08:37:23.372Z",
       "status": "UNPLANNED",
-      "id": "8f7372dd0f81"
+      "id": "4d7acba4ee98"
     },
     {
       "source": "EKEDC",
@@ -18,20 +18,9 @@
       "summary": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
       "officialUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T08:14:22.816Z",
+      "publishedAt": "2025-10-10T08:37:23.369Z",
       "status": "UNPLANNED",
-      "id": "3862f09ee6b9"
-    },
-    {
-      "source": "EKEDC",
-      "sourceName": "Eko Electricity Distribution Company",
-      "title": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
-      "summary": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
-      "officialUrl": "https://ekedp.com/news/public-notice-upgraded-and-downgraded-feeders-for-march-2025-5420",
-      "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T08:14:22.817Z",
-      "status": "PLANNED",
-      "id": "970f273476d4"
+      "id": "33c99df80913"
     },
     {
       "source": "EKEDC",
@@ -40,9 +29,20 @@
       "summary": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
       "officialUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T08:14:22.816Z",
+      "publishedAt": "2025-10-10T08:37:23.370Z",
       "status": "PLANNED",
-      "id": "5abbc63a16ba"
+      "id": "1bf9a7af79e5"
+    },
+    {
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
+      "summary": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
+      "officialUrl": "https://ekedp.com/news/public-notice-upgraded-and-downgraded-feeders-for-march-2025-5420",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-10-10T08:37:23.370Z",
+      "status": "PLANNED",
+      "id": "d379e4da7604"
     },
     {
       "source": "EKEDC",
@@ -51,11 +51,11 @@
       "summary": "Prepaid Meter Upgrade Checker",
       "officialUrl": "https://ekedp.com/sts",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T08:14:22.814Z",
+      "publishedAt": "2025-10-10T08:37:23.367Z",
       "status": "PLANNED",
-      "id": "6310597cb169"
+      "id": "a36d3061fa5f"
     }
   ],
-  "generatedAt": "2025-10-10T08:14:24.003Z",
-  "latestSourceAt": "2025-10-10T08:14:22.818Z"
+  "generatedAt": "2025-10-10T08:37:24.018Z",
+  "latestSourceAt": "2025-10-10T08:37:23.372Z"
 }
