@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,6 +15,8 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { NewsStrip } from "@/components/NewsStrip";
 import { useNews } from "@/hooks/useNews";
 import { differenceInCalendarDays } from "date-fns";
+import { LastVerifiedLabel } from "@/components/LastVerifiedLabel";
+import { useJsonLd } from "@/hooks/useJsonLd";
 
 const Results = () => {
   const { t, language } = useLanguage();
@@ -36,6 +39,61 @@ const Results = () => {
   const heroAwaitingUpdate = heroLastVerified
     ? differenceInCalendarDays(new Date(), new Date(heroLastVerified)) > 14
     : false;
+  const siteUrl = "https://naijainfo.ng";
+  const resultsUrl = `${siteUrl}/results`;
+  const firstExamOfficial = news.items.find((item) => item.domain === "EXAMS" && item.tier === "OFFICIAL");
+  const highlightedHeroDescription = highlighted?.heroDescription;
+
+  const newsArticleLd = useMemo(() => {
+    if (!firstExamOfficial) {
+      return null;
+    }
+    return {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      headline: firstExamOfficial.title,
+      datePublished: firstExamOfficial.publishedAt,
+      dateModified: firstExamOfficial.publishedAt,
+      mainEntityOfPage: firstExamOfficial.officialUrl,
+      url: resultsUrl,
+      articleSection: "Exams",
+      author: {
+        "@type": "Organization",
+        name: firstExamOfficial.source
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "NaijaInfo",
+        url: siteUrl
+      },
+      description: firstExamOfficial.summary ?? highlightedHeroDescription ?? undefined
+    };
+  }, [firstExamOfficial, highlightedHeroDescription, resultsUrl, siteUrl]);
+
+  const breadcrumbLd = useMemo(
+    () => ({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: t("common.home"),
+          item: siteUrl
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: t("meta.results.title"),
+          item: resultsUrl
+        }
+      ]
+    }),
+    [resultsUrl, siteUrl, t]
+  );
+
+  useJsonLd("ld-json-results-article", newsArticleLd);
+  useJsonLd("ld-json-results-breadcrumb", breadcrumbLd);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -63,7 +121,7 @@ const Results = () => {
         </section>
 
         <section className="container py-10 space-y-10">
-          <NewsStrip domain="EXAMS" max={3} />
+          <NewsStrip domain="EXAMS" />
 
           {highlighted && (
             <ScrollReveal>
@@ -88,7 +146,7 @@ const Results = () => {
                         <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(highlighted)}
                       </p>
                       <p className="flex items-center gap-2">
-                        <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span>
+                        <LastVerifiedLabel />
                         <span>{heroLastVerifiedLabel}</span>
                         {heroAwaitingUpdate && (
                           <Badge className="bg-amber-200 text-amber-900 border-amber-300">
@@ -134,8 +192,9 @@ const Results = () => {
                           <p>
                             <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
                           </p>
-                          <p>
-                            <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                          <p className="flex items-center gap-1">
+                            <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                            <span>{resolveLastVerified(guide)}</span>
                           </p>
                         </div>
                         <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
@@ -168,8 +227,9 @@ const Results = () => {
                           <p>
                             <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
                           </p>
-                          <p>
-                            <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                          <p className="flex items-center gap-1">
+                            <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                            <span>{resolveLastVerified(guide)}</span>
                           </p>
                         </div>
                         <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">
@@ -202,8 +262,9 @@ const Results = () => {
                           <p>
                             <span className="font-semibold text-foreground">{t('common.officialSource')}:</span> {resolveSource(guide)}
                           </p>
-                          <p>
-                            <span className="font-semibold text-foreground">{t('common.lastVerified')}:</span> {resolveLastVerified(guide)}
+                          <p className="flex items-center gap-1">
+                            <LastVerifiedLabel className="text-xs text-muted-foreground" />
+                            <span>{resolveLastVerified(guide)}</span>
                           </p>
                         </div>
                         <Button asChild variant="ghost" className="px-0 text-primary hover:text-primary">

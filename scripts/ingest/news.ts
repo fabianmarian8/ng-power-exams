@@ -1,13 +1,59 @@
-import axios from 'axios';
 import * as cheerio from 'cheerio';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { NEWS_ADAPTERS } from './news/adapters/index.js';
-import type { AdapterNewsItem, RegisteredAdapter } from './news/adapters/types';
+import type { AdapterContext, AdapterNewsItem, RegisteredAdapter } from './news/adapters/types';
 import type { NewsItem, NewsPayload } from '../../src/shared/types';
 
-const USER_AGENT = 'NaijaInfo-NewsIngest/1.0 (+https://ng-power-exams.local)';
+const USER_AGENT = 'Mozilla/5.0 (NaijaInfoBot/1.0; +https://naijainfo.ng)';
 const LAGOS_TIMEZONE = 'Africa/Lagos';
+const RETRY_DELAYS = [0, 500, 1500];
+
+type FetchInit = Parameters<typeof fetch>[1];
+type HeadersInput = ConstructorParameters<typeof Headers>[0];
+
+async function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchWithRetry(url: string, init?: FetchInit): Promise<{ status: number; body: string; ok: boolean }> {
+  let lastError: Error | undefined;
+  let lastResponse: { status: number; body: string; ok: boolean } | undefined;
+
+  for (let attempt = 0; attempt < RETRY_DELAYS.length; attempt += 1) {
+    if (attempt > 0) {
+      await delay(RETRY_DELAYS[attempt]);
+    }
+
+    try {
+      const headers = new Headers(init?.headers as HeadersInput | undefined);
+      if (!headers.has('User-Agent')) {
+        headers.set('User-Agent', USER_AGENT);
+      }
+      const response = await fetch(url, {
+        ...init,
+        headers,
+        signal: AbortSignal.timeout(15_000),
+        redirect: 'follow'
+      });
+      const body = await response.text();
+      const payload = { status: response.status, body, ok: response.ok } as const;
+      if (response.ok) {
+        return payload;
+      }
+      lastResponse = payload;
+      lastError = new Error(`Request failed with status ${response.status}`);
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error('Unknown fetch error');
+    }
+  }
+
+  if (lastResponse) {
+    return lastResponse;
+  }
+
+  throw lastError ?? new Error(`Unable to fetch ${url}`);
+}
 
 function normalizeSpaces(input: string | undefined | null): string | undefined {
   if (!input) return undefined;
@@ -22,7 +68,7 @@ function ensureTitle(input: string): string {
 function ensureUrl(url: string): string {
   try {
     return new URL(url).toString();
-  } catch (error) {
+  } catch {
     return url;
   }
 }
@@ -30,7 +76,7 @@ function ensureUrl(url: string): string {
 function extractHost(url: string): string | null {
   try {
     return new URL(url).hostname.replace(/^www\./, '').toLowerCase();
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -56,28 +102,93 @@ function toLagosIso(date: Date): string {
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+01:00`;
 }
 
-function ensurePublishedAt(raw: string | undefined): string {
-  if (!raw) {
-    return toLagosIso(new Date());
-  }
+function parsePublished(raw: string | undefined): Date | undefined {
+  if (!raw) return undefined;
   const trimmed = raw.trim();
-  if (!trimmed) {
-    return toLagosIso(new Date());
-  }
-  if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-    return toLagosIso(new Date(`${trimmed}T09:00:00+01:00`));
-  }
-  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?$/.test(trimmed)) {
-    return toLagosIso(new Date(`${trimmed}+01:00`));
-  }
+  if (!trimmed) return undefined;
+
   if (/([+-]\d{2}:\d{2}|Z)$/.test(trimmed)) {
-    const parsed = new Date(trimmed);
-    if (!Number.isNaN(parsed.valueOf())) {
-      return toLagosIso(parsed);
+    const zoned = new Date(trimmed);
+    if (!Number.isNaN(zoned.valueOf())) {
+      return zoned;
     }
   }
-  const parsed = new Date(trimmed);
-  if (!Number.isNaN(parsed.valueOf())) {
+
+  const isoMatch = trimmed.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})(?::\d{2})?$/);
+  if (isoMatch) {
+    const [, datePart, timePart] = isoMatch;
+    return new Date(`${datePart}T${timePart}+01:00`);
+  }
+
+  const yyyyMmDd = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (yyyyMmDd) {
+    const [, yearRaw, monthRaw, dayRaw] = yyyyMmDd;
+    const year = Number.parseInt(yearRaw, 10);
+    const month = Number.parseInt(monthRaw, 10) - 1;
+    const day = Number.parseInt(dayRaw, 10);
+    return new Date(Date.UTC(year, month, day, 8, 0));
+  }
+
+  const ddMmmMatch = trimmed.match(
+    /(\d{1,2})\s+([A-Za-z]{3,9})\s+(\d{4})(?:[,\s]+(\d{1,2}:\d{2})(?:\s*(AM|PM))?)?/
+  );
+  if (ddMmmMatch) {
+    const [, dayRaw, monthRaw, yearRaw, timeRaw, meridiemRaw] = ddMmmMatch;
+    const monthNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+    const day = Number.parseInt(dayRaw, 10);
+    const month = monthNames.indexOf(monthRaw.slice(0, 3).toLowerCase());
+    const year = Number.parseInt(yearRaw, 10);
+    let hour = 9;
+    let minute = 0;
+    if (timeRaw) {
+      const [hourRaw, minuteRaw] = timeRaw.split(':');
+      hour = Number.parseInt(hourRaw, 10);
+      minute = Number.parseInt(minuteRaw, 10);
+      if (Number.isNaN(hour)) hour = 9;
+      if (Number.isNaN(minute)) minute = 0;
+      if (meridiemRaw) {
+        const meridiem = meridiemRaw.toUpperCase();
+        if (meridiem === 'PM' && hour < 12) hour += 12;
+        if (meridiem === 'AM' && hour === 12) hour = 0;
+      }
+    }
+    return new Date(Date.UTC(year, month === -1 ? 0 : month, day, hour - 1, minute));
+  }
+
+  const slashMatch = trimmed.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}:\d{2})(?:\s*(AM|PM))?)?/);
+  if (slashMatch) {
+    const [, dayRaw, monthRaw, yearRaw, timeRaw, meridiemRaw] = slashMatch;
+    const day = Number.parseInt(dayRaw, 10);
+    const month = Number.parseInt(monthRaw, 10) - 1;
+    const year = Number.parseInt(yearRaw, 10);
+    let hour = 9;
+    let minute = 0;
+    if (timeRaw) {
+      const [hourRaw, minuteRaw] = timeRaw.split(':');
+      hour = Number.parseInt(hourRaw, 10);
+      minute = Number.parseInt(minuteRaw, 10);
+      if (Number.isNaN(hour)) hour = 9;
+      if (Number.isNaN(minute)) minute = 0;
+      if (meridiemRaw) {
+        const meridiem = meridiemRaw.toUpperCase();
+        if (meridiem === 'PM' && hour < 12) hour += 12;
+        if (meridiem === 'AM' && hour === 12) hour = 0;
+      }
+    }
+    return new Date(Date.UTC(year, Number.isNaN(month) ? 0 : month, day, hour - 1, minute));
+  }
+
+  const parsed = Date.parse(trimmed);
+  if (!Number.isNaN(parsed)) {
+    return new Date(parsed);
+  }
+
+  return undefined;
+}
+
+function ensurePublishedAt(raw: string | undefined): string {
+  const parsed = parsePublished(raw);
+  if (parsed) {
     return toLagosIso(parsed);
   }
   return toLagosIso(new Date());
@@ -182,12 +293,6 @@ function updateSummary(summary: ReturnType<typeof createSummaryCounter>, item: N
   }
 }
 
-type AdapterContext = {
-  axios: typeof axios;
-  cheerio: typeof cheerio;
-  userAgent: string;
-};
-
 async function runAdapter(
   adapter: RegisteredAdapter,
   ctx: AdapterContext
@@ -213,11 +318,7 @@ async function runWithLimit<T>(limit: number, tasks: Array<() => Promise<T>>): P
       }
       nextIndex += 1;
       const task = tasks[currentIndex];
-      try {
-        results[currentIndex] = await task();
-      } catch (error) {
-        throw error;
-      }
+      results[currentIndex] = await task();
     }
   }
 
@@ -235,7 +336,7 @@ export interface NewsIngestResult {
 
 export async function ingestNews(): Promise<NewsIngestResult> {
   const ctx: AdapterContext = {
-    axios,
+    fetch: fetchWithRetry,
     cheerio,
     userAgent: USER_AGENT
   };

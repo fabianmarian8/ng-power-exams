@@ -32,6 +32,7 @@
     "officialWebsite": "Official Website",
     "lastUpdated": "Last updated",
     "lastVerified": "Last verified",
+    "lastVerifiedTooltip": "Official updates are pulled from JAMB/WAEC/NECO (EXAMS) and TCN/DISCOs (POWER).",
     "officialSource": "Official source",
     "home": "Home",
     "backTo": "Back to"
@@ -41,7 +42,12 @@
     "latestPowerUpdates": "Latest Power Updates",
     "official": "Official",
     "media": "Media",
-    "awaitingNewOfficial": "Awaiting new official updates"
+    "awaitingNewOfficial": "Awaiting new official updates",
+    "loading": "Loading…",
+    "noRecentUpdates": "No recent updates yet.",
+    "awaitingFirstOfficial": "Awaiting first official update",
+    "reportedBy": "Reported by {source}",
+    "newBadge": "NEW"
   },
   "badge": {
     "planned": "Planned outage",
@@ -67,11 +73,11 @@
     },
     "outages": {
       "title": "Nigeria Power Outage Updates",
-      "description": "Official outage information for all Nigerian DisCos with reporting steps, contact numbers, and safety guides."
+      "description": "Nigeria power outage updates with TCN grid status, Ikeja, Eko, Kaduna, JED DISCO updates, reporting steps, and safety guides."
     },
     "results": {
       "title": "Nigeria Exam Results Hub",
-      "description": "Official JAMB, WAEC, and NECO result guides with portal links, verification steps, and troubleshooting tips."
+      "description": "Official JAMB, WAEC, NECO result checker guides covering UTME, SSCE, BECE, e-facility tips, and troubleshooting steps."
     }
   },
   "index": {
