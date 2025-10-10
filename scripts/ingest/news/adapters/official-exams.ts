@@ -15,7 +15,8 @@ export const examOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'JAMB',
       keywords: EXAM_KEYWORDS,
-      limit: 15
+      limit: 15,
+      fixture: 'jamb_news.html'
     })
   },
   {
@@ -29,7 +30,8 @@ export const examOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'WAEC',
       keywords: EXAM_KEYWORDS,
-      limit: 15
+      limit: 15,
+      fixture: 'waec_news.html'
     })
   },
   {
@@ -43,7 +45,8 @@ export const examOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'NECO',
       keywords: EXAM_KEYWORDS,
-      limit: 15
+      limit: 15,
+      fixture: 'neco_news.html'
     })
   }
 ];

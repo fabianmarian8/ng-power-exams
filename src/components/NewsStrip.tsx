@@ -19,7 +19,12 @@ export function NewsStrip({ domain, max = 3 }: NewsStripProps) {
   const domainItems = items.filter((item) => item.domain === domain);
   const official = domainItems.filter((item) => item.tier === 'OFFICIAL');
   const media = domainItems.filter((item) => item.tier === 'MEDIA');
-  const prioritized = [...official, ...media.filter((item) => !official.some((off) => off.id === item.id))];
+  const now = new Date();
+  const recentMedia = media.filter((item) => differenceInCalendarDays(now, new Date(item.publishedAt)) <= 30);
+  const prioritized = [
+    ...official,
+    ...recentMedia.filter((item) => !official.some((off) => off.id === item.id))
+  ];
   const displayed = prioritized.slice(0, max);
   const isPower = domain === 'POWER';
   const heading = domain === 'EXAMS' ? t('news.latestExamUpdates') : t('news.latestPowerUpdates');
@@ -29,7 +34,7 @@ export function NewsStrip({ domain, max = 3 }: NewsStripProps) {
     : false;
   const lastVerifiedLabel = latestOfficial
     ? formatNewsDateTime(latestOfficial)
-    : t('news.awaitingFirstOfficial', 'Awaiting first official update');
+    : t('news.noOfficialUpdateYet', 'No official update yet');
 
   return (
     <div className="space-y-3">

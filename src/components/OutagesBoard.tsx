@@ -297,7 +297,7 @@ export function OutagesBoard() {
   const latestPowerOfficial = news.data.latestOfficialByDomain.POWER;
   const powerLastUpdateLabel = latestPowerOfficial
     ? formatNewsDateTime(latestPowerOfficial)
-    : t('news.awaitingFirstOfficial', 'Awaiting first official update');
+    : t('news.noOfficialUpdateYet', 'No official update yet');
   const awaitingPowerUpdate = latestPowerOfficial
     ? differenceInCalendarDays(new Date(), new Date(latestPowerOfficial)) > 14
     : false;

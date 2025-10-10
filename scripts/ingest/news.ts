@@ -5,55 +5,7 @@ import { NEWS_ADAPTERS } from './news/adapters/index.js';
 import type { AdapterContext, AdapterNewsItem, RegisteredAdapter } from './news/adapters/types';
 import type { NewsItem, NewsPayload } from '../../src/shared/types';
 
-const USER_AGENT = 'Mozilla/5.0 (NaijaInfoBot/1.0; +https://naijainfo.ng)';
 const LAGOS_TIMEZONE = 'Africa/Lagos';
-const RETRY_DELAYS = [0, 500, 1500];
-
-type FetchInit = Parameters<typeof fetch>[1];
-type HeadersInput = ConstructorParameters<typeof Headers>[0];
-
-async function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function fetchWithRetry(url: string, init?: FetchInit): Promise<{ status: number; body: string; ok: boolean }> {
-  let lastError: Error | undefined;
-  let lastResponse: { status: number; body: string; ok: boolean } | undefined;
-
-  for (let attempt = 0; attempt < RETRY_DELAYS.length; attempt += 1) {
-    if (attempt > 0) {
-      await delay(RETRY_DELAYS[attempt]);
-    }
-
-    try {
-      const headers = new Headers(init?.headers as HeadersInput | undefined);
-      if (!headers.has('User-Agent')) {
-        headers.set('User-Agent', USER_AGENT);
-      }
-      const response = await fetch(url, {
-        ...init,
-        headers,
-        signal: AbortSignal.timeout(15_000),
-        redirect: 'follow'
-      });
-      const body = await response.text();
-      const payload = { status: response.status, body, ok: response.ok } as const;
-      if (response.ok) {
-        return payload;
-      }
-      lastResponse = payload;
-      lastError = new Error(`Request failed with status ${response.status}`);
-    } catch (error) {
-      lastError = error instanceof Error ? error : new Error('Unknown fetch error');
-    }
-  }
-
-  if (lastResponse) {
-    return lastResponse;
-  }
-
-  throw lastError ?? new Error(`Unable to fetch ${url}`);
-}
 
 function normalizeSpaces(input: string | undefined | null): string | undefined {
   if (!input) return undefined;
@@ -336,9 +288,7 @@ export interface NewsIngestResult {
 
 export async function ingestNews(): Promise<NewsIngestResult> {
   const ctx: AdapterContext = {
-    fetch: fetchWithRetry,
-    cheerio,
-    userAgent: USER_AGENT
+    cheerio
   };
 
   const adapterResults = await runWithLimit(
@@ -377,7 +327,12 @@ export async function ingestNews(): Promise<NewsIngestResult> {
   await mkdir('public/live', { recursive: true });
   await writeFile('public/live/news.json', JSON.stringify(payload, null, 2));
 
-  console.log('News summary:', summary);
+  console.log('News summary:');
+  console.log(`  EXAMS_OFFICIAL: ${summary.EXAMS_official}, EXAMS_MEDIA: ${summary.EXAMS_media}`);
+  console.log(`  POWER_OFFICIAL: ${summary.POWER_official}, POWER_MEDIA: ${summary.POWER_media}`);
+  console.log('latestOfficialByDomain:');
+  console.log(`  EXAMS: ${payload.latestOfficialByDomain.EXAMS ?? 'N/A'}`);
+  console.log(`  POWER: ${payload.latestOfficialByDomain.POWER ?? 'N/A'}`);
   console.log('News adapter counts:', countsByAdapter);
   console.log(`Generated ${payload.items.length} news items @ ${payload.generatedAt}`);
 

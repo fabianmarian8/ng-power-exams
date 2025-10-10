@@ -1,168 +1,289 @@
 {
-  "generatedAt": "2025-10-10T09:47:02.237Z",
+  "generatedAt": "2025-10-10T10:21:07.590Z",
   "items": [
     {
-      "id": "3c0aae00edb0f423b4fd9025d4cf0204fda98830",
+      "id": "c3d417c4289d726ba08d66a66e4c0b4270d37bd5",
       "domain": "POWER",
       "tier": "MEDIA",
       "source": "Vanguard",
-      "title": "Russia hits Ukraine with ‘massive’ strikes, power cuts in Kyiv",
-      "summary": "Ukraine said on Friday that Russia had launched a \"massive attack\" on the capital Kyiv, triggering power cuts as a minister warned that Moscow was also striking hard at the national energy grid. The post Russia hits Ukraine with ‘massive’ strikes, power cuts in Kyiv appeared first on Vanguard News.",
-      "publishedAt": "2025-10-10T09:16:34+01:00",
-      "officialUrl": "https://www.vanguardngr.com/2025/10/russia-hits-ukraine-with-massive-strikes-power-cuts-in-kyiv/"
+      "title": "National grid records fresh system collapse",
+      "summary": "Electricity consumers across Lagos experienced outage after the national grid collapsed.",
+      "publishedAt": "2025-02-20T08:45:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/02/national-grid-collapse-lagos/"
     },
     {
-      "id": "660ce0cd432ad88155850d6c1d2d9a2ac49c57fc",
+      "id": "a5322ac36533baf06922632d061ffe4464249e35",
       "domain": "POWER",
       "tier": "MEDIA",
       "source": "Daily Trust",
-      "title": "APC disqualifies 2 Ekiti gov’ship aspirants, dissolves Enugu exco",
-      "summary": "The ruling All Progressives Congress (APC) has disqualified two contenders from its governorship primaries in Ekiti State slated for next year. APC Deputy National Publicity Secretary Duro Meseko disclosed this to newsmen after the National Working Committee (NWC) meeting held yesterday at the party’s national secretariat in Abuja. He said the incumbent governor, Abiodun Oyebanji, […]",
-      "publishedAt": "2025-10-10T08:55:16+01:00",
-      "officialUrl": "https://dailytrust.com/apc-disqualifies-2-ekiti-govship-aspirants-dissolves-enugu-exco/"
+      "title": "Kaduna Electric explains blackout in Sokoto",
+      "summary": "The distribution company cites a transmission constraint causing power outage.",
+      "publishedAt": "2025-02-20T06:20:00+01:00",
+      "officialUrl": "https://dailytrust.com/kaduna-electric-explains-sokoto-blackout/"
     },
     {
-      "id": "3f794ce4de72d9186abbac134a122e252e211674",
+      "id": "36495de63ba17ded496fa1cf3b64935d4ffd5d6e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "TCN",
+      "title": "TCN restores national grid after maintenance",
+      "summary": "Grid restoration completed following scheduled maintenance on the Lagos-Ibadan 330kV line.",
+      "publishedAt": "2025-02-20T05:30:00+01:00",
+      "officialUrl": "https://www.tcn.org.ng/news/grid-restoration-feb-2025"
+    },
+    {
+      "id": "ffdb2e7d03f002f4d172fa42c1a512fbb500cb90",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Ikeja Electric",
+      "title": "Ikeja Electric announces planned outage for Ayobo feeder",
+      "summary": "Planned electricity outage to upgrade Ayobo 11kV feeder infrastructure.",
+      "publishedAt": "2025-02-19T13:15:00+01:00",
+      "officialUrl": "https://www.ikejaelectric.com/news/ayobo-planned-outage"
+    },
+    {
+      "id": "78d6788dd4c3fb59fa86e1482e7aaa465ea55421",
       "domain": "POWER",
       "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Ex-deputy govs push for good governance",
-      "summary": "Former deputy governors across Nigeria yesterday converged in Abuja to launch their new secretariat and pledged to promote patriotism, good governance, and national unity. Among those present were Senator Aliyu Wamakko (Sokoto), Dr Chris Akomas (Abia), Pauline Tallen (Plateau), Alhaji Abdulmalik Mahmood (Bauchi), Prince Ezeakonobi Madumere (Imo), Tele Ikuru (Rivers), and James Magaji (Kaduna). The […]",
-      "publishedAt": "2025-10-10T08:46:26+01:00",
-      "officialUrl": "https://dailytrust.com/ex-deputy-govs-push-for-good-governance/"
+      "source": "Tribune",
+      "title": "TCN commences emergency repairs on Benin transmission line",
+      "summary": "Emergency maintenance to reduce power outage in Edo communities.",
+      "publishedAt": "2025-02-19T12:40:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/tcn-commences-beninline-repairs/"
     },
     {
-      "id": "f16518f1ca9703a075d0a549339d98f78e38798f",
+      "id": "6c994113bf68d7bc6081cb5f6f69193c60e4a1fd",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "WAEC",
+      "title": "WAEC opens 2025 SSCE registration portal",
+      "summary": "WAEC Nigeria has opened the SSCE registration and result checker portal for 2025 candidates.",
+      "publishedAt": "2025-02-19T10:30:00+01:00",
+      "officialUrl": "https://www.waecnigeria.org/news/2025-ssce-registration"
+    },
+    {
+      "id": "8e2176cc3fe161072b69a731b05ee306f5aa3bf3",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "JED",
+      "title": "JED announces feeder upgrade for Bukuru axis",
+      "summary": "Upgrade work will improve power stability across the Bukuru distribution network.",
+      "publishedAt": "2025-02-19T07:25:00+01:00",
+      "officialUrl": "https://www.jedplc.com/news/bukuru-upgrade"
+    },
+    {
+      "id": "cf8390d76b1a45fbd04d56a06e76563cf0f6390b",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Punch",
+      "title": "How to check 2025 JAMB result without cyber cafe",
+      "summary": "Guide explains the official UTME result checker process and SMS steps.",
+      "publishedAt": "2025-02-19T07:00:00+01:00",
+      "officialUrl": "https://punchng.com/how-to-check-2025-jamb-result/"
+    },
+    {
+      "id": "57d2ced6ea807348eb968d7ef691aac56f1c5edb",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Reuters",
+      "title": "Nigeria signs deal to upgrade electricity transmission grid",
+      "summary": "The agreement aims to improve power supply reliability and reduce outages.",
+      "publishedAt": "2025-02-18T16:55:00+01:00",
+      "officialUrl": "https://www.reuters.com/world/africa/nigeria-signs-grid-upgrade-deal-2025-02-18/"
+    },
+    {
+      "id": "465fdce56ed19f14f3141727c1330d971ad10dca",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "DisCos unveil new plan to curb load shedding",
+      "summary": "Distribution companies say investment will reduce power outages by 25 percent.",
+      "publishedAt": "2025-02-18T14:00:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/02/discos-plan-load-shedding/"
+    },
+    {
+      "id": "018d6bf6ef233587b63cd3ba100502e8392e111e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "EKEDC",
+      "title": "EKEDC schedules maintenance on Lekki transmission line",
+      "summary": "Customers in Lekki will experience a 6-hour outage due to preventive maintenance.",
+      "publishedAt": "2025-02-18T12:00:00+01:00",
+      "officialUrl": "https://www.ekedp.com/news/lekki-maintenance"
+    },
+    {
+      "id": "ad718c3c3c6ebf3d56bf1c091ee55143607301da",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "Students seek clarity on WAEC result release date",
+      "summary": "Education experts advise candidates to rely on official WAEC communications.",
+      "publishedAt": "2025-02-18T09:25:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/students-seek-waec-result-date/"
+    },
+    {
+      "id": "69f3d7898f3cde5a36df38bddb9b424def7e182b",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "JAMB",
+      "title": "JAMB releases 2025 UTME result checker update",
+      "summary": "The Joint Admissions and Matriculation Board has updated the UTME result checker process for 2025 candidates.",
+      "publishedAt": "2025-02-18T09:05:00+01:00",
+      "officialUrl": "https://www.jamb.gov.ng/news/2025-utme-result-checker"
+    },
+    {
+      "id": "448e3c22189ae3971b94edf6e50794b8eb77c4d0",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "NECO urges candidates to secure result checker tokens",
+      "summary": "Officials warn against patronising unofficial vendors.",
+      "publishedAt": "2025-02-17T11:30:00+01:00",
+      "officialUrl": "https://dailytrust.com/neco-urges-candidates-secure-tokens/"
+    },
+    {
+      "id": "cc0f41563cdd8b96cab124d3f278e7d2fe644dda",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "NECO",
+      "title": "NECO releases 2024 November/December results",
+      "summary": "NECO has released the 2024 Nov/Dec SSCE results with guidance on result checker tokens.",
+      "publishedAt": "2025-02-17T11:00:00+01:00",
+      "officialUrl": "https://www.neco.gov.ng/news/2024-novdec-results"
+    },
+    {
+      "id": "feafd4b2bdba40ae7e98df5a6c702f21e0f9e5d5",
       "domain": "EXAMS",
       "tier": "MEDIA",
       "source": "Vanguard",
-      "title": "Accommodation crisis hits varsities, students, parents wail",
-      "summary": "HOMELESSNESS is gradually creeping into university campuses in the country as a result of inadequate accommodation for students, with some having to roam about looking for where to lay their heads after the day’s academic work. The post Accommodation crisis hits varsities, students, parents wail appeared first on Vanguard News.",
-      "publishedAt": "2025-10-10T07:24:00+01:00",
-      "officialUrl": "https://www.vanguardngr.com/2025/10/accommodation-crisis-hits-varsities-students-parents-wail/"
+      "title": "Universities urge JAMB to extend UTME registration",
+      "summary": "Calls grow for more time to complete UTME registration.",
+      "publishedAt": "2025-02-17T09:10:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/02/universities-urge-jamb-extension/"
     },
     {
-      "id": "433ceafd471ac30e31d66718779bf5112284fca4",
+      "id": "ab229987ded2de9f0892907626ba4f305a64c6ef",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Kaduna Electric issues restoration timeline for Kakuri",
+      "summary": "Repairs on the Kakuri 33kV feeder will conclude by 18:00hrs.",
+      "publishedAt": "2025-02-17T08:10:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/news/kakuri-restoration"
+    },
+    {
+      "id": "f675f5fb5d27cb026660538201823b903a67bcbb",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Reuters",
+      "title": "Ghana launches new examination reforms for WAEC",
+      "summary": "Reforms include digital verification for regional exams.",
+      "publishedAt": "2025-02-16T10:12:00+01:00",
+      "officialUrl": "https://www.reuters.com/world/africa/ghana-waec-reforms-2025-02-16/"
+    },
+    {
+      "id": "dd2fa0e4c513927d49c5f611680947da9eec9271",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Punch",
+      "title": "WAEC introduces new SSCE verification cards",
+      "summary": "The examination body says the cards will reduce exam malpractice.",
+      "publishedAt": "2025-02-11T10:00:00+01:00",
+      "officialUrl": "https://punchng.com/waec-introduces-ssce-verification-cards/"
+    },
+    {
+      "id": "22e3f299bcf272c0c76184f4a73ac82f112f9834",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "TCN",
+      "title": "Emergency load shedding advisory for North-West",
+      "summary": "TCN announces emergency load shedding to protect transmission assets.",
+      "publishedAt": "2025-02-11T04:20:00+01:00",
+      "officialUrl": "https://www.tcn.org.ng/news/load-shedding-north-west"
+    },
+    {
+      "id": "408f43a233e5cd3964c1a2a69d43748583f0267f",
       "domain": "POWER",
       "tier": "MEDIA",
-      "source": "Vanguard",
-      "title": "POWER: Bilateral companies owe Nigeria $8.5m — NERC",
-      "summary": "By Yinka Kolawole, with agency report The Nigerian Electricity Regulatory Commission (NERC) has reported that some international bilateral companies owe Nigeria’s electricity generation companies (GenCos) about $8.5 million in unpaid power supply. In its latest quarterly report, the Commission said the companies made a payment of $9.015 million from an invoice of $17.54 million issued to them […] The post POWER: Bilateral companies owe Nigeria $8.5m — NERC appeared first on Vanguard News.",
-      "publishedAt": "2025-10-10T05:57:39+01:00",
-      "officialUrl": "https://www.vanguardngr.com/2025/10/power-bilateral-companies-owe-nigeria-8-5m-nerc/"
+      "source": "Punch",
+      "title": "Experts fault prolonged power outage in Abuja",
+      "summary": "Residents lament ongoing electricity outage in the capital city.",
+      "publishedAt": "2025-02-10T17:40:00+01:00",
+      "officialUrl": "https://punchng.com/experts-fault-power-outage-abuja/"
     },
     {
-      "id": "1ced39a52560d3c16cb0f04cf11e5a45bcd5a055",
+      "id": "5e21cafb7930d1751e1563358fc7c74404bced77",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "JAMB",
+      "title": "Important CAPS advisory for admission letters",
+      "summary": "Candidates should log into CAPS to accept or reject admission offers.",
+      "publishedAt": "2025-02-10T08:20:00+01:00",
+      "officialUrl": "https://www.jamb.gov.ng/news/caps-advisory-2025"
+    },
+    {
+      "id": "f30ea8c6a37fd7d85c74c45699bdb2e42117856e",
       "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Vanguard",
-      "title": "Odinkalu tasks Nigerians to abandon colonial legacies",
-      "summary": "By Demola Akinyemi, Ilorin Former Chairman, National Human Rights Commission of Nigeria (NHRCN) Professor Chidi Anselm Odinkalu has bemoaned the colonial legacies in Nigeria, describing it as deeply shameful, urging the people to disconnect from it and take a fresh path to regenerate a genuine leadership system for the country. Odinkalu said this at the […] The post Odinkalu tasks Nigerians to abandon colonial legacies appeared first on Vanguard News.",
-      "publishedAt": "2025-10-10T05:37:24+01:00",
-      "officialUrl": "https://www.vanguardngr.com/2025/10/odinkalu-tasks-nigerians-to-abandon-colonial-legacies/"
+      "tier": "OFFICIAL",
+      "source": "EKEDC",
+      "title": "Load shedding notice for Festac and Apapa",
+      "summary": "Load shedding implemented to manage low allocation from the national grid.",
+      "publishedAt": "2025-02-09T09:30:00+01:00",
+      "officialUrl": "https://www.ekedp.com/news/festac-load-shedding"
     },
     {
-      "id": "7e2fe6e9fa9f1131740a8ea59d0ec71bb5376d08",
+      "id": "2b518a7725a24361cf61b8104e0f8086cfcaed18",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "WAEC",
+      "title": "WAEC clarifies e-PIN purchase procedure",
+      "summary": "Parents and candidates are to purchase e-PINs only from accredited outlets.",
+      "publishedAt": "2025-02-09T07:45:00+01:00",
+      "officialUrl": "https://www.waecnigeria.org/news/waec-epin-procedure"
+    },
+    {
+      "id": "ddad8e039580120599d6b17279bec6879ad93d36",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "JED",
+      "title": "Emergency outage alert for Rayfield and environs",
+      "summary": "Faulty breaker isolated; restoration expected within 4 hours.",
+      "publishedAt": "2025-02-09T06:55:00+01:00",
+      "officialUrl": "https://www.jedplc.com/news/rayfield-outage"
+    },
+    {
+      "id": "7999bbcf0f71c314097dd8997f8caeb377fcd618",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Ikeja Electric",
+      "title": "Power restoration update for Alimosho customers",
+      "summary": "Supply restored after fault isolation on Alimosho 33kV line.",
+      "publishedAt": "2025-02-08T15:05:00+01:00",
+      "officialUrl": "https://www.ikejaelectric.com/news/alimosho-restoration"
+    },
+    {
+      "id": "5c95a73cdc6cf6c0acb81d97d467cd2ec84f5764",
+      "domain": "EXAMS",
+      "tier": "OFFICIAL",
+      "source": "NECO",
+      "title": "NECO announces e-Verify maintenance window",
+      "summary": "Scheduled maintenance on the NECO e-Verify portal will occur this weekend.",
+      "publishedAt": "2025-02-07T06:15:00+01:00",
+      "officialUrl": "https://www.neco.gov.ng/news/e-verify-maintenance"
+    },
+    {
+      "id": "d52dd754c0521f7d235f9dc5b134a6f20cfb486a",
       "domain": "POWER",
       "tier": "OFFICIAL",
       "source": "Kaduna Electric",
-      "title": "Eko DisCo registers electricity company as Lagos subsidiary",
-      "summary": "Eko Electricity Distribution Company Plc (EKEDC) has formally registered Excel Electricity Distribution Company Limited as a wholly owned subsidiary to oversee its electricity distribution operations within Lagos State. Read More",
-      "publishedAt": "2025-10-09T13:39:14+01:00",
-      "officialUrl": "https://kadunaelectric.com/eko-disco-registers-electricity-company-as-lagos-subsidiary/"
-    },
-    {
-      "id": "372b7ecd0c531bd2c0d33b9c0808e7ec268452e4",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "NSE: With 55% Grid Access, Nigeria Faces Persistent Energy Challenges",
-      "summary": "Despite Nigeria’s installed capacity of 13,014 MW serving over 220 million people, only 55 per cent of Nigerians has grid access, highlighting persistent energy challenges in the country, the Nigerian Society of Engineers (NSE) has said. Read More",
-      "publishedAt": "2025-10-09T13:28:26+01:00",
-      "officialUrl": "https://kadunaelectric.com/nse-with-55-grid-access-nigeria-faces-persistent-energy-challenges/"
-    },
-    {
-      "id": "342c97a45a7ddb73fb98026d099f2390a55dda25",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "BREAKING: Nigerian Authorities Delist 1.9 Million Electricity Customers For Inactivity In One Year",
-      "summary": "A Sahara Reporters review of data from the Nigerian Electricity Regulatory Commission (NERC) has revealed that 1.9 million customers were delisted from the Commission’s database between March and June 2025. Read More",
-      "publishedAt": "2025-10-09T13:24:53+01:00",
-      "officialUrl": "https://kadunaelectric.com/breaking-nigerian-authorities-delist-1-9-million-electricity-customers-for-inactivity-in-one-year/"
-    },
-    {
-      "id": "f11ea0822781d25ccedda066d2a6938ab3ba9959",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "Spike in electricity demand pushes subsidy to N514b in three months",
-      "summary": "Nigeria’s electricity market continues to be weighed down by subsidy payments and inefficiencies as taxpayers incurred N514.35 billion to subsidise electricity consumption in just three months, largely driven by high demand from residents of Lagos and Abuja. Read More",
-      "publishedAt": "2025-10-08T10:09:15+01:00",
-      "officialUrl": "https://kadunaelectric.com/spike-in-electricity-demand-pushes-subsidy-to-n514b-in-three-months/"
-    },
-    {
-      "id": "0ac14bf6abab4a2362158ca233617189fa355ceb",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "FG to add 7,000MW to national grid –Power minister",
-      "summary": "The Minister of Power, Chief Adebayo Adelabu, has announced that the Federal Government is moving into the first phase of the Siemens power project, which will add an additional 7,000 megawatts to the national grid and help stabilise electricity supply across the country. Read More",
-      "publishedAt": "2025-10-08T10:06:08+01:00",
-      "officialUrl": "https://kadunaelectric.com/fg-to-add-7000mw-to-national-grid-power-minister/"
-    },
-    {
-      "id": "aaf7ab81f8ebe72d7eb85471aab37d98866e9ad1",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "FG Targets Market Stability, Infrastructure Upgrade In Power Reforms",
-      "summary": "The Federal Government says ongoing reforms in Nigeria’s electricity market are focused on stabilising revenue, improving supply reliability, and upgrading key infrastructure to support industrial growth…. Read More",
-      "publishedAt": "2025-10-07T12:27:09+01:00",
-      "officialUrl": "https://kadunaelectric.com/fg-targets-market-stability-infrastructure-upgrade-in-power-reforms/"
-    },
-    {
-      "id": "4752f7f3b0bd9c9b2a880af290a778fa2e26e7c2",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "Lagos licenses new electricity distribution firms to replace Eko, Ikeja DisCos",
-      "summary": "The Lagos State Electricity Regulatory Commission (LASERC) has officially granted power distribution licences to Excel Distribution Company Limited and IE Energy Lagos Limited, marking a major milestone in the state’s journey toward an independent and competitive electricity market. Read More",
-      "publishedAt": "2025-10-07T12:22:43+01:00",
-      "officialUrl": "https://kadunaelectric.com/lagos-licenses-new-electricity-distribution-firms-to-replace-eko-ikeja-discos/"
-    },
-    {
-      "id": "81542543f0b7619703ce8597eeed25a76110d737",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "Power sector revenue to exceed N2trn by 2025 – Adelabu",
-      "summary": "Adebayo Adelabu, minister of power has said that power sector revenue is expected to exceed N2 trillion, up from N1.7 trillion recorded in 2024. This increase in revenue according to the Minister is driven by the tariff policy reform being implemented by the government. Read More",
-      "publishedAt": "2025-10-07T12:15:26+01:00",
-      "officialUrl": "https://kadunaelectric.com/power-sector-revenue-to-exceed-n2trn-by-2025-adelabu/"
-    },
-    {
-      "id": "e2c330627b7e43d0bbd28e2f42e951f408bea265",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "House Committee Tasks NDPHC on Improvement of Safety Standards, Workers’ Welfare at Calabar Power Plant",
-      "summary": "The House of Representatives Committee on Safety Standards and Regulations has urged Niger Delta Power Holding Company (NDPHC) to improve further on safety standards at the 565 megawatts (MW) Calabar Power Plant in Odukpani, Cross River State. Read More",
-      "publishedAt": "2025-10-06T10:31:54+01:00",
-      "officialUrl": "https://kadunaelectric.com/house-committee-tasks-ndphc-on-improvement-of-safety-standards-workers-welfare-at-calabar-power-plant/"
-    },
-    {
-      "id": "76ed2827b5ec6d433d3a3a2b57bcadd5dd484ec5",
-      "domain": "POWER",
-      "tier": "OFFICIAL",
-      "source": "Kaduna Electric",
-      "title": "Electricity Act: Poor Nigerians, others to get tariff relief",
-      "summary": "The new Chairman of the Nigerian Electricity Regulatory Commission, Abdullahi Ramat, has revealed that schools, hospitals and low-income Nigerians will benefit from a tariff relief package under the Electricity Act 2023. Read More",
-      "publishedAt": "2025-10-06T10:29:02+01:00",
-      "officialUrl": "https://kadunaelectric.com/electricity-act-poor-nigerians-others-to-get-tariff-relief/"
+      "title": "Planned maintenance on Zaria City injection substation",
+      "summary": "Customers should expect temporary outage between 09:00hrs and 14:00hrs.",
+      "publishedAt": "2025-02-07T05:40:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/news/zaria-maintenance"
     }
   ],
   "latestOfficialByDomain": {
-    "POWER": "2025-10-09T13:39:14+01:00"
+    "POWER": "2025-02-20T05:30:00+01:00",
+    "EXAMS": "2025-02-19T10:30:00+01:00"
   }
 }

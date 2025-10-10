@@ -15,7 +15,8 @@ export const powerOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'TCN',
       keywords: POWER_KEYWORDS,
-      limit: 20
+      limit: 20,
+      fixture: 'tcn_news.html'
     })
   },
   {
@@ -29,7 +30,8 @@ export const powerOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'Ikeja Electric',
       keywords: POWER_KEYWORDS,
-      limit: 20
+      limit: 20,
+      fixture: 'ikeja_news.html'
     })
   },
   {
@@ -43,7 +45,8 @@ export const powerOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'EKEDC',
       keywords: POWER_KEYWORDS,
-      limit: 20
+      limit: 20,
+      fixture: 'ekedc_news.html'
     })
   },
   {
@@ -57,7 +60,8 @@ export const powerOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'Kaduna Electric',
       keywords: POWER_KEYWORDS,
-      limit: 20
+      limit: 20,
+      fixture: 'kaduna_news.html'
     })
   },
   {
@@ -71,7 +75,8 @@ export const powerOfficialAdapters: RegisteredAdapter[] = [
       tier: 'OFFICIAL',
       source: 'JED',
       keywords: POWER_KEYWORDS,
-      limit: 20
+      limit: 20,
+      fixture: 'jed_news.html'
     })
   }
 ];

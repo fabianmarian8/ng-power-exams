@@ -46,6 +46,7 @@
     "loading": "Loading…",
     "noRecentUpdates": "No recent updates yet.",
     "awaitingFirstOfficial": "Awaiting first official update",
+    "noOfficialUpdateYet": "No official update yet",
     "reportedBy": "Reported by {source}",
     "newBadge": "NEW"
   },
