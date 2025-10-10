@@ -1,9 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["events", "generatedAt"],
+  "required": ["events", "generatedAt", "lastSourceUpdate"],
   "properties": {
     "generatedAt": { "type": "string", "format": "date-time" },
+    "lastSourceUpdate": { "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }] },
     "events": {
       "type": "array",
       "items": {
@@ -15,11 +16,12 @@
           "title",
           "publishedAt",
           "detectedAt",
-          "sourceUrl"
+          "sourceUrl",
+          "verifiedBy"
         ],
         "properties": {
           "id": { "type": "string" },
-          "source": { "type": "string", "enum": ["TCN", "IKEDC", "EKEDC", "KADUNA"] },
+          "source": { "type": "string", "enum": ["TCN", "IKEDC", "EKEDC", "KADUNA", "JED"] },
           "category": {
             "type": "string",
             "enum": ["planned", "unplanned", "restoration", "advisory"]
@@ -40,7 +42,8 @@
           },
           "publishedAt": { "type": "string", "format": "date-time" },
           "detectedAt": { "type": "string", "format": "date-time" },
-          "sourceUrl": { "type": "string", "format": "uri" }
+          "sourceUrl": { "type": "string", "format": "uri" },
+          "verifiedBy": { "type": "string", "enum": ["TCN", "DisCo", "Media", "Community"] }
         }
       }
     }
