@@ -1,4 +1,4 @@
-import { buildOutageItem, fetchHtml, load, extractPlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -23,7 +23,7 @@ export const kaduna: Adapter = async (ctx) => {
       const parsedDate = dateText ? Date.parse(dateText) : NaN;
       const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
       const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
-      const plannedWindow = extractPlannedWindow(`${title} ${summary}`);
+      const plannedWindow = resolvePlannedWindow(`${title} ${summary}`, publishedAt);
 
       items.push(
         buildOutageItem({
@@ -34,13 +34,16 @@ export const kaduna: Adapter = async (ctx) => {
           officialUrl: href,
           verifiedBy: 'DISCO',
           publishedAt,
-          plannedWindow
+          plannedWindow: plannedWindow ?? undefined,
+          status: 'PLANNED'
         })
       );
     });
   } catch (error) {
     console.error('Kaduna scrape failed', error);
   }
+
+  console.log(`[KADUNA] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length}`);
 
   return items;
 };

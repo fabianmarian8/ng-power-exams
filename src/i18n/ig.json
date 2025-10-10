@@ -65,7 +65,10 @@
       "today": "Taa",
       "sevenDays": "Ụbọchị 7 na-abịa",
       "all": "Ihe niile"
-    }
+    },
+    "scheduledLabel": "Oge e tụrụ anya:",
+    "noScheduleProvided": "Enweghị oge e nyere",
+    "publishedLabel": "Ebipụtara:"
   },
   "meta": {
     "homepage": {

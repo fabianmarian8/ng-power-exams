@@ -4,6 +4,7 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { DateTime } from 'luxon';
 import { fromAdapters } from './adapters/index.js';
 import schema from './schema/outages.schema.json' assert { type: 'json' };
 import type { OutageItem } from '../../src/lib/outages-types';
@@ -111,9 +112,9 @@ function sortItems(items: OutageItem[]): OutageItem[] {
     if (rankDiff !== 0) return rankDiff;
 
     if (a.status === 'PLANNED' && b.status === 'PLANNED') {
-      const startA = a.plannedWindow?.start ?? a.plannedWindow?.end ?? a.publishedAt;
-      const startB = b.plannedWindow?.start ?? b.plannedWindow?.end ?? b.publishedAt;
-      return new Date(startB).valueOf() - new Date(startA).valueOf();
+      const startA = a.plannedWindow?.start ? new Date(a.plannedWindow.start).valueOf() : Number.POSITIVE_INFINITY;
+      const startB = b.plannedWindow?.start ? new Date(b.plannedWindow.start).valueOf() : Number.POSITIVE_INFINITY;
+      return startA - startB;
     }
 
     return new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf();
@@ -128,6 +129,34 @@ async function main() {
   });
 
   const normalizedItems = items.map(normalizeItem);
+  const now = DateTime.now().setZone('Africa/Lagos');
+  for (const item of normalizedItems) {
+    if (item.status !== 'PLANNED' || !item.plannedWindow?.start) {
+      continue;
+    }
+
+    const start = DateTime.fromISO(item.plannedWindow.start, { zone: 'Africa/Lagos' });
+    const end = item.plannedWindow.end
+      ? DateTime.fromISO(item.plannedWindow.end, { zone: 'Africa/Lagos' })
+      : null;
+
+    if (!start.isValid) {
+      item.plannedWindow = undefined;
+      continue;
+    }
+
+    const windowEnded = end?.isValid ? end < now : start < now;
+    if (start < now.minus({ days: 1 }) && windowEnded) {
+      item.plannedWindow = undefined;
+      continue;
+    }
+
+    item.plannedWindow = {
+      start: start.toISO(),
+      end: end?.isValid ? end.toISO() : undefined,
+      timezone: 'Africa/Lagos'
+    };
+  }
   const deduped = dedupeItems(normalizedItems);
   const sortedItems = sortItems(deduped);
   const latestSourceAt = sortedItems

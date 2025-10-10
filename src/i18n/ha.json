@@ -65,7 +65,10 @@
       "today": "Yau",
       "sevenDays": "Kwanaki 7 masu zuwa",
       "all": "Duka"
-    }
+    },
+    "scheduledLabel": "Lokacin da aka tsara:",
+    "noScheduleProvided": "Ba a bayar da jadawali ba",
+    "publishedLabel": "An wallafa:"
   },
   "meta": {
     "homepage": {
