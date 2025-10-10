@@ -49,10 +49,16 @@ const Index = () => {
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <Button asChild size="lg" className="bg-urgent-red hover:bg-urgent-red/90 text-white animate-bounce-subtle">
-                  <Link to="/outages/national-grid-status">{t('index.hero.checkGridButton')}</Link>
+                  <Link to="/outages" className="flex items-center">
+                    <Zap className="mr-2 h-5 w-5" />
+                    Power Outages
+                  </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="border-nigeria-green text-nigeria-green hover:bg-nigeria-green hover:text-white">
-                  <Link to="/results/check-jamb-result-2025">{t('index.hero.checkJambButton')}</Link>
+                <Button asChild size="lg" className="bg-nigeria-green hover:bg-nigeria-green/90 text-white">
+                  <Link to="/results" className="flex items-center">
+                    <GraduationCap className="mr-2 h-5 w-5" />
+                    Exam Results
+                  </Link>
                 </Button>
               </div>
             </ScrollReveal>
