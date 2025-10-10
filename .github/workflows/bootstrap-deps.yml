@@ -1,7 +1,7 @@
 name: Bootstrap Yarn Zero-Install
 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
   bootstrap:
