@@ -138,6 +138,10 @@
       "description": "More than 30 guides cover outage reporting, prepaid meters, blackout safety, and exam verification steps.",
       "powerGuides": "Power Outage Guides",
       "resultGuides": "Exam Results Guides"
+    },
+    "testimonials": {
+      "title": "What Our Users Say",
+      "subtitle": "Trusted by thousands of Nigerians"
     }
   },
   "outages": {

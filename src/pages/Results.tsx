@@ -110,7 +110,7 @@ const Results = () => {
             backgroundPosition: 'center',
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/90 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background" />
           <div className="container relative py-12 md:py-16">
             <ScrollReveal className="mx-auto max-w-3xl space-y-4">
               <Badge variant="outline" className="text-primary border-primary/60">{t('results.hero.badge')}</Badge>

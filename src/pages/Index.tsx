@@ -51,13 +51,13 @@ const Index = () => {
                 <Button asChild size="lg" className="bg-urgent-red hover:bg-urgent-red/90 text-white animate-bounce-subtle">
                   <Link to="/outages" className="flex items-center">
                     <Zap className="mr-2 h-5 w-5" />
-                    Power Outages
+                    {t('header.powerOutages')}
                   </Link>
                 </Button>
                 <Button asChild size="lg" className="bg-nigeria-green hover:bg-nigeria-green/90 text-white">
                   <Link to="/results" className="flex items-center">
                     <GraduationCap className="mr-2 h-5 w-5" />
-                    Exam Results
+                    {t('header.examResults')}
                   </Link>
                 </Button>
               </div>
@@ -250,8 +250,8 @@ const Index = () => {
         <section className="container py-12 space-y-8">
           <ScrollReveal>
             <div className="text-center space-y-2">
-              <h2 className="text-2xl font-bold">What Our Users Say</h2>
-              <p className="text-muted-foreground">Trusted by thousands of Nigerians</p>
+              <h2 className="text-2xl font-bold">{t('index.testimonials.title')}</h2>
+              <p className="text-muted-foreground">{t('index.testimonials.subtitle')}</p>
             </div>
           </ScrollReveal>
           <Testimonials />

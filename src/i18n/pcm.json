@@ -138,6 +138,10 @@
       "description": "More than 30 guides cover outage reporting, prepaid meter, blackout safety, and exam verification steps.",
       "powerGuides": "Light Wahala Guides",
       "resultGuides": "Exam Result Guides"
+    },
+    "testimonials": {
+      "title": "Wetin Our Users Dey Talk",
+      "subtitle": "Thousands of Naija people dey trust us"
     }
   },
   "outages": {

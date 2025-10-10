@@ -88,7 +88,7 @@ export function NewsStrip({ domain, max = 3 }: NewsStripProps) {
               <CardContent className="space-y-3 pt-0 text-sm">
                 {item.tier === 'MEDIA' && (
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
-                    {t('news.reportedBy', { source: item.source })}
+                    {t('news.reportedBy').replace('{source}', item.source)}
                   </p>
                 )}
                 {item.summary && <p className="text-muted-foreground">{item.summary}</p>}
