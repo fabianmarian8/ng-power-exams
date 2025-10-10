@@ -3,13 +3,13 @@
     {
       "source": "EKEDC",
       "sourceName": "Eko Electricity Distribution Company",
-      "title": "Report A Fault",
-      "summary": "Report A Fault",
-      "officialUrl": "https://ekedp.com/whistleblowing",
+      "title": "Prepaid Meter Upgrade Checker",
+      "summary": "Prepaid Meter Upgrade Checker",
+      "officialUrl": "https://ekedp.com/sts",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T11:08:16.179Z",
-      "status": "UNPLANNED",
-      "id": "4eecd29140b1"
+      "publishedAt": "2025-10-10T11:24:56.885Z",
+      "status": "PLANNED",
+      "id": "e8e6bbb0e2b0"
     },
     {
       "source": "EKEDC",
@@ -18,9 +18,9 @@
       "summary": "CONTACT OUR RAPID RESPONSE TEAM FOR ANY ELECTRICAL FAULTS",
       "officialUrl": "https://ekedp.com/news/contact-our-rapid-response-team-for-any-electrical-faults-2504",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T11:08:16.176Z",
-      "status": "UNPLANNED",
-      "id": "c7d3c7c4ed5c"
+      "publishedAt": "2025-10-10T11:24:56.887Z",
+      "status": "PLANNED",
+      "id": "b65c027f4fcc"
     },
     {
       "source": "EKEDC",
@@ -29,9 +29,9 @@
       "summary": "NOTICE OF SYSTEM MAINTENANCE UPGRADE",
       "officialUrl": "https://ekedp.com/news/notice-of-system-maintenance-upgrade-5354",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T11:08:16.177Z",
+      "publishedAt": "2025-10-10T11:24:56.888Z",
       "status": "PLANNED",
-      "id": "1bed3dbdceca"
+      "id": "92e206190c47"
     },
     {
       "source": "EKEDC",
@@ -40,22 +40,22 @@
       "summary": "PUBLIC NOTICE - UPGRADED AND DOWNGRADED FEEDERS FOR MARCH 2025",
       "officialUrl": "https://ekedp.com/news/public-notice-upgraded-and-downgraded-feeders-for-march-2025-5420",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T11:08:16.177Z",
+      "publishedAt": "2025-10-10T11:24:56.888Z",
       "status": "PLANNED",
-      "id": "518c8bed8c21"
+      "id": "60bf3f3fcdc2"
     },
     {
       "source": "EKEDC",
       "sourceName": "Eko Electricity Distribution Company",
-      "title": "Prepaid Meter Upgrade Checker",
-      "summary": "Prepaid Meter Upgrade Checker",
-      "officialUrl": "https://ekedp.com/sts",
+      "title": "Report A Fault",
+      "summary": "Report A Fault",
+      "officialUrl": "https://ekedp.com/whistleblowing",
       "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-10T11:08:16.175Z",
+      "publishedAt": "2025-10-10T11:24:56.890Z",
       "status": "PLANNED",
-      "id": "3c230d30fc4a"
+      "id": "3793d0c60b9b"
     }
   ],
-  "generatedAt": "2025-10-10T11:08:16.468Z",
-  "latestSourceAt": "2025-10-10T11:08:16.179Z"
+  "generatedAt": "2025-10-10T11:24:57.586Z",
+  "latestSourceAt": "2025-10-10T11:24:56.890Z"
 }
