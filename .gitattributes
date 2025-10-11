@@ -1,0 +1,2 @@
+# generované súbory – v PR ich nechceme riešiť
+public/live/*.json merge=ours

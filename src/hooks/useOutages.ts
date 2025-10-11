@@ -1,7 +1,7 @@
-import { DateTime } from 'luxon';
 import { useQuery } from '@tanstack/react-query';
 import { OUTAGES_FALLBACK } from '@/data/outages-fallback';
 import type { OutagesPayload, OutageItem } from '@/lib/outages-types';
+import { nowLagos, toLagos } from '@/shared/luxon';
 
 function cloneFallback(): OutagesPayload {
   return JSON.parse(JSON.stringify(OUTAGES_FALLBACK)) as OutagesPayload;
@@ -20,45 +20,52 @@ interface UseOutagesResult {
   lastSourceUpdate?: string;
 }
 
-const ZONE = 'Africa/Lagos';
-
 export type PlannedRange = 'today' | 'next7' | 'all';
 
 export function selectPlanned(items: OutageItem[], range: PlannedRange): OutageItem[] {
-  const withStart = items.filter((item) => item.status === 'PLANNED' && item.plannedWindow?.start);
+  const getStartIso = (item: OutageItem) => item.start ?? item.plannedWindow?.start;
+  const getEndIso = (item: OutageItem) => item.end ?? item.plannedWindow?.end;
 
-  let filtered = withStart;
-  const now = DateTime.now().setZone(ZONE);
+  const withStart = items.filter((item) => item.status === 'PLANNED' && Boolean(getStartIso(item)));
+  const withoutStart = items.filter((item) => item.status === 'PLANNED' && !getStartIso(item));
+
+  const now = nowLagos();
+  const startOfToday = now.startOf('day');
+  const endOfToday = now.endOf('day');
+  const endOfWeek = now.plus({ days: 7 }).endOf('day');
+
+  let list = withStart;
 
   if (range === 'today') {
-    const startOfDay = now.startOf('day');
-    const endOfDay = now.endOf('day');
-    filtered = withStart.filter((item) => {
-      const start = DateTime.fromISO(item.plannedWindow!.start!, { zone: ZONE });
-      if (!start.isValid) return false;
-      const end = item.plannedWindow?.end
-        ? DateTime.fromISO(item.plannedWindow.end, { zone: ZONE })
-        : null;
-      const effectiveEnd = end?.isValid ? end : start;
-      return start <= endOfDay && effectiveEnd >= startOfDay;
+    list = withStart.filter((item) => {
+      const startIso = getStartIso(item);
+      if (!startIso) return false;
+      const start = toLagos(startIso);
+      if (!start || !start.isValid) return false;
+      const endIso = getEndIso(item);
+      const end = endIso ? toLagos(endIso) : null;
+      const effectiveEnd = end && end.isValid ? end : start;
+      return start <= endOfToday && effectiveEnd >= startOfToday;
     });
   } else if (range === 'next7') {
-    const startOfDay = now.startOf('day');
-    const rangeEnd = now.plus({ days: 7 }).endOf('day');
-    filtered = withStart.filter((item) => {
-      const start = DateTime.fromISO(item.plannedWindow!.start!, { zone: ZONE });
-      if (!start.isValid) return false;
-      return start >= startOfDay && start <= rangeEnd;
+    list = withStart.filter((item) => {
+      const startIso = getStartIso(item);
+      if (!startIso) return false;
+      const start = toLagos(startIso);
+      if (!start || !start.isValid) return false;
+      return start >= startOfToday && start <= endOfWeek;
     });
   }
 
-  const sorted = [...filtered].sort((a, b) => {
-    const startA = DateTime.fromISO(a.plannedWindow!.start!, { zone: ZONE });
-    const startB = DateTime.fromISO(b.plannedWindow!.start!, { zone: ZONE });
-    return startA.toMillis() - startB.toMillis();
+  list.sort((a, b) => {
+    const startA = toLagos(getStartIso(a) ?? '');
+    const startB = toLagos(getStartIso(b) ?? '');
+    const millisA = startA && startA.isValid ? startA.toMillis() : Number.POSITIVE_INFINITY;
+    const millisB = startB && startB.isValid ? startB.toMillis() : Number.POSITIVE_INFINITY;
+    return millisA - millisB;
   });
 
-  return sorted;
+  return range === 'all' ? [...list, ...withoutStart] : list;
 }
 
 export function useOutages(): UseOutagesResult {
@@ -91,12 +98,13 @@ export function useOutages(): UseOutagesResult {
       return cloneFallback();
     },
     refetchOnWindowFocus: true,
-    staleTime: 30_000
+    staleTime: 60_000,
+    refetchInterval: 300_000
   });
 
   const payload = query.data ?? cloneFallback();
   const all = payload.items ?? [];
-  const planned = all.filter((item) => item.status === 'PLANNED');
+  const planned = payload.planned ?? all.filter((item) => item.status === 'PLANNED');
   const active = all.filter((item) => item.status === 'UNPLANNED');
   const restored = all.filter((item) => item.status === 'RESTORED');
 

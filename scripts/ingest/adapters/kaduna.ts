@@ -1,4 +1,4 @@
-import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow, sanitizeText } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -9,41 +9,72 @@ export const kaduna: Adapter = async (ctx) => {
   const items: OutageItem[] = [];
 
   try {
-    const html = await fetchHtml(ctx, CATEGORY_URL);
-    const $ = load(html, ctx.cheerio);
+    const { html, status, fromFixture } = await fetchHtml(ctx, CATEGORY_URL, 'kaduna_news.html');
+    console.log(`[KADUNA] fetch ${CATEGORY_URL} status=${status}${fromFixture ? ' (fixture)' : ''}`);
+    const $ = load(html, ctx.cheerio, { xmlMode: fromFixture });
 
-    $('article, .post, .blog-post').each((_, element) => {
-      const node = $(element);
-      const link = node.find('a').first();
-      const href = link.attr('href');
-      const title = (link.text() || node.find('h2, h3').first().text()).replace(/\s+/g, ' ').trim();
-      if (!href || !title || !KEYWORDS.test(title)) return;
+    if (fromFixture) {
+      $('item').each((_, item) => {
+        const node = $(item);
+        const title = sanitizeText(node.find('title').text());
+        const link = sanitizeText(node.find('link').text());
+        const description = sanitizeText(node.find('description').text());
+        const pubDate = sanitizeText(node.find('pubDate').text());
+        if (!title || !KEYWORDS.test(title)) return;
+        const plannedWindow = resolvePlannedWindow(`${title} ${description}`);
 
-      const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
-      const parsedDate = dateText ? Date.parse(dateText) : NaN;
-      const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
-      const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
-      const plannedWindow = resolvePlannedWindow(`${title} ${summary}`, publishedAt);
+        items.push(
+          buildOutageItem({
+            source: 'KADUNA',
+            sourceName: 'Kaduna Electric',
+            title,
+            summary: description || title,
+            officialUrl: link || CATEGORY_URL,
+            verifiedBy: 'DISCO',
+            publishedAt: pubDate ? new Date(pubDate).toISOString() : undefined,
+            plannedWindow: plannedWindow ?? undefined
+          })
+        );
+      });
+    } else {
+      $('article, .post, .blog-post').each((_, element) => {
+        const node = $(element);
+        const link = node.find('a').first();
+        const href = link.attr('href');
+        const title = (link.text() || node.find('h2, h3').first().text()).replace(/\s+/g, ' ').trim();
+        if (!href || !title || !KEYWORDS.test(title)) return;
 
-      items.push(
-        buildOutageItem({
-          source: 'KADUNA',
-          sourceName: 'Kaduna Electric',
-          title,
-          summary,
-          officialUrl: href,
-          verifiedBy: 'DISCO',
-          publishedAt,
-          plannedWindow: plannedWindow ?? undefined,
-          status: 'PLANNED'
-        })
-      );
-    });
+        const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
+        const parsedDate = dateText ? Date.parse(dateText) : NaN;
+        const publishedAt = !Number.isNaN(parsedDate) ? new Date(parsedDate).toISOString() : undefined;
+        const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
+        const plannedWindow = resolvePlannedWindow(`${title} ${summary}`, publishedAt);
+
+        items.push(
+          buildOutageItem({
+            source: 'KADUNA',
+            sourceName: 'Kaduna Electric',
+            title,
+            summary,
+            officialUrl: href,
+            verifiedBy: 'DISCO',
+            publishedAt,
+            plannedWindow: plannedWindow ?? undefined,
+            status: 'PLANNED'
+          })
+        );
+      });
+    }
   } catch (error) {
     console.error('Kaduna scrape failed', error);
   }
 
-  console.log(`[KADUNA] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length}`);
+  console.log(
+    `[KADUNA] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length} top=${items
+      .slice(0, 3)
+      .map((item) => item.title)
+      .join(' | ')}`
+  );
 
   return items;
 };
