@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2025-10-11T03:47:55.184Z",
+  "generatedAt": "2025-10-11T04:11:40.603Z",
   "items": [
+    {
+      "id": "6ecf0af11183fff8152e0e4aae278fcf8a43d68e",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "A journey through Lagos-Calabar Coastal highway",
+      "summary": "Months after President Bola Ahmed Tinubu commissioned the “completed” 30-kilometre parts of the 700km Lagos-Calabar Coastal Highway, about 18km of the road is ready for use at a stretch from its starting point at Ahmadu Bello Way, Victoria Island, Daily Trust can report. Section 1 of the highway spreads from Ahmadu Bello Way to Eleko […]",
+      "publishedAt": "2025-10-11T04:09:00+01:00",
+      "officialUrl": "https://dailytrust.com/a-journey-through-lagos-calabar-coastal-highway/"
+    },
+    {
+      "id": "5474d7067cb73fa54842a6e8f7496a3bff414505",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Our failures ‘invited’ cholera",
+      "summary": "Of course, it’s unnatural for any person, group, or authority to invite disease. However, our separate and collective inactions covertly ‘lure’ diseases to creep into our communities; most times in an epidemic manner. We shall later return to explain this view in the succeeding paragraphs of this discourse. An elaborate report recently published by the […]",
+      "publishedAt": "2025-10-11T04:06:00+01:00",
+      "officialUrl": "https://dailytrust.com/our-failures-invited-cholera/"
+    },
     {
       "id": "9ba2abeccdc1075c120251ce857e1f3c31650550",
       "domain": "POWER",
@@ -20,46 +40,6 @@
       "summary": "KADUNA: Uba Sani returns 300,000 children back to school in one year Vanguard News",
       "publishedAt": "2025-10-11T02:49:00+01:00",
       "officialUrl": "https://www.vanguardngr.com/2025/10/kaduna-uba-sani-returns-300000-children-back-to-school-in-one-year/"
-    },
-    {
-      "id": "f4f57d3655fc9aa0bed21e70ffcbe2bac0330579",
-      "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Super Eagles edge Lesotho to keep World Cup dream alive",
-      "summary": "The Super Eagles of Nigeria boosted their 2026 FIFA World Cup qualification hopes on Thursday with a narrow 2–1 victory over Lesotho. The win in South Africa revived Nigeria’s campaign after earlier setbacks, keeping their chances alive ahead of the final group matches. After a goalless first half, William Troost-Ekong opened the scoring in the […]",
-      "publishedAt": "2025-10-10T18:27:00+01:00",
-      "officialUrl": "https://dailytrust.com/super-eagles-edge-lesotho-to-keep-world-cup-dream-alive/"
-    },
-    {
-      "id": "e38f0e6e1b3405ebbd890a3c42d22eb641412016",
-      "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "ASUU: UNIJOS students back lecturers’ planned strike",
-      "summary": "Students of the University of Jos (UniJos) have described as timely the planned industrial action by the Academic Staff Union of Universities (ASUU). According to the students, the academic staff have done all they could, including issuing several warnings and ultimatums, to ensure their demands are met, but to no avail, hence their support for […]",
-      "publishedAt": "2025-10-10T16:08:00+01:00",
-      "officialUrl": "https://dailytrust.com/asuu-unijos-students-back-lecturers-planned-strike/"
-    },
-    {
-      "id": "d34acf9aa76cd37091909dabaedafa6a9553cc46",
-      "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "‘Uba Sani Has Protected Mental Health Against Discrimination’",
-      "summary": "Governor Uba Sani has made mental health a basic human right, by enacting the Kaduna State Mental Health Law on September 18, 2025, to replace the outdated Lunacy Act of 1958. The law protects every citizen living with mental health condition against discrimination and guarantees access to quality care, as well as restores dignity to […]",
-      "publishedAt": "2025-10-10T15:47:00+01:00",
-      "officialUrl": "https://dailytrust.com/uba-sani-has-protected-mental-health-against-discrimination/"
-    },
-    {
-      "id": "c76f697e3cf5bcdd49cf86fa7400012cb83969be",
-      "domain": "EXAMS",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Soldiers feared dead as Boko Haram hits Borno military base",
-      "summary": "Suspected Boko Haram insurgents have attacked a military base in Ngamdu, Kaga local government area of Borno State. Daily Trust gathered that the incident happened in the wee hours of Friday. The insurgents, in large numbers, attacked the troops at the camp along Maiduguri-Damaturu highway. Motorists and commercial drivers said as a result of the […]",
-      "publishedAt": "2025-10-10T15:40:00+01:00",
-      "officialUrl": "https://dailytrust.com/breaking-soldiers-feared-dead-as-boko-haram-hits-borno-military-base/"
     },
     {
       "id": "9fcd1e2387a3a1e5c9f9aeb6e0183f52636c2586",
