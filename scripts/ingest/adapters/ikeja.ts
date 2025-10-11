@@ -1,4 +1,4 @@
-import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow, sanitizeText } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -52,71 +52,99 @@ export const ikeja: Adapter = async (ctx) => {
   const collected: OutageItem[] = [];
 
   try {
-    const html = await fetchHtml(ctx, CNN_URL);
-    const $ = load(html, ctx.cheerio);
-    const processed = new Set<string>();
+    const { html, status, fromFixture } = await fetchHtml(ctx, CNN_URL, 'ikeja_news.html');
+    console.log(`[IKEJA] fetch ${CNN_URL} status=${status}${fromFixture ? ' (fixture)' : ''}`);
+    const $ = load(html, ctx.cheerio, { xmlMode: fromFixture });
 
-    $('a, div, li').each((_, el) => {
-      const el$ = $(el);
-      const card = el$.closest('a, div, li');
-      const title = card.text().replace(/\s+/g, ' ').trim();
-      if (!title || title.length < 15) {
-        return;
-      }
-      if (processed.has(title)) return;
-      processed.add(title);
+    if (fromFixture) {
+      $('item').each((_, item) => {
+        const node = $(item);
+        const title = sanitizeText(node.find('title').text());
+        const link = sanitizeText(node.find('link').text());
+        const description = sanitizeText(node.find('description').text());
+        const pubDate = sanitizeText(node.find('pubDate').text());
+        if (!title || BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) return;
+        const plannedWindow = resolvePlannedWindow(`${title} ${description}`);
 
-      const href = card.find('a').attr('href') ?? CNN_URL;
-      const url = new URL(href, CNN_URL).toString();
-      if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) {
-        return;
-      }
-      const areas = extractAreas(title);
-      const publishedAt = parsePublishedAt(title);
+        collected.push(
+          createItem({
+            sourceUrl: link || CNN_URL,
+            title,
+            summary: description || title,
+            publishedAt: pubDate ? new Date(pubDate).toISOString() : undefined,
+            affectedAreas: extractAreas(description || title)
+          })
+        );
+      });
+    } else {
+      const processed = new Set<string>();
 
-      collected.push(
-        createItem({
-          sourceUrl: url,
-          title,
-          summary: title,
-          publishedAt,
-          affectedAreas: areas
-        })
-      );
-    });
-  } catch (error) {
-    console.error('IKEDC CNN scrape failed', error);
-  }
+      $('a, div, li').each((_, el) => {
+        const el$ = $(el);
+        const card = el$.closest('a, div, li');
+        const title = card.text().replace(/\s+/g, ' ').trim();
+        if (!title || title.length < 15) {
+          return;
+        }
+        if (processed.has(title)) return;
+        processed.add(title);
 
-  for (const unit of BUSINESS_UNITS) {
-    const url = `${CNN_URL}index3.php?menu_bu=${encodeURIComponent(unit)}`;
-    try {
-      const html = await fetchHtml(ctx, url);
-      const $ = load(html, ctx.cheerio);
-      $('table tr').each((_, row) => {
-        const text = $(row).text().replace(/\s+/g, ' ').trim();
-        if (!text || text.length < 15) return;
-        if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(text))) return;
-        const areas = extractAreas(text);
-        const publishedAt = parsePublishedAt(text);
+        const href = card.find('a').attr('href') ?? CNN_URL;
+        const url = new URL(href, CNN_URL).toString();
+        if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) {
+          return;
+        }
+        const areas = extractAreas(title);
+        const publishedAt = parsePublishedAt(title);
 
         collected.push(
           createItem({
             sourceUrl: url,
-            title: text,
-            summary: text,
+            title,
+            summary: title,
             publishedAt,
             affectedAreas: areas
           })
         );
       });
-    } catch (error) {
-      console.error(`IKEDC BU scrape failed (${unit})`, error);
+
+      for (const unit of BUSINESS_UNITS) {
+        const url = `${CNN_URL}index3.php?menu_bu=${encodeURIComponent(unit)}`;
+        try {
+          const { html: unitHtml, status: unitStatus } = await fetchHtml(ctx, url);
+          console.log(`[IKEJA] fetch ${url} status=${unitStatus}`);
+          const unit$ = load(unitHtml, ctx.cheerio);
+          unit$('table tr').each((_, row) => {
+            const text = unit$(row).text().replace(/\s+/g, ' ').trim();
+            if (!text || text.length < 15) return;
+            if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(text))) return;
+            const areas = extractAreas(text);
+            const publishedAt = parsePublishedAt(text);
+
+            collected.push(
+              createItem({
+                sourceUrl: url,
+                title: text,
+                summary: text,
+                publishedAt,
+                affectedAreas: areas
+              })
+            );
+          });
+        } catch (error) {
+          console.error(`IKEDC BU scrape failed (${unit})`, error);
+        }
+      }
     }
+  } catch (error) {
+    console.error('IKEDC CNN scrape failed', error);
   }
 
   console.log(
-    `[IKEJA] items=${collected.length} windows=${collected.filter((item) => item.plannedWindow?.start).length}`
+    `[IKEJA] items=${collected.length} windows=${collected.filter((item) => item.plannedWindow?.start).length} top=${collected
+      .slice(0, 3)
+      .map((item) => item.title)
+      .join(' | ')}`
   );
 
   return collected;
