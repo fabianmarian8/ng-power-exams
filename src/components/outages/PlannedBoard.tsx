@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { DateTime } from 'luxon';
 import { CalendarPlus, CalendarClock, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,8 +8,7 @@ import type { OutageItem } from '@/lib/outages-types';
 import { generateOutageIcs } from '@/lib/ics';
 import { selectPlanned, type PlannedRange } from '@/hooks/useOutages';
 import { OutageTimeline } from './OutageTimeline';
-
-const TZ = 'Africa/Lagos';
+import { fromLagosISO, lagosNow } from '@shared/luxon';
 
 interface PlannedBoardProps {
   items: OutageItem[];
@@ -27,10 +25,10 @@ function formatDateRange(item: OutageItem, t: (key: string, fallback: string) =>
   const startIso = item.start ?? item.plannedWindow?.start;
   const endIso = item.end ?? item.plannedWindow?.end;
   if (!startIso && !endIso) {
-    return t('outages.planned.unknownWindow', 'Schedule pending');
+    return t('outages.planned.unknownWindow', 'No schedule provided');
   }
-  const start = startIso ? DateTime.fromISO(startIso, { zone: TZ }) : null;
-  const end = endIso ? DateTime.fromISO(endIso, { zone: TZ }) : null;
+  const start = fromLagosISO(startIso);
+  const end = fromLagosISO(endIso);
 
   if (start?.isValid && end?.isValid) {
     if (start.hasSame(end, 'day')) {
@@ -47,13 +45,14 @@ function formatDateRange(item: OutageItem, t: (key: string, fallback: string) =>
     return end.toFormat('dd MMM, HH:mm');
   }
 
-  return t('outages.planned.unknownWindow', 'Schedule pending');
+  return t('outages.planned.unknownWindow', 'No schedule provided');
 }
 
 function isNewItem(item: OutageItem): boolean {
-  const published = DateTime.fromISO(item.publishedAt, { zone: TZ });
-  if (!published.isValid) return false;
-  return DateTime.now().setZone(TZ).diff(published, 'hours').hours <= 24;
+  const published = fromLagosISO(item.publishedAt);
+  const now = lagosNow();
+  if (!published) return false;
+  return now.diff(published, 'hours').hours <= 24;
 }
 
 function VerifiedBadge({ item }: { item: OutageItem }) {
@@ -111,7 +110,7 @@ export function PlannedBoard({ items, lastUpdated }: PlannedBoardProps) {
           </p>
           {lastUpdated && (
             <p className="text-xs text-muted-foreground">
-              {t('outages.planned.lastUpdated', 'Last updated')}: {DateTime.fromISO(lastUpdated).setZone(TZ).toFormat('dd MMM HH:mm')}
+              {t('outages.planned.lastUpdated', 'Last updated')}: {fromLagosISO(lastUpdated)?.toFormat('dd MMM HH:mm') ?? lastUpdated}
             </p>
           )}
         </div>
@@ -170,7 +169,7 @@ export function PlannedBoard({ items, lastUpdated }: PlannedBoardProps) {
                       <Clock className="h-3.5 w-3.5" />
                       <span>
                         {t('outages.planned.published', 'Published')}{' '}
-                        {DateTime.fromISO(item.publishedAt).setZone(TZ).toFormat('dd MMM, HH:mm')}
+                        {fromLagosISO(item.publishedAt)?.toFormat('dd MMM, HH:mm') ?? item.publishedAt}
                       </span>
                     </div>
                     {calendarUrl && (

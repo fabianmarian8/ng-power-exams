@@ -1,10 +1,8 @@
-import { DateTime } from 'luxon';
 import type { OutageItem } from '@/lib/outages-types';
+import { DateTime, fromLagosISO, lagosNow } from '@shared/luxon';
 
-const TZ = 'Africa/Lagos';
-
-function toIcsDate(iso: string): string {
-  return DateTime.fromISO(iso, { zone: TZ }).toUTC().toFormat("yyyyMMdd'T'HHmmss'Z'");
+function toIcsDateTime(dateTime: DateTime): string {
+  return dateTime.toUTC().toFormat("yyyyMMdd'T'HHmmss'Z'");
 }
 
 function escape(text: string | undefined): string {
@@ -14,20 +12,16 @@ function escape(text: string | undefined): string {
 
 export function generateOutageIcs(item: OutageItem): string | null {
   const startIso = item.start ?? item.plannedWindow?.start;
-  if (!startIso) {
-    return null;
-  }
-  const start = DateTime.fromISO(startIso, { zone: TZ });
-  if (!start.isValid) {
+  const start = fromLagosISO(startIso);
+  if (!start) {
     return null;
   }
   const endIso = item.end ?? item.plannedWindow?.end;
-  const end = endIso ? DateTime.fromISO(endIso, { zone: TZ }) : start.plus({ hours: 2 });
-  const safeEnd = end.isValid ? end : start.plus({ hours: 2 });
+  const end = fromLagosISO(endIso) ?? start.plus({ hours: 2 });
 
   // Don't generate calendar link for events that ended more than 6 hours ago
-  const now = DateTime.now().setZone(TZ);
-  const sixHoursAfterEnd = safeEnd.plus({ hours: 6 });
+  const now = lagosNow();
+  const sixHoursAfterEnd = end.plus({ hours: 6 });
   if (now.toMillis() > sixHoursAfterEnd.toMillis()) {
     return null;
   }
@@ -39,9 +33,9 @@ export function generateOutageIcs(item: OutageItem): string | null {
     'CALSCALE:GREGORIAN',
     'BEGIN:VEVENT',
     `UID:${item.id}@naijainfo.ng`,
-    `DTSTAMP:${toIcsDate(DateTime.now().setZone(TZ).toISO()!)}`,
-    `DTSTART:${toIcsDate(start.toISO()!)}`,
-    `DTEND:${toIcsDate(safeEnd.toISO()!)}`,
+    `DTSTAMP:${toIcsDateTime(lagosNow())}`,
+    `DTSTART:${toIcsDateTime(start)}`,
+    `DTEND:${toIcsDateTime(end)}`,
     `SUMMARY:${escape(item.title)}`,
     `DESCRIPTION:${escape(item.summary ?? item.title)}`,
     item.officialUrl ? `URL:${escape(item.officialUrl)}` : undefined,

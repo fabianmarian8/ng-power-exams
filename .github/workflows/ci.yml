@@ -19,4 +19,6 @@ jobs:
       - name: Lint
         run: yarn lint
       - name: Adapter offline tests
+        env:
+          NEWS_OFFLINE: '1'
         run: yarn test:adapters

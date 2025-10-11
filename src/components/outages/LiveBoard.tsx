@@ -1,21 +1,19 @@
 import { useMemo } from 'react';
-import { DateTime } from 'luxon';
 import { AlertTriangle, RefreshCw, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { OutageItem } from '@/lib/outages-types';
-
-const TZ = 'Africa/Lagos';
+import { fromLagosISO, lagosNow } from '@shared/luxon';
 
 interface LiveBoardProps {
   items: OutageItem[];
 }
 
 function isNew(item: OutageItem): boolean {
-  const published = DateTime.fromISO(item.publishedAt, { zone: TZ });
-  if (!published.isValid) return false;
-  return DateTime.now().setZone(TZ).diff(published, 'hours').hours <= 24;
+  const published = fromLagosISO(item.publishedAt);
+  if (!published) return false;
+  return lagosNow().diff(published, 'hours').hours <= 24;
 }
 
 function statusBadge(item: OutageItem) {
@@ -59,7 +57,7 @@ export function LiveBoard({ items }: LiveBoardProps) {
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {sorted.map((item) => {
-          const published = DateTime.fromISO(item.publishedAt).setZone(TZ);
+          const published = fromLagosISO(item.publishedAt);
           return (
             <Card key={item.id} className="flex h-full flex-col justify-between border-l-4 border-l-warning-orange">
               <CardHeader className="space-y-2">
@@ -86,7 +84,7 @@ export function LiveBoard({ items }: LiveBoardProps) {
                   </p>
                 ) : null}
                 <div className="text-xs text-muted-foreground">
-                  {t('outages.live.publishedAt', 'Published')}: {published.isValid ? published.toFormat('dd MMM, HH:mm') : 'TBC'}
+                  {t('outages.live.publishedAt', 'Published')}: {published?.toFormat('dd MMM, HH:mm') ?? 'TBC'}
                 </div>
                 {item.officialUrl && (
                   <a
