@@ -3204,13 +3204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@portal:./vendor/date-fns-tz::locator=vite_react_shadcn_ts%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "date-fns-tz@portal:./vendor/date-fns-tz::locator=vite_react_shadcn_ts%40workspace%3A."
-  languageName: node
-  linkType: soft
-
-"date-fns@npm:^3.6.0":
+"date-fns@npm:3.6.0":
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
   checksum: 0daa1e9a436cf99f9f2ae9232b55e11f3dd46132bee10987164f3eebd29f245b2e066d7d7db40782627411ecf18551d8f4c9fcdf2226e48bb66545407d448ab7
@@ -4963,6 +4957,12 @@ __metadata:
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
   checksum: ffeb54d9c22e6625727f6dc863ae4cde952dbc02ff50c96179f3c0ce14b2f9a63ae8472fe86387c17a534bdae1ca0f518e81c47553a4f97718139805befc625e
+  languageName: node
+  linkType: hard
+
+"luxon@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "luxon@npm:3.5.0"
   languageName: node
   linkType: hard
 
@@ -6933,8 +6933,7 @@ __metadata:
     clsx: ^2.1.1
     cmdk: ^1.1.1
     cross-env: ^7.0.3
-    date-fns: ^3.6.0
-    date-fns-tz: "portal:./vendor/date-fns-tz"
+    date-fns: 3.6.0
     embla-carousel-react: ^8.6.0
     eslint: ^9.32.0
     eslint-config-prettier: ^9.1.0
@@ -6943,6 +6942,7 @@ __metadata:
     input-otp: ^1.4.2
     lovable-tagger: ^1.1.10
     lucide-react: ^0.462.0
+    luxon: ^3.5.0
     nanoid: ^5.0.7
     next-themes: ^0.3.0
     postcss: ^8.5.6

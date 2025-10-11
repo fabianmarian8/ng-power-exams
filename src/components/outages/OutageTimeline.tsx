@@ -1,17 +1,21 @@
-import { DateTime } from 'luxon';
 import { Dot } from 'lucide-react';
 import type { OutageItem } from '@/lib/outages-types';
-
-const TZ = 'Africa/Lagos';
+import { fromLagosISO, lagosNow } from '@shared/luxon';
 
 interface OutageTimelineProps {
   items: OutageItem[];
 }
 
 export function OutageTimeline({ items }: OutageTimelineProps) {
+  const now = lagosNow();
   const sorted = [...items]
-    .filter((item) => item.start ?? item.plannedWindow?.start)
-    .sort((a, b) => new Date(a.start ?? a.plannedWindow?.start ?? 0).valueOf() - new Date(b.start ?? b.plannedWindow?.start ?? 0).valueOf())
+    .map((item) => ({
+      item,
+      start: fromLagosISO(item.start ?? item.plannedWindow?.start),
+      end: fromLagosISO(item.end ?? item.plannedWindow?.end)
+    }))
+    .filter((entry) => entry.start && entry.start > now)
+    .sort((a, b) => a.start!.toMillis() - b.start!.toMillis())
     .slice(0, 6);
 
   if (sorted.length === 0) {
@@ -19,10 +23,10 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
   }
 
   const maxDuration = Math.max(
-    ...sorted.map((item) => {
-      const start = DateTime.fromISO(item.start ?? item.plannedWindow?.start ?? '', { zone: TZ });
-      const end = DateTime.fromISO(item.end ?? item.plannedWindow?.end ?? '', { zone: TZ });
-      if (!start.isValid || !end.isValid) return 2;
+    ...sorted.map(({ start, end }) => {
+      if (!start || !end) {
+        return 2;
+      }
       return Math.max(1, end.diff(start, 'hours').hours || 2);
     })
   );
@@ -30,10 +34,8 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
   return (
     <div className="rounded-xl border bg-muted/40 p-4">
       <div className="grid gap-4 md:grid-cols-2">
-        {sorted.map((item) => {
-          const start = DateTime.fromISO(item.start ?? item.plannedWindow?.start ?? '', { zone: TZ });
-          const end = DateTime.fromISO(item.end ?? item.plannedWindow?.end ?? '', { zone: TZ });
-          const duration = start.isValid && end.isValid ? Math.max(1, end.diff(start, 'hours').hours) : 2;
+        {sorted.map(({ item, start, end }) => {
+          const duration = start && end ? Math.max(1, end.diff(start, 'hours').hours) : 2;
           const height = 40 + (duration / maxDuration) * 60;
 
           return (
@@ -43,7 +45,7 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
                 <span className="flex-1 w-px bg-primary/40" style={{ minHeight: `${height}px` }} />
               </div>
               <div className="flex-1 rounded-lg bg-background px-4 py-3 shadow-sm">
-                <p className="text-xs uppercase text-muted-foreground">{start.isValid ? start.toFormat('dd MMM, HH:mm') : 'TBC'}</p>
+                <p className="text-xs uppercase text-muted-foreground">{start ? start.toFormat('dd MMM, HH:mm') : 'TBC'}</p>
                 <p className="font-medium leading-tight">{item.title}</p>
                 {item.affectedAreas?.length ? (
                   <p className="mt-1 text-xs text-muted-foreground">{item.affectedAreas.slice(0, 3).join(', ')}</p>
@@ -51,9 +53,7 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
                 <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                   <Dot className="h-4 w-4" />
                   <span>
-                    {start.isValid && end.isValid
-                      ? `${start.toFormat('HH:mm')} – ${end.toFormat('HH:mm')}`
-                      : 'Duration pending'}
+                    {start && end ? `${start.toFormat('HH:mm')} – ${end.toFormat('HH:mm')}` : 'Duration pending'}
                   </span>
                 </div>
               </div>

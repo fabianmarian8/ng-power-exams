@@ -4,10 +4,13 @@ on:
   schedule:
     - cron: "*/10 * * * *"
   workflow_dispatch:
-  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
   ingest:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -27,7 +30,7 @@ jobs:
 
       - name: Run ingest script
         env:
-          INGEST_FIXTURES_ONLY: ${{ (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && '1' || '' }}
+          INGEST_FIXTURES_ONLY: ${{ github.event_name == 'workflow_dispatch' && '1' || '' }}
         run: yarn ingest
 
       - name: Commit generated files

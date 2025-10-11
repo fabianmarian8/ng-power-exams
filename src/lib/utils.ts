@@ -2,6 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import type { Language } from "@/contexts/LanguageContext";
+import { LAGOS_TIMEZONE } from "@shared/luxon";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -31,7 +32,7 @@ export function formatLocalizedDateTime(dateString: string, language: Language) 
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
-    timeZone: "Africa/Lagos"
+    timeZone: LAGOS_TIMEZONE
   }).format(parsedDate);
 }
 
@@ -41,7 +42,7 @@ export function formatNewsDateTime(dateString: string): string {
     return dateString;
   }
   const formatter = new Intl.DateTimeFormat('en-GB', {
-    timeZone: 'Africa/Lagos',
+    timeZone: LAGOS_TIMEZONE,
     day: '2-digit',
     month: 'short',
     year: 'numeric',

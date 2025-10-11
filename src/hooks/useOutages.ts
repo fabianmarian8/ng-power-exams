@@ -1,7 +1,7 @@
-import { DateTime } from 'luxon';
 import { useQuery } from '@tanstack/react-query';
 import { OUTAGES_FALLBACK } from '@/data/outages-fallback';
 import type { OutagesPayload, OutageItem } from '@/lib/outages-types';
+import { fromLagosISO, lagosNow } from '@shared/luxon';
 
 function cloneFallback(): OutagesPayload {
   return JSON.parse(JSON.stringify(OUTAGES_FALLBACK)) as OutagesPayload;
@@ -20,51 +20,56 @@ interface UseOutagesResult {
   lastSourceUpdate?: string;
 }
 
-const ZONE = 'Africa/Lagos';
-
 export type PlannedRange = 'today' | 'next7' | 'all';
 
 export function selectPlanned(items: OutageItem[], range: PlannedRange): OutageItem[] {
-  const withStart = items.filter((item) => {
-    if (item.status !== 'PLANNED') return false;
-    return Boolean(item.start ?? item.plannedWindow?.start);
-  });
+  const planned = items.filter((item) => item.status === 'PLANNED');
+  const now = lagosNow();
+  const startOfDay = now.startOf('day');
+  const endOfDay = now.endOf('day');
+  const rangeEnd = now.plus({ days: 7 }).endOf('day');
 
-  let filtered = withStart;
-  const now = DateTime.now().setZone(ZONE);
+  const filtered = planned.filter((item) => {
+    const start = fromLagosISO(item.start ?? item.plannedWindow?.start);
+    const end = fromLagosISO(item.end ?? item.plannedWindow?.end);
 
-  if (range === 'today') {
-    const startOfDay = now.startOf('day');
-    const endOfDay = now.endOf('day');
-    filtered = withStart.filter((item) => {
-      const startIso = item.start ?? item.plannedWindow?.start;
-      if (!startIso) return false;
-      const start = DateTime.fromISO(startIso, { zone: ZONE });
-      if (!start.isValid) return false;
-      const endIso = item.end ?? item.plannedWindow?.end;
-      const end = endIso ? DateTime.fromISO(endIso, { zone: ZONE }) : null;
-      const effectiveEnd = end?.isValid ? end : start;
+    if (range === 'all') {
+      return true;
+    }
+
+    if (!start) {
+      return false;
+    }
+
+    if (range === 'today') {
+      const effectiveEnd = end ?? start;
       return start <= endOfDay && effectiveEnd >= startOfDay;
-    });
-  } else if (range === 'next7') {
-    const startOfDay = now.startOf('day');
-    const rangeEnd = now.plus({ days: 7 }).endOf('day');
-    filtered = withStart.filter((item) => {
-      const startIso = item.start ?? item.plannedWindow?.start;
-      if (!startIso) return false;
-      const start = DateTime.fromISO(startIso, { zone: ZONE });
-      if (!start.isValid) return false;
-      return start >= startOfDay && start <= rangeEnd;
-    });
-  }
+    }
 
-  const sorted = [...filtered].sort((a, b) => {
-    const startA = DateTime.fromISO(a.start ?? a.plannedWindow?.start ?? '', { zone: ZONE });
-    const startB = DateTime.fromISO(b.start ?? b.plannedWindow?.start ?? '', { zone: ZONE });
-    return startA.toMillis() - startB.toMillis();
+    if (range === 'next7') {
+      return start >= startOfDay && start <= rangeEnd;
+    }
+
+    return true;
   });
 
-  return sorted;
+  return filtered
+    .map((item) => ({
+      item,
+      start: fromLagosISO(item.start ?? item.plannedWindow?.start),
+      published: fromLagosISO(item.publishedAt)
+    }))
+    .sort((a, b) => {
+      if (a.start && b.start) {
+        return a.start.toMillis() - b.start.toMillis();
+      }
+      if (a.start) return -1;
+      if (b.start) return 1;
+      const aPublished = a.published?.toMillis() ?? 0;
+      const bPublished = b.published?.toMillis() ?? 0;
+      return bPublished - aPublished;
+    })
+    .map(({ item }) => item);
 }
 
 export function useOutages(): UseOutagesResult {
