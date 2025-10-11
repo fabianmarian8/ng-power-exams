@@ -42,8 +42,8 @@ function makeId(item: OutageItem): string {
   const key = [
     item.source,
     normalizeWhitespace(item.title) ?? '',
-    item.plannedWindow?.start ?? '',
-    item.plannedWindow?.end ?? '',
+    item.start ?? item.plannedWindow?.start ?? '',
+    item.end ?? item.plannedWindow?.end ?? '',
     item.publishedAt ?? ''
   ].join('|');
   return createHash('sha1').update(key).digest('hex').slice(0, 12);
@@ -63,39 +63,57 @@ function normalizeItem(item: OutageItem): OutageItem {
       }
     : undefined;
 
-  return {
+  const start = item.start ?? plannedWindow?.start;
+  const end = item.end ?? plannedWindow?.end;
+  const baseItem = {
     ...item,
-    id: makeId(item),
+    plannedWindow,
+    start,
+    end
+  } as OutageItem;
+
+  const confidence =
+    typeof item.confidence === 'number'
+      ? item.confidence
+      : item.verifiedBy === 'TCN'
+        ? 1
+        : item.verifiedBy === 'DISCO'
+          ? 0.9
+          : item.verifiedBy === 'MEDIA'
+            ? 0.6
+            : item.confidence;
+
+  return {
+    ...baseItem,
+    id: makeId(baseItem),
     title: normalizedTitle,
     summary: normalizedSummary,
     affectedAreas: normalizedAreas,
-    plannedWindow,
     sourceName: normalizeWhitespace(item.sourceName),
     officialUrl: item.officialUrl,
     raw: item.raw,
+    confidence,
     _score: item._score
   };
 }
 
 function sortItems(items: OutageItem[]): OutageItem[] {
-  const rank: Record<OutageItem['status'], number> = {
-    UNPLANNED: 0,
-    RESTORED: 1,
-    PLANNED: 2
-  };
+  const planned = items
+    .filter((item) => item.status === 'PLANNED' && (item.start || item.plannedWindow?.start))
+    .sort((a, b) => {
+      const aStart = new Date(a.start ?? a.plannedWindow?.start ?? 0).valueOf();
+      const bStart = new Date(b.start ?? b.plannedWindow?.start ?? 0).valueOf();
+      return aStart - bStart;
+    });
 
-  return [...items].sort((a, b) => {
-    const rankDiff = rank[a.status] - rank[b.status];
-    if (rankDiff !== 0) return rankDiff;
+  const live = items
+    .filter((item) => item.status !== 'PLANNED')
+    .sort((a, b) => new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf());
 
-    if (a.status === 'PLANNED' && b.status === 'PLANNED') {
-      const startA = a.plannedWindow?.start ? new Date(a.plannedWindow.start).valueOf() : Number.POSITIVE_INFINITY;
-      const startB = b.plannedWindow?.start ? new Date(b.plannedWindow.start).valueOf() : Number.POSITIVE_INFINITY;
-      return startA - startB;
-    }
+  const plannedIds = new Set(planned.map((item) => item.id));
+  const remainder = items.filter((item) => item.status === 'PLANNED' && !plannedIds.has(item.id));
 
-    return new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf();
-  });
+  return [...planned, ...live, ...remainder];
 }
 
 async function main() {
@@ -145,8 +163,13 @@ async function main() {
       return new Date(current) > new Date(latest) ? current : latest;
     }, undefined);
 
+  const plannedItems = sortedItems
+    .filter((item) => item.status === 'PLANNED' && (item.start || item.plannedWindow?.start))
+    .sort((a, b) => new Date(a.start ?? a.plannedWindow?.start ?? 0).valueOf() - new Date(b.start ?? b.plannedWindow?.start ?? 0).valueOf());
+
   const payload = {
     items: sortedItems,
+    planned: plannedItems,
     generatedAt: new Date().toISOString(),
     latestSourceAt
   };
@@ -154,9 +177,10 @@ async function main() {
   const summaryLog = {
     TCN: stats.tcn,
     Ikeja: stats.ikeja,
-    Eko: stats.eko,
+    EKEDC: stats.ekedc,
     Kaduna: stats.kaduna,
-    JED: stats.jed
+    JED: stats.jed,
+    Media: stats.media
   };
   console.log('Adapters summary:', summaryLog);
   console.log('Last published per adapter:', lastPublishedAtByAdapter);

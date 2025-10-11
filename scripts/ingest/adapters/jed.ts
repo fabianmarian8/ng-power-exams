@@ -85,6 +85,7 @@ function buildItem(params: {
     affectedAreas: areas,
     verifiedBy: 'DISCO',
     officialUrl: params.sourceUrl,
+    confidence: 0.9,
     raw: {
       feeder: params.feeder,
       band: params.band,
@@ -124,15 +125,45 @@ export const jed: Adapter = async (ctx) => {
 
   for (const pageUrl of PAGES) {
     let html: string;
+    let fromFixture = false;
     try {
-      html = await fetchHtml(ctx, pageUrl);
+      const result = await fetchHtml(ctx, pageUrl, 'jed_news.html');
+      html = result.html;
+      fromFixture = result.fromFixture;
+      console.log(`[JED] fetch ${pageUrl} status=${result.status}${fromFixture ? ' (fixture)' : ''}`);
     } catch (error) {
       console.error(`JED page fetch failed: ${pageUrl}`, error);
       continue;
     }
 
-    const $ = load(html, ctx.cheerio);
+    const $ = load(html, ctx.cheerio, { xmlMode: fromFixture });
     const publishedAt = extractPublishedAt(html, $) ?? new Date().toISOString();
+
+    if (fromFixture) {
+      $('item').each((_, entry) => {
+        const node = $(entry);
+        const title = normalize(node.find('title').text());
+        const link = normalize(node.find('link').text());
+        const description = normalize(node.find('description').text());
+        const pubDate = node.find('pubDate').text();
+        if (!title) return;
+        const outage: OutageItem = {
+          id: '',
+          source: 'JED',
+          sourceName: 'Jos Electricity Distribution Plc',
+          title,
+          summary: description || title,
+          publishedAt: pubDate ? new Date(pubDate).toISOString() : publishedAt,
+          status: 'UNPLANNED',
+          verifiedBy: 'DISCO',
+          officialUrl: link || pageUrl,
+          affectedAreas: [],
+          raw: { description }
+        };
+        items.push(outage);
+      });
+      break;
+    }
 
     $('table').each((_, table) => {
       const headerNodes = $(table).find('thead th');
@@ -197,5 +228,12 @@ export const jed: Adapter = async (ctx) => {
     });
   }
 
-  return aggregateDowngradedFeeders(items);
+  const result = aggregateDowngradedFeeders(items);
+  console.log(
+    `[JED] items=${result.length} windows=${result.filter((item) => item.plannedWindow?.start).length} top=${result
+      .slice(0, 3)
+      .map((item) => item.title)
+      .join(' | ')}`
+  );
+  return result;
 };

@@ -20,6 +20,14 @@ export interface OutageItem {
   summary?: string;
   publishedAt: string;
   status: OutageStatus;
+  /**
+   * Normalised planned start in ISO-8601 (UTC) derived from source text.
+   */
+  start?: string;
+  /**
+   * Normalised planned end in ISO-8601 (UTC) derived from source text.
+   */
+  end?: string;
   plannedWindow?: {
     start?: string;
     end?: string;
@@ -29,6 +37,7 @@ export interface OutageItem {
   verifiedBy?: VerificationSource;
   officialUrl?: string;
   raw?: Record<string, any>;
+  confidence?: number;
   _score?: number;
 }
 
