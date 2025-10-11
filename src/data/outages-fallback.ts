@@ -13,6 +13,8 @@ export const OUTAGES_FALLBACK: OutagesPayload = {
         'The Transmission Company of Nigeria will execute an Optical Ground Wire (OPGW) upgrade on the Jebba–Osogbo 330kV corridor.',
       publishedAt: '2025-10-01T07:30:00.000Z',
       status: 'PLANNED',
+      start: '2025-10-01T09:00:00.000Z',
+      end: '2025-10-01T17:00:00.000Z',
       plannedWindow: {
         start: '2025-10-01T09:00:00.000Z',
         end: '2025-10-01T17:00:00.000Z',
@@ -20,7 +22,8 @@ export const OUTAGES_FALLBACK: OutagesPayload = {
       },
       affectedAreas: ['Jebba', 'Osogbo', 'Ilorin'],
       verifiedBy: 'TCN',
-      officialUrl: 'https://www.tcn.org.ng/latest-news/tcn-schedules-opgw-upgrade-between-jebba-and-osogbo/'
+      officialUrl: 'https://www.tcn.org.ng/latest-news/tcn-schedules-opgw-upgrade-between-jebba-and-osogbo/',
+      confidence: 1
     },
     {
       id: 'jed-2025-10-01-rayfield-band-a',
@@ -33,7 +36,8 @@ export const OUTAGES_FALLBACK: OutagesPayload = {
       status: 'UNPLANNED',
       affectedAreas: ['Rayfield', 'Bukuru'],
       verifiedBy: 'DISCO',
-      officialUrl: 'https://jedplc.com/feeder-availability.php'
+      officialUrl: 'https://jedplc.com/feeder-availability.php',
+      confidence: 0.9
     },
     {
       id: 'kaduna-2025-09-21-kaduna-metropolis-update',
@@ -46,7 +50,8 @@ export const OUTAGES_FALLBACK: OutagesPayload = {
       status: 'UNPLANNED',
       affectedAreas: ['Kaduna North', 'Kaduna South'],
       verifiedBy: 'DISCO',
-      officialUrl: 'https://kadunaelectric.com/an-update-on-the-power-supply-situation-in-kaduna-metropolis/'
+      officialUrl: 'https://kadunaelectric.com/an-update-on-the-power-supply-situation-in-kaduna-metropolis/',
+      confidence: 0.9
     },
     {
       id: 'ekedc-2025-07-05-lekki-maintenance',
@@ -57,6 +62,7 @@ export const OUTAGES_FALLBACK: OutagesPayload = {
         'Eko Disco informs customers in Lekki, Ajah, and Ibeju-Lekki that TCN will carry out critical maintenance between 9 a.m. and 6 p.m. daily for 25 days.',
       publishedAt: '2025-07-05T09:10:00.000Z',
       status: 'PLANNED',
+      start: '2025-07-06T09:00:00.000Z',
       plannedWindow: {
         start: '2025-07-06T09:00:00.000Z',
         timezone: 'Africa/Lagos'
@@ -64,7 +70,8 @@ export const OUTAGES_FALLBACK: OutagesPayload = {
       affectedAreas: ['Lekki', 'Ajah', 'Ibeju-Lekki'],
       verifiedBy: 'DISCO',
       officialUrl:
-        'https://ekedp.com/news/ekedc-set-for-operational-system-upgrade-urges-customers-to-recharge-and-pay-their-bills-to-avoid-service-disruption-4927'
+        'https://ekedp.com/news/ekedc-set-for-operational-system-upgrade-urges-customers-to-recharge-and-pay-their-bills-to-avoid-service-disruption-4927',
+      confidence: 0.9
     }
   ]
 };

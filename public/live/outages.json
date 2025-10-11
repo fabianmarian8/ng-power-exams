@@ -1,4 +1,157 @@
 {
+  "items": [
+    {
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "EKEDC schedules maintenance on Lekki transmission line",
+      "summary": "<p>Maintenance scheduled from 8:00am to 5:00pm on 12/10/2025. Customers in Lekki will experience a 6-hour outage due to preventive maintenance.</p>",
+      "officialUrl": "https://www.ekedp.com/news/lekki-maintenance",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-02-18T11:00:00.000Z",
+      "plannedWindow": {
+        "start": "2025-10-12T08:00:00+01:00",
+        "end": "2025-10-12T17:00:00+01:00",
+        "timezone": "Africa/Lagos"
+      },
+      "status": "PLANNED",
+      "confidence": 0.9,
+      "start": "2025-10-12T08:00:00+01:00",
+      "end": "2025-10-12T17:00:00+01:00",
+      "id": "474997646d67"
+    },
+    {
+      "source": "TCN",
+      "sourceName": "Transmission Company of Nigeria",
+      "title": "TCN restores national grid after maintenance",
+      "summary": "<p>Grid restoration completed following scheduled maintenance on the Lagos-Ibadan 330kV line.</p>",
+      "officialUrl": "https://www.tcn.org.ng/news/grid-restoration-feb-2025",
+      "verifiedBy": "TCN",
+      "publishedAt": "2025-02-20T04:30:00.000Z",
+      "raw": {
+        "description": "<p>Grid restoration completed following scheduled maintenance on the Lagos-Ibadan 330kV line.</p>"
+      },
+      "status": "RESTORED",
+      "confidence": 1,
+      "id": "c104384bac14"
+    },
+    {
+      "source": "AEDC",
+      "sourceName": "Abuja Electricity Distribution Company (media relay)",
+      "title": "TCN commences emergency repairs on Benin transmission line",
+      "summary": "<p>Emergency maintenance to reduce power outage in Edo communities.</p>",
+      "officialUrl": "https://tribuneonlineng.com/tcn-commences-beninline-repairs/",
+      "verifiedBy": "MEDIA",
+      "publishedAt": "2025-02-19T11:40:00.000Z",
+      "raw": {
+        "description": "<p>Emergency maintenance to reduce power outage in Edo communities.</p>",
+        "relaySource": "media"
+      },
+      "status": "UNPLANNED",
+      "confidence": 0.6,
+      "id": "152ba309394b"
+    },
+    {
+      "id": "9321c3dec1e1",
+      "source": "JED",
+      "sourceName": "Jos Electricity Distribution Plc",
+      "title": "JED announces feeder upgrade for Bukuru axis",
+      "summary": "<p>Upgrade work will improve power stability across the Bukuru distribution network.</p>",
+      "publishedAt": "2025-02-19T06:25:00.000Z",
+      "status": "UNPLANNED",
+      "verifiedBy": "DISCO",
+      "officialUrl": "https://www.jedplc.com/news/bukuru-upgrade",
+      "raw": {
+        "description": "<p>Upgrade work will improve power stability across the Bukuru distribution network.</p>"
+      },
+      "confidence": 0.9
+    },
+    {
+      "source": "KADUNA",
+      "sourceName": "Kaduna Electric",
+      "title": "Kaduna Electric issues restoration timeline for Kakuri",
+      "summary": "<p>Repairs on the Kakuri 33kV feeder will conclude by 18:00hrs.</p>",
+      "officialUrl": "https://kadunaelectric.com/news/kakuri-restoration",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-02-17T07:10:00.000Z",
+      "status": "UNPLANNED",
+      "confidence": 0.9,
+      "id": "3bcff25f9d26"
+    },
+    {
+      "id": "c74f613e0b87",
+      "source": "JED",
+      "sourceName": "Jos Electricity Distribution Plc",
+      "title": "Emergency outage alert for Rayfield and environs",
+      "summary": "<p>Faulty breaker isolated; restoration expected within 4 hours.</p>",
+      "publishedAt": "2025-02-09T05:55:00.000Z",
+      "status": "UNPLANNED",
+      "verifiedBy": "DISCO",
+      "officialUrl": "https://www.jedplc.com/news/rayfield-outage",
+      "raw": {
+        "description": "<p>Faulty breaker isolated; restoration expected within 4 hours.</p>"
+      },
+      "confidence": 0.9
+    },
+    {
+      "source": "IKEJA",
+      "sourceName": "Ikeja Electric",
+      "title": "Power restoration update for Alimosho customers",
+      "summary": "<p>Supply restored after fault isolation on Alimosho 33kV line.</p>",
+      "officialUrl": "https://www.ikejaelectric.com/news/alimosho-restoration",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-02-08T14:05:00.000Z",
+      "status": "RESTORED",
+      "confidence": 0.9,
+      "id": "88d9d8d67d28"
+    },
+    {
+      "source": "KADUNA",
+      "sourceName": "Kaduna Electric",
+      "title": "Planned maintenance on Zaria City injection substation",
+      "summary": "<p>Customers should expect temporary outage between 09:00hrs and 14:00hrs.</p>",
+      "officialUrl": "https://kadunaelectric.com/news/zaria-maintenance",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-02-07T04:40:00.000Z",
+      "status": "PLANNED",
+      "confidence": 0.9,
+      "id": "201aba43f1d7"
+    },
+    {
+      "source": "IKEJA",
+      "sourceName": "Ikeja Electric",
+      "title": "Ikeja Electric announces planned outage for Ayobo feeder",
+      "summary": "<p>Planned electricity outage to upgrade Ayobo 11kV feeder infrastructure.</p>",
+      "officialUrl": "https://www.ikejaelectric.com/news/ayobo-planned-outage",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-02-19T12:15:00.000Z",
+      "status": "PLANNED",
+      "confidence": 0.9,
+      "id": "9ce200724168"
+    }
+  ],
+  "planned": [
+    {
+      "source": "EKEDC",
+      "sourceName": "Eko Electricity Distribution Company",
+      "title": "EKEDC schedules maintenance on Lekki transmission line",
+      "summary": "<p>Maintenance scheduled from 8:00am to 5:00pm on 12/10/2025. Customers in Lekki will experience a 6-hour outage due to preventive maintenance.</p>",
+      "officialUrl": "https://www.ekedp.com/news/lekki-maintenance",
+      "verifiedBy": "DISCO",
+      "publishedAt": "2025-02-18T11:00:00.000Z",
+      "plannedWindow": {
+        "start": "2025-10-12T08:00:00+01:00",
+        "end": "2025-10-12T17:00:00+01:00",
+        "timezone": "Africa/Lagos"
+      },
+      "status": "PLANNED",
+      "confidence": 0.9,
+      "start": "2025-10-12T08:00:00+01:00",
+      "end": "2025-10-12T17:00:00+01:00",
+      "id": "474997646d67"
+    }
+  ],
+  "generatedAt": "2025-10-11T07:06:45.566Z",
+  "latestSourceAt": "2025-02-20T04:30:00.000Z"
   "items": [],
   "generatedAt": "2025-10-11T07:08:41.717Z"
 }
