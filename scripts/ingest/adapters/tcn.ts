@@ -1,5 +1,5 @@
 import type { CheerioAPI } from 'cheerio';
-import { buildOutageItem, fetchHtml, load, resolvePlannedWindow } from './utils';
+import { buildOutageItem, fetchHtml, load, resolvePlannedWindow, sanitizeText } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -85,8 +85,34 @@ export const tcn: Adapter = async (ctx) => {
 
   for (const listingUrl of LISTING_URLS) {
     try {
-      const listingHtml = await fetchHtml(ctx, listingUrl);
-      const $ = load(listingHtml, ctx.cheerio);
+      const { html: listingHtml, status, fromFixture } = await fetchHtml(ctx, listingUrl, 'tcn_news.html');
+      console.log(`[TCN] fetch ${listingUrl} status=${status}${fromFixture ? ' (fixture)' : ''}`);
+      const $ = load(listingHtml, ctx.cheerio, { xmlMode: fromFixture });
+      if (fromFixture) {
+        $('item').each((_, item) => {
+          const node = $(item);
+          const title = sanitizeText(node.find('title').text());
+          const link = sanitizeText(node.find('link').text());
+          const description = sanitizeText(node.find('description').text());
+          const pubDate = sanitizeText(node.find('pubDate').text());
+          if (!title || !KEYWORDS.test(title)) return;
+          const plannedWindow = resolvePlannedWindow(`${title} ${description}`);
+          items.push(
+            buildOutageItem({
+              source: 'TCN',
+              sourceName: 'Transmission Company of Nigeria',
+              title,
+              summary: description,
+              officialUrl: link,
+              verifiedBy: 'TCN',
+              plannedWindow: plannedWindow ?? undefined,
+              publishedAt: pubDate ? new Date(pubDate).toISOString() : undefined,
+              raw: { description }
+            })
+          );
+        });
+        break;
+      }
       $('article, .post, .td_module_wrap, .blog-post').each((_, element) => {
         const node = $(element);
         const link = node.find('a').first();
@@ -105,8 +131,9 @@ export const tcn: Adapter = async (ctx) => {
 
   for (const url of articleLinks) {
     try {
-      const articleHtml = await fetchHtml(ctx, url);
-      const article = load(articleHtml, ctx.cheerio);
+      const { html: articleHtml, status, fromFixture } = await fetchHtml(ctx, url, 'tcn_news.html');
+      console.log(`[TCN] article ${url} status=${status}${fromFixture ? ' (fixture)' : ''}`);
+      const article = load(articleHtml, ctx.cheerio, { xmlMode: fromFixture });
       const heading =
         article('h1.entry-title, h1.post-title, h1, h2').first().text().replace(/\s+/g, ' ').trim() ||
         article('title').text().trim();
@@ -115,7 +142,7 @@ export const tcn: Adapter = async (ctx) => {
       const bodyHtml =
         article('article .entry-content').text() || article('article').text() || article('.entry-content').text();
       const fallbackBody = article('p').text();
-      const bodyText = (bodyHtml || fallbackBody).replace(/\s+/g, ' ').trim();
+      const bodyText = sanitizeText(bodyHtml || fallbackBody);
       const areas = extractAreas(bodyText);
       const summary = summarise(bodyText || heading);
       const publishedAt = extractPublishedAt(articleHtml, article);
@@ -130,12 +157,20 @@ export const tcn: Adapter = async (ctx) => {
           raw: { bodyText }
         })
       );
+      if (fromFixture) {
+        break;
+      }
     } catch (error) {
       console.error(`TCN article fetch failed: ${url}`, error);
     }
   }
 
-  console.log(`[TCN] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length}`);
+  console.log(
+    `[TCN] items=${items.length} windows=${items.filter((item) => item.plannedWindow?.start).length} top=${items
+      .slice(0, 3)
+      .map((item) => item.title)
+      .join(' | ')}`
+  );
 
   return items;
 };

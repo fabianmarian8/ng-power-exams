@@ -3204,6 +3204,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"date-fns-tz@portal:./vendor/date-fns-tz::locator=vite_react_shadcn_ts%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "date-fns-tz@portal:./vendor/date-fns-tz::locator=vite_react_shadcn_ts%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "date-fns@npm:^3.6.0":
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
@@ -6928,6 +6934,7 @@ __metadata:
     cmdk: ^1.1.1
     cross-env: ^7.0.3
     date-fns: ^3.6.0
+    date-fns-tz: "portal:./vendor/date-fns-tz"
     embla-carousel-react: ^8.6.0
     eslint: ^9.32.0
     eslint-config-prettier: ^9.1.0

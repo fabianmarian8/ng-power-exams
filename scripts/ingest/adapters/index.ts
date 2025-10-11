@@ -1,4 +1,4 @@
-import { eko } from './eko';
+import { ekedc } from './ekedc';
 import { ikeja } from './ikeja';
 import { kaduna } from './kaduna';
 import { jed } from './jed';
@@ -6,7 +6,9 @@ import { tcn } from './tcn';
 import type { AdapterContext } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
-type AdapterName = 'tcn' | 'ikeja' | 'eko' | 'kaduna' | 'jed';
+import { mediaRelay } from './mediaRelay';
+
+type AdapterName = 'tcn' | 'ikeja' | 'ekedc' | 'kaduna' | 'jed' | 'media';
 
 interface AdapterResult {
   items: OutageItem[];
@@ -18,25 +20,28 @@ export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> 
   const adapters: Record<AdapterName, () => Promise<OutageItem[]>> = {
     tcn: () => tcn(ctx),
     ikeja: () => ikeja(ctx),
-    eko: () => eko(ctx),
+    ekedc: () => ekedc(ctx),
     kaduna: () => kaduna(ctx),
-    jed: () => jed(ctx)
+    jed: () => jed(ctx),
+    media: () => mediaRelay(ctx)
   };
 
   const stats: Record<AdapterName, number> = {
     tcn: 0,
     ikeja: 0,
-    eko: 0,
+    ekedc: 0,
     kaduna: 0,
-    jed: 0
+    jed: 0,
+    media: 0
   };
 
   const lastPublishedAtByAdapter: Record<AdapterName, string | null> = {
     tcn: null,
     ikeja: null,
-    eko: null,
+    ekedc: null,
     kaduna: null,
-    jed: null
+    jed: null,
+    media: null
   };
 
   const items: OutageItem[] = [];

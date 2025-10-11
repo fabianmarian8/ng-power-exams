@@ -11,16 +11,25 @@ import { outageGuides, DEFAULT_OUTAGE_LAST_VERIFIED } from "@/data/outages";
 import usePageMetadata from "@/hooks/use-page-metadata";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { formatLocalizedDateTime } from "@/lib/utils";
-import OutagesBoard from "@/components/OutagesBoard";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { LastVerifiedLabel } from "@/components/LastVerifiedLabel";
 import { useNews } from "@/hooks/useNews";
 import { useJsonLd } from "@/hooks/useJsonLd";
+import { useOutages } from "@/hooks/useOutages";
+import { PlannedBoard } from "@/components/outages/PlannedBoard";
+import { LiveBoard } from "@/components/outages/LiveBoard";
+import { NationalGridCard } from "@/components/outages/NationalGridCard";
 
 const Outages = () => {
   const { t, language } = useLanguage();
   usePageMetadata("meta.outages.title", "meta.outages.description");
   const news = useNews();
+  const outages = useOutages();
+  const liveItems = useMemo(() => [...outages.active, ...outages.restored], [outages.active, outages.restored]);
+  const latestTcn = useMemo(
+    () => outages.all.find((item) => item.source === "TCN"),
+    [outages.all]
+  );
 
   const nationalGuides = outageGuides.filter((guide) => guide.category === "national");
   const discoGuides = outageGuides.filter((guide) => guide.category === "disco");
@@ -86,7 +95,32 @@ const Outages = () => {
     [outagesUrl, siteUrl, t]
   );
 
+  const plannedEventsLd = useMemo(() => {
+    const planned = outages.planned.filter((item) => item.start);
+    if (planned.length === 0) {
+      return null;
+    }
+    return planned.slice(0, 10).map((item) => ({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      name: item.title,
+      startDate: item.start,
+      endDate: item.end ?? item.start,
+      description: item.summary ?? undefined,
+      url: item.officialUrl ?? outagesUrl,
+      location: {
+        "@type": "Place",
+        name: item.affectedAreas?.join(", ") ?? "Nigeria"
+      },
+      organizer: {
+        "@type": "Organization",
+        name: item.sourceName ?? item.source
+      }
+    }));
+  }, [outages.planned, outagesUrl]);
+
   useJsonLd("ld-json-outages-article", newsArticleLd);
+  useJsonLd("ld-json-outages-events", plannedEventsLd);
   useJsonLd("ld-json-outages-breadcrumb", breadcrumbLd);
 
   return (
@@ -117,7 +151,11 @@ const Outages = () => {
         </section>
 
         <section className="container py-10 space-y-10">
-          <OutagesBoard />
+          <PlannedBoard items={outages.planned} lastUpdated={outages.lastIngest} />
+
+          <LiveBoard items={liveItems} />
+
+          <NationalGridCard item={latestTcn} />
 
           {nationalHighlight && (
             <Card className="border-primary/40">
