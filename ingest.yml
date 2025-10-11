@@ -2,8 +2,9 @@ name: Ingest outages & redeploy
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/10 * * * *"
   workflow_dispatch:
+  pull_request:
 
 jobs:
   ingest:
@@ -25,6 +26,8 @@ jobs:
         run: yarn install --immutable --immutable-cache
 
       - name: Run ingest script
+        env:
+          INGEST_FIXTURES_ONLY: ${{ (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && '1' || '' }}
         run: yarn ingest
 
       - name: Commit generated files

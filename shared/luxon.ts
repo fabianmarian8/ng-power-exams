@@ -12,6 +12,35 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
+interface DurationValues {
+  days?: number;
+  hours?: number;
+  minutes?: number;
+  milliseconds?: number;
+}
+
+interface DurationLike {
+  milliseconds: number;
+  hours?: number;
+  minutes?: number;
+  days?: number;
+}
+
+function toMillis(values: DurationValues): number {
+  const factors = [
+    (values.days ?? 0) * 86_400_000,
+    (values.hours ?? 0) * 3_600_000,
+    (values.minutes ?? 0) * 60_000,
+    values.milliseconds ?? 0
+  ];
+
+  if (factors.some((factor) => !Number.isFinite(factor))) {
+    return Number.NaN;
+  }
+
+  return factors.reduce((total, value) => total + value, 0);
+}
+
 interface LocalComponents {
   year: number;
   month: number;
@@ -146,16 +175,22 @@ export class DateTime {
     return fromLocalComponents(local, this.zone);
   }
 
-  plus(values: { days?: number }): DateTime {
-    const days = values.days ?? 0;
-    if (!this.valid || !Number.isFinite(days)) return this;
-    return new DateTime(this.epochMillis + days * 86_400_000, this.zone, true);
+  plus(values: DurationValues): DateTime {
+    if (!this.valid) return this;
+    const delta = toMillis(values);
+    if (!Number.isFinite(delta)) {
+      return new DateTime(Number.NaN, this.zone, false);
+    }
+    return new DateTime(this.epochMillis + delta, this.zone, true);
   }
 
-  minus(values: { days?: number }): DateTime {
-    const days = values.days ?? 0;
-    if (!this.valid || !Number.isFinite(days)) return this;
-    return new DateTime(this.epochMillis - days * 86_400_000, this.zone, true);
+  minus(values: DurationValues): DateTime {
+    if (!this.valid) return this;
+    const delta = toMillis(values);
+    if (!Number.isFinite(delta)) {
+      return new DateTime(Number.NaN, this.zone, false);
+    }
+    return new DateTime(this.epochMillis - delta, this.zone, true);
   }
 
   toISO(): string | null {
@@ -203,6 +238,25 @@ export class DateTime {
 
   toUTC(): DateTime {
     return new DateTime(this.epochMillis, 'UTC', this.valid);
+  }
+
+  diff(other: DateTime, unit: 'hours' | 'minutes' | 'days' | 'milliseconds' = 'milliseconds'): DurationLike {
+    if (!this.valid || !other.valid) {
+      return { milliseconds: Number.NaN, hours: Number.NaN, minutes: Number.NaN, days: Number.NaN };
+    }
+
+    const diffMillis = this.epochMillis - other.epochMillis;
+    const result: DurationLike = { milliseconds: diffMillis };
+
+    if (unit === 'hours') {
+      result.hours = diffMillis / 3_600_000;
+    } else if (unit === 'minutes') {
+      result.minutes = diffMillis / 60_000;
+    } else if (unit === 'days') {
+      result.days = diffMillis / 86_400_000;
+    }
+
+    return result;
   }
 }
 
