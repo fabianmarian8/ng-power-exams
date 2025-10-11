@@ -1,11 +1,9 @@
-import { DateTime } from 'luxon';
 import { ExternalLink, Radio } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import type { OutageItem } from '@/lib/outages-types';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-const TZ = 'Africa/Lagos';
+import { toLagos } from '@/shared/luxon';
 
 interface NationalGridCardProps {
   item?: OutageItem;
@@ -13,7 +11,7 @@ interface NationalGridCardProps {
 
 export function NationalGridCard({ item }: NationalGridCardProps) {
   const { t } = useLanguage();
-  const published = item ? DateTime.fromISO(item.publishedAt).setZone(TZ) : null;
+  const published = item ? toLagos(item.publishedAt) : null;
 
   return (
     <Card className="border-primary/40 bg-primary/5">

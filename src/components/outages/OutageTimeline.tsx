@@ -1,8 +1,6 @@
-import { DateTime } from 'luxon';
 import { Dot } from 'lucide-react';
 import type { OutageItem } from '@/lib/outages-types';
-
-const TZ = 'Africa/Lagos';
+import { toLagos } from '@/shared/luxon';
 
 interface OutageTimelineProps {
   items: OutageItem[];
@@ -11,7 +9,13 @@ interface OutageTimelineProps {
 export function OutageTimeline({ items }: OutageTimelineProps) {
   const sorted = [...items]
     .filter((item) => item.start ?? item.plannedWindow?.start)
-    .sort((a, b) => new Date(a.start ?? a.plannedWindow?.start ?? 0).valueOf() - new Date(b.start ?? b.plannedWindow?.start ?? 0).valueOf())
+    .sort((a, b) => {
+      const startA = toLagos(a.start ?? a.plannedWindow?.start ?? '');
+      const startB = toLagos(b.start ?? b.plannedWindow?.start ?? '');
+      const millisA = startA && startA.isValid ? startA.toMillis() : Number.POSITIVE_INFINITY;
+      const millisB = startB && startB.isValid ? startB.toMillis() : Number.POSITIVE_INFINITY;
+      return millisA - millisB;
+    })
     .slice(0, 6);
 
   if (sorted.length === 0) {
@@ -20,9 +24,9 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
 
   const maxDuration = Math.max(
     ...sorted.map((item) => {
-      const start = DateTime.fromISO(item.start ?? item.plannedWindow?.start ?? '', { zone: TZ });
-      const end = DateTime.fromISO(item.end ?? item.plannedWindow?.end ?? '', { zone: TZ });
-      if (!start.isValid || !end.isValid) return 2;
+      const start = toLagos(item.start ?? item.plannedWindow?.start ?? '');
+      const end = toLagos(item.end ?? item.plannedWindow?.end ?? '');
+      if (!start || !start.isValid || !end || !end.isValid) return 2;
       return Math.max(1, end.diff(start, 'hours').hours || 2);
     })
   );
@@ -31,9 +35,9 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
     <div className="rounded-xl border bg-muted/40 p-4">
       <div className="grid gap-4 md:grid-cols-2">
         {sorted.map((item) => {
-          const start = DateTime.fromISO(item.start ?? item.plannedWindow?.start ?? '', { zone: TZ });
-          const end = DateTime.fromISO(item.end ?? item.plannedWindow?.end ?? '', { zone: TZ });
-          const duration = start.isValid && end.isValid ? Math.max(1, end.diff(start, 'hours').hours) : 2;
+          const start = toLagos(item.start ?? item.plannedWindow?.start ?? '');
+          const end = toLagos(item.end ?? item.plannedWindow?.end ?? '');
+          const duration = start && start.isValid && end && end.isValid ? Math.max(1, end.diff(start, 'hours').hours) : 2;
           const height = 40 + (duration / maxDuration) * 60;
 
           return (
@@ -43,7 +47,7 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
                 <span className="flex-1 w-px bg-primary/40" style={{ minHeight: `${height}px` }} />
               </div>
               <div className="flex-1 rounded-lg bg-background px-4 py-3 shadow-sm">
-                <p className="text-xs uppercase text-muted-foreground">{start.isValid ? start.toFormat('dd MMM, HH:mm') : 'TBC'}</p>
+                <p className="text-xs uppercase text-muted-foreground">{start && start.isValid ? start.toFormat('dd MMM, HH:mm') : 'TBC'}</p>
                 <p className="font-medium leading-tight">{item.title}</p>
                 {item.affectedAreas?.length ? (
                   <p className="mt-1 text-xs text-muted-foreground">{item.affectedAreas.slice(0, 3).join(', ')}</p>
@@ -51,7 +55,7 @@ export function OutageTimeline({ items }: OutageTimelineProps) {
                 <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                   <Dot className="h-4 w-4" />
                   <span>
-                    {start.isValid && end.isValid
+                    {start && start.isValid && end && end.isValid
                       ? `${start.toFormat('HH:mm')} – ${end.toFormat('HH:mm')}`
                       : 'Duration pending'}
                   </span>

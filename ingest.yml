@@ -30,6 +30,11 @@ jobs:
           INGEST_FIXTURES_ONLY: ${{ (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && '1' || '' }}
         run: yarn ingest
 
+      - name: Run news ingest
+        env:
+          NEWS_OFFLINE: ${{ (github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch') && '1' || '' }}
+        run: yarn ingest:news
+
       - name: Commit generated files
         run: |
           git config user.name "bot"

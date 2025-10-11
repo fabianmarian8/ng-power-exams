@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "luxon": path.resolve(__dirname, "./shared/luxon"),
+      "@/shared": path.resolve(__dirname, "./shared"),
+      "@shared": path.resolve(__dirname, "./shared"),
     },
   },
 }));

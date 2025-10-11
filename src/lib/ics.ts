@@ -1,54 +1,39 @@
-import { DateTime } from 'luxon';
-import type { OutageItem } from '@/lib/outages-types';
+import { toLagos, LAGOS_TZ } from "@/shared/luxon";
 
-const TZ = 'Africa/Lagos';
+export function buildICS(opts: {
+  title: string;
+  description?: string;
+  location?: string;
+  start?: string;
+  end?: string;
+}): string {
+  const s = opts.start ? toLagos(opts.start) : null;
+  const e = opts.end ? toLagos(opts.end) : null;
 
-function toIcsDate(iso: string): string {
-  return DateTime.fromISO(iso, { zone: TZ }).toUTC().toFormat("yyyyMMdd'T'HHmmss'Z'");
-}
+  const end = e ?? (s ? s.plus({ hours: 2 }) : null);
 
-function escape(text: string | undefined): string {
-  if (!text) return '';
-  return text.replace(/\\/g, '\\\\').replace(/\n+/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
-}
+  const dt = (d: ReturnType<typeof toLagos>) => d?.toFormat("yyyyMMdd'T'HHmmss");
+  const esc = (x?: string) =>
+    (x ?? "").replace(/\\n/g, "\\n").replace(/,/g, "\\,").replace(/;/g, "\\;");
 
-export function generateOutageIcs(item: OutageItem): string | null {
-  const startIso = item.start ?? item.plannedWindow?.start;
-  if (!startIso) {
-    return null;
-  }
-  const start = DateTime.fromISO(startIso, { zone: TZ });
-  if (!start.isValid) {
-    return null;
-  }
-  const endIso = item.end ?? item.plannedWindow?.end;
-  const end = endIso ? DateTime.fromISO(endIso, { zone: TZ }) : start.plus({ hours: 2 });
-  const safeEnd = end.isValid ? end : start.plus({ hours: 2 });
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//NaijaInfo//Outage Planner//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    "BEGIN:VEVENT",
+    s ? `DTSTART;TZID=${LAGOS_TZ}:${dt(s)}` : "",
+    end ? `DTEND;TZID=${LAGOS_TZ}:${dt(end)}` : "",
+    `SUMMARY:${esc(opts.title)}`,
+    opts.location ? `LOCATION:${esc(opts.location)}` : "",
+    opts.description ? `DESCRIPTION:${esc(opts.description)}` : "",
+    "END:VEVENT",
+    "END:VCALENDAR",
+    ""
+  ]
+    .filter(Boolean)
+    .join("\r\n");
 
-  // Don't generate calendar link for events that ended more than 6 hours ago
-  const now = DateTime.now().setZone(TZ);
-  const sixHoursAfterEnd = safeEnd.plus({ hours: 6 });
-  if (now.toMillis() > sixHoursAfterEnd.toMillis()) {
-    return null;
-  }
-
-  const lines = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//NaijaInfo//Outage Planner//EN',
-    'CALSCALE:GREGORIAN',
-    'BEGIN:VEVENT',
-    `UID:${item.id}@naijainfo.ng`,
-    `DTSTAMP:${toIcsDate(DateTime.now().setZone(TZ).toISO()!)}`,
-    `DTSTART:${toIcsDate(start.toISO()!)}`,
-    `DTEND:${toIcsDate(safeEnd.toISO()!)}`,
-    `SUMMARY:${escape(item.title)}`,
-    `DESCRIPTION:${escape(item.summary ?? item.title)}`,
-    item.officialUrl ? `URL:${escape(item.officialUrl)}` : undefined,
-    'END:VEVENT',
-    'END:VCALENDAR'
-  ].filter(Boolean) as string[];
-
-  const blob = lines.join('\r\n');
-  return `data:text/calendar;charset=utf-8,${encodeURIComponent(blob)}`;
+  return ics;
 }

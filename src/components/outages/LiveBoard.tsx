@@ -1,21 +1,19 @@
 import { useMemo } from 'react';
-import { DateTime } from 'luxon';
 import { AlertTriangle, RefreshCw, Zap } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { OutageItem } from '@/lib/outages-types';
-
-const TZ = 'Africa/Lagos';
+import { nowLagos, toLagos } from '@/shared/luxon';
 
 interface LiveBoardProps {
   items: OutageItem[];
 }
 
 function isNew(item: OutageItem): boolean {
-  const published = DateTime.fromISO(item.publishedAt, { zone: TZ });
-  if (!published.isValid) return false;
-  return DateTime.now().setZone(TZ).diff(published, 'hours').hours <= 24;
+  const published = toLagos(item.publishedAt);
+  if (!published || !published.isValid) return false;
+  return nowLagos().diff(published, 'hours').hours <= 24;
 }
 
 function statusBadge(item: OutageItem) {
@@ -38,7 +36,13 @@ export function LiveBoard({ items }: LiveBoardProps) {
   const sorted = useMemo(
     () =>
       [...items]
-        .sort((a, b) => new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf())
+        .sort((a, b) => {
+          const bDate = toLagos(b.publishedAt);
+          const aDate = toLagos(a.publishedAt);
+          const bMillis = bDate && bDate.isValid ? bDate.toMillis() : 0;
+          const aMillis = aDate && aDate.isValid ? aDate.toMillis() : 0;
+          return bMillis - aMillis;
+        })
         .slice(0, 12),
     [items]
   );
@@ -59,7 +63,7 @@ export function LiveBoard({ items }: LiveBoardProps) {
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {sorted.map((item) => {
-          const published = DateTime.fromISO(item.publishedAt).setZone(TZ);
+          const published = toLagos(item.publishedAt);
           return (
             <Card key={item.id} className="flex h-full flex-col justify-between border-l-4 border-l-warning-orange">
               <CardHeader className="space-y-2">
@@ -86,7 +90,8 @@ export function LiveBoard({ items }: LiveBoardProps) {
                   </p>
                 ) : null}
                 <div className="text-xs text-muted-foreground">
-                  {t('outages.live.publishedAt', 'Published')}: {published.isValid ? published.toFormat('dd MMM, HH:mm') : 'TBC'}
+                  {t('outages.live.publishedAt', 'Published')}:{' '}
+                  {published && published.isValid ? published.toFormat('dd MMM, HH:mm') : 'TBC'}
                 </div>
                 {item.officialUrl && (
                   <a
