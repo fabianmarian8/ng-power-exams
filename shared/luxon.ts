@@ -146,16 +146,48 @@ export class DateTime {
     return fromLocalComponents(local, this.zone);
   }
 
-  plus(values: { days?: number }): DateTime {
+  plus(values: { days?: number; hours?: number; minutes?: number; seconds?: number }): DateTime {
     const days = values.days ?? 0;
-    if (!this.valid || !Number.isFinite(days)) return this;
-    return new DateTime(this.epochMillis + days * 86_400_000, this.zone, true);
+    const hours = values.hours ?? 0;
+    const minutes = values.minutes ?? 0;
+    const seconds = values.seconds ?? 0;
+    if (!this.valid) return this;
+    const totalMillis = days * 86_400_000 + hours * 3_600_000 + minutes * 60_000 + seconds * 1_000;
+    if (!Number.isFinite(totalMillis)) return this;
+    return new DateTime(this.epochMillis + totalMillis, this.zone, true);
   }
 
-  minus(values: { days?: number }): DateTime {
+  minus(values: { days?: number; hours?: number; minutes?: number; seconds?: number }): DateTime {
     const days = values.days ?? 0;
-    if (!this.valid || !Number.isFinite(days)) return this;
-    return new DateTime(this.epochMillis - days * 86_400_000, this.zone, true);
+    const hours = values.hours ?? 0;
+    const minutes = values.minutes ?? 0;
+    const seconds = values.seconds ?? 0;
+    if (!this.valid) return this;
+    const totalMillis = days * 86_400_000 + hours * 3_600_000 + minutes * 60_000 + seconds * 1_000;
+    if (!Number.isFinite(totalMillis)) return this;
+    return new DateTime(this.epochMillis - totalMillis, this.zone, true);
+  }
+
+  diff(other: DateTime, unit?: string | string[]): { hours: number; as(u: string): number } {
+    const millisDiff = this.epochMillis - other.epochMillis;
+    const hours = millisDiff / 3_600_000;
+    const minutes = millisDiff / 60_000;
+    const seconds = millisDiff / 1_000;
+    const days = millisDiff / 86_400_000;
+    
+    return {
+      hours,
+      as(u: string): number {
+        switch (u) {
+          case 'hours': return hours;
+          case 'minutes': return minutes;
+          case 'seconds': return seconds;
+          case 'days': return days;
+          case 'milliseconds': return millisDiff;
+          default: return millisDiff;
+        }
+      }
+    };
   }
 
   toISO(): string | null {
@@ -169,11 +201,19 @@ export class DateTime {
     if (!this.valid) return 'Invalid DateTime';
     const local = toLocalComponents(this.epochMillis, this.zone);
     if (!local) return 'Invalid DateTime';
+    const monthName = MONTH_NAMES[clamp(local.month, 1, 12) - 1];
     switch (pattern) {
       case 'dd LLL yyyy, HH:mm':
-        return `${formatNumber(local.day, 2)} ${MONTH_NAMES[clamp(local.month, 1, 12) - 1]} ${formatNumber(local.year, 4)}, ${formatNumber(local.hour, 2)}:${formatNumber(local.minute, 2)}`;
+        return `${formatNumber(local.day, 2)} ${monthName} ${formatNumber(local.year, 4)}, ${formatNumber(local.hour, 2)}:${formatNumber(local.minute, 2)}`;
+      case 'dd MMM, HH:mm':
+        return `${formatNumber(local.day, 2)} ${monthName}, ${formatNumber(local.hour, 2)}:${formatNumber(local.minute, 2)}`;
+      case 'dd MMM HH:mm':
+        return `${formatNumber(local.day, 2)} ${monthName} ${formatNumber(local.hour, 2)}:${formatNumber(local.minute, 2)}`;
       case 'HH:mm':
         return `${formatNumber(local.hour, 2)}:${formatNumber(local.minute, 2)}`;
+      case "yyyyMMdd'T'HHmmss'Z'":
+        const utc = new Date(this.epochMillis);
+        return `${formatNumber(utc.getUTCFullYear(), 4)}${formatNumber(utc.getUTCMonth() + 1, 2)}${formatNumber(utc.getUTCDate(), 2)}T${formatNumber(utc.getUTCHours(), 2)}${formatNumber(utc.getUTCMinutes(), 2)}${formatNumber(utc.getUTCSeconds(), 2)}Z`;
       default:
         return this.toISO() ?? '';
     }

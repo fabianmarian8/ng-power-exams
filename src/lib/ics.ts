@@ -25,6 +25,13 @@ export function generateOutageIcs(item: OutageItem): string | null {
   const end = endIso ? DateTime.fromISO(endIso, { zone: TZ }) : start.plus({ hours: 2 });
   const safeEnd = end.isValid ? end : start.plus({ hours: 2 });
 
+  // Don't generate calendar link for events that ended more than 6 hours ago
+  const now = DateTime.now().setZone(TZ);
+  const sixHoursAfterEnd = safeEnd.plus({ hours: 6 });
+  if (now.toMillis() > sixHoursAfterEnd.toMillis()) {
+    return null;
+  }
+
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
