@@ -120,6 +120,10 @@
       "viewAll": "Wo gbogbo DisCos",
       "seeGuide": "Wo ìtọ́sọ́nà pípa"
     },
+    "featuredGuides": {
+      "title": "Àwọn Ìtọ́sọ́nà Pàtàkì",
+      "subtitle": "Àwọn ohun èlò tó gbajúmọ̀ jùlọ fún ìṣòro ìmọ́lẹ̀ àti èsì ìdánwò"
+    },
     "examShortcuts": {
       "title": "Àwọn Ọ̀nà Kúkúrú Èsì Ìdánwò",
       "browse": "Ṣàwárí àárín èsì",

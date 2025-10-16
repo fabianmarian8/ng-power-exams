@@ -120,6 +120,10 @@
       "viewAll": "View all DisCos",
       "seeGuide": "See outage guide"
     },
+    "featuredGuides": {
+      "title": "Featured Guides",
+      "subtitle": "Most popular resources for light wahala and exam results"
+    },
     "examShortcuts": {
       "title": "Exam Result Shortcuts",
       "browse": "Browse results hub",

@@ -1,10 +1,24 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import enTranslations from '../i18n/en.json';
+import pcmTranslations from '../i18n/pcm.json';
+import haTranslations from '../i18n/ha.json';
+import yoTranslations from '../i18n/yo.json';
+import igTranslations from '../i18n/ig.json';
 
 // Language codes
 export type Language = 'en' | 'pcm' | 'ha' | 'yo' | 'ig';
 
 // Translation type
 type Translations = Record<string, any>;
+
+// Translation map
+const translationsMap: Record<Language, Translations> = {
+  en: enTranslations,
+  pcm: pcmTranslations,
+  ha: haTranslations,
+  yo: yoTranslations,
+  ig: igTranslations,
+};
 
 // Supported languages metadata
 export const LANGUAGES = [
@@ -25,28 +39,20 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const STORAGE_KEY = 'naijainfo_lang';
 
-// Import translations
-const loadTranslations = async (lang: Language): Promise<Translations> => {
-  try {
-    const module = await import(`../i18n/${lang}.json`);
-    return module.default;
-  } catch (error) {
-    // Fallback to English if language file not found
-    const module = await import(`../i18n/en.json`);
-    return module.default;
-  }
-};
-
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [language, setLanguageState] = useState<Language>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     return (saved as Language) || 'en';
   });
 
-  const [translations, setTranslations] = useState<Translations>({});
+  const [translations, setTranslations] = useState<Translations>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    const lang = (saved as Language) || 'en';
+    return translationsMap[lang];
+  });
 
   useEffect(() => {
-    loadTranslations(language).then(setTranslations);
+    setTranslations(translationsMap[language]);
     localStorage.setItem(STORAGE_KEY, language);
     document.documentElement.lang = language;
   }, [language]);

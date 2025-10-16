@@ -120,6 +120,10 @@
       "viewAll": "Duba duk DisCos",
       "seeGuide": "Duba jagorar katsewa"
     },
+    "featuredGuides": {
+      "title": "Jagororin da Aka Bayyana",
+      "subtitle": "Shahararrun albarkatu don matsalar wutar lantarki da sakamakon jarrabawa"
+    },
     "examShortcuts": {
       "title": "Hanyar Sakamakon Jarrabawa",
       "browse": "Ziyarci cibiyar sakamakon",
