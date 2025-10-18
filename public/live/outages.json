@@ -1,48 +1,5 @@
 {
-  "generatedAt": "2025-10-18T10:00:00.000Z",
-  "latestSourceAt": "2025-10-18T09:30:00.000Z",
-  "items": [
-    {
-      "id": "ekedc-lekki-2025-10-18",
-      "source": "EKEDC",
-      "sourceName": "Eko Electricity Distribution Company",
-      "title": "EKEDC schedules maintenance on Lekki transmission line",
-      "summary": "Maintenance scheduled from 8:00am to 5:00pm on 20/10/2025. Customers in Lekki will experience a 6-hour outage due to preventive maintenance.",
-      "officialUrl": "https://www.ekedp.com/news/lekki-maintenance",
-      "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-18T08:00:00.000Z",
-      "plannedWindow": {
-        "start": "2025-10-20T08:00:00+01:00",
-        "end": "2025-10-20T17:00:00+01:00",
-        "timezone": "Africa/Lagos"
-      },
-      "status": "PLANNED",
-      "confidence": 0.9,
-      "start": "2025-10-20T08:00:00+01:00",
-      "end": "2025-10-20T17:00:00+01:00",
-      "affectedAreas": ["Lekki", "Ajah"]
-    }
-  ],
-  "planned": [
-    {
-      "id": "ekedc-lekki-2025-10-18",
-      "source": "EKEDC",
-      "sourceName": "Eko Electricity Distribution Company",
-      "title": "EKEDC schedules maintenance on Lekki transmission line",
-      "summary": "Maintenance scheduled from 8:00am to 5:00pm on 20/10/2025.",
-      "officialUrl": "https://www.ekedp.com/news/lekki-maintenance",
-      "verifiedBy": "DISCO",
-      "publishedAt": "2025-10-18T08:00:00.000Z",
-      "plannedWindow": {
-        "start": "2025-10-20T08:00:00+01:00",
-        "end": "2025-10-20T17:00:00+01:00",
-        "timezone": "Africa/Lagos"
-      },
-      "status": "PLANNED",
-      "confidence": 0.9,
-      "start": "2025-10-20T08:00:00+01:00",
-      "end": "2025-10-20T17:00:00+01:00",
-      "affectedAreas": ["Lekki", "Ajah"]
-    }
-  ]
+  "items": [],
+  "planned": [],
+  "generatedAt": "2025-10-18T09:47:00.904Z"
 }

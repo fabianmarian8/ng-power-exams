@@ -1,13 +1,83 @@
 {
-  "generatedAt": "2025-10-18T10:00:00.000Z",
+  "generatedAt": "2025-10-18T09:47:18.936Z",
   "items": [
+    {
+      "id": "f885d8b6f0dc08b3891fd557b0d4c3d27814d5dc",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "Police confirm 2 officers killed by bandits in Kaduna",
+      "summary": "Police confirm 2 officers killed by bandits in Kaduna Vanguard News",
+      "publishedAt": "2025-10-18T07:50:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/10/police-confirm-2-officers-killed-by-bandits-in-kaduna/"
+    },
+    {
+      "id": "2fec1b7d8dca1183df49e4088e2e458943e41300",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "Woman begs court for custody of grandson, demands N30,000 monthly for upkeep",
+      "summary": "•I want to take care of my son myself, enroll him in school —Man A middle-aged woman, Karimatu Sulaimanm, has prayed a Shari’a court in Magajin Gari, Kaduna State to grant her custody of her four-year-old grandson. Karimatu’s counsel, Mr Usman Umar, told the court that his client’s daughter who was divorced by her husband, […]",
+      "publishedAt": "2025-10-18T07:38:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/woman-begs-court-for-custody-of-grandson-demands-n30000-monthly-for-upkeep/"
+    },
+    {
+      "id": "6c6be21a703de907a9af5c68db612e8628934423",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Tasks ahead new INEC chairman",
+      "summary": "The recent exit of Professor Mahmood Yakubu from the Independent National Electoral Commission (INEC) upon the completion of his two-term tenure as chairman and the immediate appointment of Professor Josh Ojo Amupitan as replacement are significant developments that necessitate an evaluation of the electoral body’s performances, vis-a-vis the challenges ahead. Many Nigerians will now wait […]",
+      "publishedAt": "2025-10-18T04:09:00+01:00",
+      "officialUrl": "https://dailytrust.com/tasks-ahead-new-inec-chairman/"
+    },
+    {
+      "id": "dc662a0be2603e5ef3a7dbe1cf5c8d3e82035509",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Ikeja Electric trains electricians in safety procedures",
+      "summary": "Ikeja Electric Plc, in partnership with the Licensed Electrical Contractors Association of Nigeria, has trained over 100 young electricians and field technicians in safety procedures, risk management, and industry standards as part of efforts to improve professionalism in the power sector. Read More",
+      "publishedAt": "2025-10-17T13:09:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/ikeja-electric-trains-electricians-in-safety-procedures/"
+    },
+    {
+      "id": "fdb100df14aaea9137640a6d347732a54d9bf248",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Nigeria anchors Africa’s $3bn solar push amid grid collapse",
+      "summary": "In a sign that Nigeria may soon anchor West Africa’s energy leap, four states on Tuesday, October 14, inked solar mini-grid agreements as part of a sweeping push behind a $3 billion renewable energy fund. Read More",
+      "publishedAt": "2025-10-15T10:05:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/nigeria-anchors-africas-3bn-solar-push-amid-grid-collapse/"
+    },
+    {
+      "id": "c372153577ba88c4f56a21a17cc1c55917253028",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Nigerian Government, GenCos Finalise ₦4 Trillion Power Deal",
+      "summary": "The Nigerian government has finalised the implementation framework for the ₦4 trillion Presidential Power Sector Debt Reduction Plan, indicating a decisive step towards restoring financial stability and investors’ confidence in Nigeria’s electricity market.",
+      "publishedAt": "2025-10-15T09:59:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/nigerian-government-gencos-finalise-%e2%82%a64-trillion-power-deal/"
+    },
+    {
+      "id": "bbc615dd9e29e4be191a85e514a334f50b74c14b",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "NERC: 38 Nigerians Killed, 19 Injured in 60 Electricity-related Incidents in Q2 2025",
+      "summary": "Nigeria recorded a sharp rise in power-sector accidents in the second quarter of 2025, reporting 60 separate incidents, which resulted in 38 fatalities and 19 injuries, according to the latest data released by the Nigerian Electricity Regulatory Commission (NERC). Read More",
+      "publishedAt": "2025-10-15T09:52:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/nerc-38-nigerians-killed-19-injured-in-60-electricity-related-incidents-in-q2-2025/"
+    },
     {
       "id": "9fcd1e2387a3a1e5c9f9aeb6e0183f52636c2586",
       "domain": "POWER",
       "tier": "OFFICIAL",
       "source": "Kaduna Electric",
       "title": "Eko DisCo registers electricity company as Lagos subsidiary",
-      "summary": "Eko Electricity Distribution Company Plc (EKEDC) has formally registered Excel Electricity Distribution Company Limited as a wholly owned subsidiary to oversee its electricity distribution operations within Lagos State.",
+      "summary": "Eko Electricity Distribution Company Plc (EKEDC) has formally registered Excel Electricity Distribution Company Limited as a wholly owned subsidiary to oversee its electricity distribution operations within Lagos State. Read More",
       "publishedAt": "2025-10-09T12:39:00+01:00",
       "officialUrl": "https://kadunaelectric.com/eko-disco-registers-electricity-company-as-lagos-subsidiary/"
     },
@@ -17,12 +87,42 @@
       "tier": "OFFICIAL",
       "source": "Kaduna Electric",
       "title": "NSE: With 55% Grid Access, Nigeria Faces Persistent Energy Challenges",
-      "summary": "Despite Nigeria's installed capacity of 13,014 MW serving over 220 million people, only 55 per cent of Nigerians has grid access, highlighting persistent energy challenges in the country.",
+      "summary": "Despite Nigeria’s installed capacity of 13,014 MW serving over 220 million people, only 55 per cent of Nigerians has grid access, highlighting persistent energy challenges in the country, the Nigerian Society of Engineers (NSE) has said. Read More",
       "publishedAt": "2025-10-09T12:28:00+01:00",
       "officialUrl": "https://kadunaelectric.com/nse-with-55-grid-access-nigeria-faces-persistent-energy-challenges/"
+    },
+    {
+      "id": "1cbdca65a94c9eebb29c2790eece288d3dd33f7e",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "BREAKING: Nigerian Authorities Delist 1.9 Million Electricity Customers For Inactivity In One Year",
+      "summary": "A Sahara Reporters review of data from the Nigerian Electricity Regulatory Commission (NERC) has revealed that 1.9 million customers were delisted from the Commission’s database between March and June 2025. Read More",
+      "publishedAt": "2025-10-09T12:24:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/breaking-nigerian-authorities-delist-1-9-million-electricity-customers-for-inactivity-in-one-year/"
+    },
+    {
+      "id": "398a6b8b92915957655905b9f630ab1749f99024",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "Spike in electricity demand pushes subsidy to N514b in three months",
+      "summary": "Nigeria’s electricity market continues to be weighed down by subsidy payments and inefficiencies as taxpayers incurred N514.35 billion to subsidise electricity consumption in just three months, largely driven by high demand from residents of Lagos and Abuja. Read More",
+      "publishedAt": "2025-10-08T09:09:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/spike-in-electricity-demand-pushes-subsidy-to-n514b-in-three-months/"
+    },
+    {
+      "id": "c6ecde747a7993c1a4ae21fd387c4e3ef82c27b2",
+      "domain": "POWER",
+      "tier": "OFFICIAL",
+      "source": "Kaduna Electric",
+      "title": "FG to add 7,000MW to national grid –Power minister",
+      "summary": "The Minister of Power, Chief Adebayo Adelabu, has announced that the Federal Government is moving into the first phase of the Siemens power project, which will add an additional 7,000 megawatts to the national grid and help stabilise electricity supply across the country. Read More",
+      "publishedAt": "2025-10-08T09:06:00+01:00",
+      "officialUrl": "https://kadunaelectric.com/fg-to-add-7000mw-to-national-grid-power-minister/"
     }
   ],
   "latestOfficialByDomain": {
-    "POWER": "2025-10-09T12:39:00+01:00"
+    "POWER": "2025-10-17T13:09:00+01:00"
   }
 }
