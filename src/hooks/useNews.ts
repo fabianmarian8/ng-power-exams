@@ -29,6 +29,7 @@ export function useNews(): UseNewsResult {
           });
           if (!response.ok) {
             if (response.status === 404) {
+              console.warn('News file not found, using fallback');
               return cloneFallback();
             }
             throw new Error(`Failed to fetch news (status ${response.status})`);
@@ -46,6 +47,7 @@ export function useNews(): UseNewsResult {
       return cloneFallback();
     },
     refetchOnWindowFocus: true,
+    refetchInterval: 60_000, // Obnoviť každú minútu
     staleTime: 30_000
   });
 

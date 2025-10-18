@@ -14,6 +14,7 @@ import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { StatsCounter } from "@/components/StatsCounter";
 import { TrustBadges } from "@/components/TrustBadges";
 import { Testimonials } from "@/components/Testimonials";
+import { LiveNewsBoard } from "@/components/LiveNewsBoard";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -196,6 +197,12 @@ const Index = () => {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="container py-12 space-y-8">
+          <ScrollReveal>
+            <LiveNewsBoard />
+          </ScrollReveal>
         </section>
 
         <section className="container py-12 space-y-8">

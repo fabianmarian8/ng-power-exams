@@ -79,7 +79,7 @@ export function useOutages(): UseOutagesResult {
           const response = await fetch(`/live/outages.json?${queryString}`, { cache: 'no-store' });
           if (!response.ok) {
             if (response.status === 404) {
-              console.warn('Live outages file missing — returning fallback payload');
+              console.warn('Outages file not found, using fallback');
               return cloneFallback();
             }
             throw new Error(`Failed to fetch outages (status ${response.status})`);
@@ -97,8 +97,8 @@ export function useOutages(): UseOutagesResult {
       return cloneFallback();
     },
     refetchOnWindowFocus: true,
-    staleTime: 60_000,
-    refetchInterval: 300_000
+    refetchInterval: 120_000, // Obnoviť každé 2 minúty
+    staleTime: 60_000
   });
 
   const payload = query.data ?? cloneFallback();
