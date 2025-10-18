@@ -41,7 +41,6 @@ export function selectPlanned(items: OutageItem[], range: PlannedRange): OutageI
   });
 
   let filtered = withStart;
-  const now = DateTime.now().setZone(ZONE);
 
   if (range === 'today') {
     const startOfDay = now.startOf('day');
