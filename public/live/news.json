@@ -1,25 +1,35 @@
 {
-  "generatedAt": "2025-10-18T10:47:31.620Z",
+  "generatedAt": "2025-10-18T20:46:49.581Z",
   "items": [
     {
-      "id": "f885d8b6f0dc08b3891fd557b0d4c3d27814d5dc",
-      "domain": "POWER",
-      "tier": "MEDIA",
-      "source": "Vanguard",
-      "title": "Police confirm 2 officers killed by bandits in Kaduna",
-      "summary": "Police confirm 2 officers killed by bandits in Kaduna Vanguard News",
-      "publishedAt": "2025-10-18T07:50:00+01:00",
-      "officialUrl": "https://www.vanguardngr.com/2025/10/police-confirm-2-officers-killed-by-bandits-in-kaduna/"
-    },
-    {
-      "id": "6c6be21a703de907a9af5c68db612e8628934423",
+      "id": "5b3d4cc65938a943e767ba7bc8208cab7663052a",
       "domain": "POWER",
       "tier": "MEDIA",
       "source": "Daily Trust",
-      "title": "Tasks ahead new INEC chairman",
-      "summary": "The recent exit of Professor Mahmood Yakubu from the Independent National Electoral Commission (INEC) upon the completion of his two-term tenure as chairman and the immediate appointment of Professor Josh Ojo Amupitan as replacement are significant developments that necessitate an evaluation of the electoral body’s performances, vis-a-vis the challenges ahead. Many Nigerians will now wait […]",
-      "publishedAt": "2025-10-18T04:09:00+01:00",
-      "officialUrl": "https://dailytrust.com/tasks-ahead-new-inec-chairman/"
+      "title": "Kaduna Gov’t Commissions Solar-Powered Borehole at NYSC Camp to end water scarcity",
+      "summary": "Kaduna State Government has successfully commissioned a solar-powered borehole at the NYSC Orientation Camp in Kaduna. The facility, located at the female corps members’ dormitory, was executed through the State’s Rural Water Supply and Sanitation Agency (RUWASSA). The commissioning ceremony, held at the NYSC camp, was marked by deep appreciation from the National Youth Service […]",
+      "publishedAt": "2025-10-18T20:28:00+01:00",
+      "officialUrl": "https://dailytrust.com/kaduna-govt-commissions-solar-powered-borehole-at-nysc-camp-to-end-water-scarcity/"
+    },
+    {
+      "id": "4a94f2bd0f07e0882b2f34c872fc7d503ea99b37",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Kaduna Targets 4.2 Million in Measles, Rubella Vaccination Campaign",
+      "summary": "Kaduna State has launched a massive vaccination drive aimed at immunizing 4.2 million children against measles and rubella, in a bold step to protect the next generation from deadly but preventable diseases. The campaign, which began on October 18, 2025, is part of a nationwide effort and involves strong collaboration between the state government, the […]",
+      "publishedAt": "2025-10-18T20:28:00+01:00",
+      "officialUrl": "https://dailytrust.com/kaduna-targets-4-2-million-in-measles-rubella-vaccination-campaign/"
+    },
+    {
+      "id": "f851285bfd56d3b73ba21dcae4b72a401a36882f",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "Six dead, eight injured in Yobe road crash",
+      "summary": "\"As a result, six passengers tragically lost their lives on the spot, while eight others sustained various degrees of injuries...",
+      "publishedAt": "2025-10-18T17:21:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/six-dead-eight-injured-in-yobe-road-crash/"
     },
     {
       "id": "dc662a0be2603e5ef3a7dbe1cf5c8d3e82035509",
