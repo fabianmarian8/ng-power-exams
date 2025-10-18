@@ -25,9 +25,19 @@ const ZONE = 'Africa/Lagos';
 export type PlannedRange = 'today' | 'next7' | 'all';
 
 export function selectPlanned(items: OutageItem[], range: PlannedRange): OutageItem[] {
+  const now = DateTime.now().setZone(ZONE);
+  const oneMonthAgo = now.minus({ days: 30 });
+  
   const withStart = items.filter((item) => {
     if (item.status !== 'PLANNED') return false;
-    return Boolean(item.start ?? item.plannedWindow?.start);
+    const startIso = item.start ?? item.plannedWindow?.start;
+    if (!startIso) return false;
+    
+    const start = DateTime.fromISO(startIso, { zone: ZONE });
+    if (!start.isValid) return false;
+    
+    // Zobraz len výpadky z posledných 30 dní alebo budúce
+    return start >= oneMonthAgo;
   });
 
   let filtered = withStart;

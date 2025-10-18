@@ -9,8 +9,20 @@ interface OutageTimelineProps {
 }
 
 export function OutageTimeline({ items }: OutageTimelineProps) {
+  const now = DateTime.now().setZone(TZ);
+  const oneMonthAgo = now.minus({ days: 30 });
+  
   const sorted = [...items]
-    .filter((item) => item.start ?? item.plannedWindow?.start)
+    .filter((item) => {
+      const startIso = item.start ?? item.plannedWindow?.start;
+      if (!startIso) return false;
+      
+      const start = DateTime.fromISO(startIso, { zone: TZ });
+      if (!start.isValid) return false;
+      
+      // Zobraz len budúce výpadky alebo výpadky z posledných 30 dní
+      return start >= oneMonthAgo;
+    })
     .sort((a, b) => new Date(a.start ?? a.plannedWindow?.start ?? 0).valueOf() - new Date(b.start ?? b.plannedWindow?.start ?? 0).valueOf())
     .slice(0, 6);
 

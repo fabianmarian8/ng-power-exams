@@ -142,7 +142,7 @@ async function main() {
     }
 
     const windowEnded = end?.isValid ? end < now : start < now;
-    if (start < now.minus({ days: 1 }) && windowEnded) {
+    if (start < now.minus({ days: 30 }) && windowEnded) {
       item.plannedWindow = undefined;
       continue;
     }
@@ -180,7 +180,10 @@ async function main() {
     EKEDC: stats.ekedc,
     Kaduna: stats.kaduna,
     JED: stats.jed,
-    Media: stats.media
+    Media: stats.media,
+    PremiumTimes: stats.premiumTimes,
+    Guardian: stats.guardian,
+    Vanguard: stats.vanguard
   };
   console.log('Adapters summary:', summaryLog);
   console.log('Last published per adapter:', lastPublishedAtByAdapter);
