@@ -1,5 +1,23 @@
 {
-  "items": [],
+  "items": [
+    {
+      "source": "AEDC",
+      "sourceName": "Abuja Electricity Distribution Company (media relay)",
+      "title": "Police arrest suspects for armed robbery, drug peddling in Abuja",
+      "summary": "\"The arrested suspects include: Manaseh Emmanuel (36), Dogora Ibrahim (21), and Ibrahim Idamusa (40), who are members of a notorious armed robbery gang",
+      "officialUrl": "https://tribuneonlineng.com/police-arrest-suspects-for-armed-robbery-drug-peddling-in-abuja/",
+      "verifiedBy": "MEDIA",
+      "publishedAt": "2025-10-19T21:01:09.000Z",
+      "raw": {
+        "description": "\"The arrested suspects include: Manaseh Emmanuel (36), Dogora Ibrahim (21), and Ibrahim Idamusa (40), who are members of a notorious armed robbery gang",
+        "relaySource": "media"
+      },
+      "status": "UNPLANNED",
+      "confidence": 0.6,
+      "id": "4660bd266a2a"
+    }
+  ],
   "planned": [],
-  "generatedAt": "2025-10-19T19:46:37.970Z"
+  "generatedAt": "2025-10-19T22:09:03.132Z",
+  "latestSourceAt": "2025-10-19T21:01:09.000Z"
 }
