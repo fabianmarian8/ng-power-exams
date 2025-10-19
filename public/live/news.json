@@ -1,6 +1,16 @@
 {
-  "generatedAt": "2025-10-19T23:09:24.787Z",
+  "generatedAt": "2025-10-19T23:25:38.401Z",
   "items": [
+    {
+      "id": "a167c6a1f85e9b6e3c10acc86d9a367b2e968b90",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Tribune",
+      "title": "CSOs condemn move by Senate to regulate lottery, gambling across Nigeria",
+      "summary": "Coalition of Civil Society Organisations, under the aegis of Coalition for Good Governance (CGG), has condemned the move by the Senate to enact a central law that regulates lottery and gambling in Nigeria, saying doing so was against the Supreme Court’s unanimous ruling that the National Assembly lacked the powers to legislate on issues relating […]",
+      "publishedAt": "2025-10-19T22:50:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/csos-condemn-move-by-senate-to-regulate-lottery-gambling-across-nigeria/"
+    },
     {
       "id": "d40882b82469094af789b5d0e6df86571192e43c",
       "domain": "POWER",
@@ -10,6 +20,16 @@
       "summary": "In a bold move to empower rural processors and farmers across Nigeria’s cassava value chain, Cassavaverse, an agro-enterprise focused on",
       "publishedAt": "2025-10-19T22:34:00+01:00",
       "officialUrl": "https://tribuneonlineng.com/firm-donates-cassava-processing-machine-to-ogun-community/"
+    },
+    {
+      "id": "e7d9b4654685e44e99245920cf8f3bc1a2f3b6a8",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Cameroonian opposition candidate kicks as official results put Biya in early lead",
+      "summary": "Opposition presidential candidate, Issa Tchiroma Bakary, has announced plans to publish ‘original’ polling station reports to prove his victory in Cameroon’s October 12 presidential election. He said this while challenging early trends that favor incumbent President Paul Biya. In a statement released Sunday, Tchiroma said, “To ensure transparency and prevent any manipulation, our campaign team […]",
+      "publishedAt": "2025-10-19T14:19:00+01:00",
+      "officialUrl": "https://dailytrust.com/cameroonian-opposition-candidate-kicks-as-official-results-put-biya-in-early-lead/"
     },
     {
       "id": "dc662a0be2603e5ef3a7dbe1cf5c8d3e82035509",
