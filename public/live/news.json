@@ -1,25 +1,35 @@
 {
-  "generatedAt": "2025-10-19T10:30:07.757Z",
+  "generatedAt": "2025-10-19T18:36:47.638Z",
   "items": [
     {
-      "id": "5b3d4cc65938a943e767ba7bc8208cab7663052a",
+      "id": "98dfa48f8aab31475972495d082f1936195eb4b7",
       "domain": "POWER",
       "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Kaduna Gov’t Commissions Solar-Powered Borehole at NYSC Camp to end water scarcity",
-      "summary": "Kaduna State Government has successfully commissioned a solar-powered borehole at the NYSC Orientation Camp in Kaduna. The facility, located at the female corps members’ dormitory, was executed through the State’s Rural Water Supply and Sanitation Agency (RUWASSA). The commissioning ceremony, held at the NYSC camp, was marked by deep appreciation from the National Youth Service […]",
-      "publishedAt": "2025-10-18T20:28:00+01:00",
-      "officialUrl": "https://dailytrust.com/kaduna-govt-commissions-solar-powered-borehole-at-nysc-camp-to-end-water-scarcity/"
+      "source": "Tribune",
+      "title": "Adelabu moves to end 15 years of epileptic power supply in Ibarapa",
+      "summary": "Ibarapa zone consists of seven towns namely: Eruwa, Lanlate, Igboora, Idere, Ayete, Tapa, and Igangan.",
+      "publishedAt": "2025-10-19T18:16:00+01:00",
+      "officialUrl": "https://tribuneonlineng.com/adelabu-moves-to-end-15-years-of-epileptic-power-supply-in-ibarapa/"
     },
     {
-      "id": "4a94f2bd0f07e0882b2f34c872fc7d503ea99b37",
+      "id": "e7d9b4654685e44e99245920cf8f3bc1a2f3b6a8",
+      "domain": "EXAMS",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Cameroonian opposition candidate kicks as official results put Biya in early lead",
+      "summary": "Opposition presidential candidate, Issa Tchiroma Bakary, has announced plans to publish ‘original’ polling station reports to prove his victory in Cameroon’s October 12 presidential election. He said this while challenging early trends that favor incumbent President Paul Biya. In a statement released Sunday, Tchiroma said, “To ensure transparency and prevent any manipulation, our campaign team […]",
+      "publishedAt": "2025-10-19T14:19:00+01:00",
+      "officialUrl": "https://dailytrust.com/cameroonian-opposition-candidate-kicks-as-official-results-put-biya-in-early-lead/"
+    },
+    {
+      "id": "a20a16f971c6f13b69ff826ec8824e727fbc5b9e",
       "domain": "POWER",
       "tier": "MEDIA",
       "source": "Daily Trust",
-      "title": "Kaduna Targets 4.2 Million in Measles, Rubella Vaccination Campaign",
-      "summary": "Kaduna State has launched a massive vaccination drive aimed at immunizing 4.2 million children against measles and rubella, in a bold step to protect the next generation from deadly but preventable diseases. The campaign, which began on October 18, 2025, is part of a nationwide effort and involves strong collaboration between the state government, the […]",
-      "publishedAt": "2025-10-18T20:28:00+01:00",
-      "officialUrl": "https://dailytrust.com/kaduna-targets-4-2-million-in-measles-rubella-vaccination-campaign/"
+      "title": "Defection: Kaduna Now 95% APC – Uba Sani",
+      "summary": "The All Progressives Congress(APC) has attracted more members, with the defection of four Kaduna State House of Assembly lawmakers and five House of Representatives members along with thousand of their supporters, at a mega rally held on Saturday. With the latest defections, APC now has 13 legislators from Kaduna State at the House of Representatives, […]",
+      "publishedAt": "2025-10-19T10:56:00+01:00",
+      "officialUrl": "https://dailytrust.com/defection-kaduna-now-95-apc-uba-sani/"
     },
     {
       "id": "dc662a0be2603e5ef3a7dbe1cf5c8d3e82035509",
