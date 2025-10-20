@@ -1,5 +1,23 @@
 {
-  "items": [],
+  "items": [
+    {
+      "source": "AEDC",
+      "sourceName": "Abuja Electricity Distribution Company (media relay)",
+      "title": "Scarcity of cooking gas persists in Lagos, Abuja, others",
+      "summary": "DESPITE the&#160; appeal by the minister of State Petroleum Resources (Gas), Honourable Ekperikpe Ekpo, urging&#160; marketers, distributors, and all stakeholders along the LPG (cooking gas) value chain to desist from hoarding the product and refrain from exploiting consumers for profit, the product’s scarcity persist in Lagos, Abuja, Delta States, others. Besides, for the few available [&#8230;]",
+      "officialUrl": "https://tribuneonlineng.com/scarcity-of-cooking-gas-persists-in-lagos-abuja-others/",
+      "verifiedBy": "MEDIA",
+      "publishedAt": "2025-10-20T04:05:00.000Z",
+      "raw": {
+        "description": "DESPITE the&#160; appeal by the minister of State Petroleum Resources (Gas), Honourable Ekperikpe Ekpo, urging&#160; marketers, distributors, and all stakeholders along the LPG (cooking gas) value chain to desist from hoarding the product and refrain from exploiting consumers for profit, the product’s scarcity persist in Lagos, Abuja, Delta States, others. Besides, for the few available [&#8230;]",
+        "relaySource": "media"
+      },
+      "status": "UNPLANNED",
+      "confidence": 0.6,
+      "id": "867c7a66d3af"
+    }
+  ],
   "planned": [],
-  "generatedAt": "2025-10-20T04:01:46.954Z"
+  "generatedAt": "2025-10-20T04:36:05.006Z",
+  "latestSourceAt": "2025-10-20T04:05:00.000Z"
 }
