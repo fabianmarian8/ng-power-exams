@@ -1,84 +1,65 @@
 import { useMemo } from 'react';
-import { MapContainer, TileLayer, Popup, CircleMarker } from 'react-leaflet';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin } from 'lucide-react';
 import type { OutageItem } from '@/lib/outages-types';
-import 'leaflet/dist/leaflet.css';
-
-const NIGERIAN_CITIES_COORDS: Record<string, [number, number]> = {
-  Lagos: [6.5244, 3.3792],
-  Abuja: [9.0765, 7.3986],
-  Kano: [12.0022, 8.592],
-  Ibadan: [7.3775, 3.947],
-  'Port Harcourt': [4.8156, 7.0498],
-  'Benin City': [6.335, 5.6037],
-  Kaduna: [10.5105, 7.4165],
-  Enugu: [6.5244, 7.5105],
-  Jos: [9.8965, 8.8583],
-  Calabar: [4.9758, 8.3417],
-  Abeokuta: [7.1475, 3.3619],
-  Osogbo: [7.7667, 4.5667],
-  Maiduguri: [11.8333, 13.15],
-  Onitsha: [6.1667, 6.7833],
-  Warri: [5.5167, 5.75],
-  Ilorin: [8.5, 4.55],
-  Akure: [7.2667, 5.2],
-  Owerri: [5.48, 7.0333],
-  Sokoto: [13.0622, 5.2339],
-  Uyo: [5.0333, 7.9333],
-  Aba: [5.1067, 7.3667],
-  Bauchi: [10.3158, 9.8442],
-  Yola: [9.2, 12.4833],
-  Gombe: [10.29, 11.17]
-};
 
 interface OutageMapProps {
   outages: OutageItem[];
 }
 
-function getMarkerColor(status: string): string {
-  switch (status) {
-    case 'PLANNED':
-      return '#3b82f6';
-    case 'UNPLANNED':
-      return '#ef4444';
-    case 'RESTORED':
-      return '#10b981';
-    default:
-      return '#6b7280';
-  }
+interface LocationGroup {
+  location: string;
+  outages: OutageItem[];
+  planned: number;
+  live: number;
+  restored: number;
 }
 
 export function OutageMap({ outages }: OutageMapProps) {
-  const outagesWithCoords = useMemo(() => {
-    return outages
-      .map((outage) => {
-        const city = outage.affectedAreas?.find((area) => NIGERIAN_CITIES_COORDS[area]);
+  const locationGroups = useMemo(() => {
+    const groups = new Map<string, LocationGroup>();
 
-        if (!city) return null;
+    outages.forEach((outage) => {
+      const locations = outage.affectedAreas || ['Unknown Location'];
+      
+      locations.forEach((location) => {
+        if (!groups.has(location)) {
+          groups.set(location, {
+            location,
+            outages: [],
+            planned: 0,
+            live: 0,
+            restored: 0
+          });
+        }
 
-        return {
-          ...outage,
-          coords: NIGERIAN_CITIES_COORDS[city],
-          city
-        };
-      })
-      .filter((item): item is NonNullable<typeof item> => item !== null);
+        const group = groups.get(location)!;
+        group.outages.push(outage);
+
+        if (outage.status === 'PLANNED') group.planned++;
+        else if (outage.status === 'RESTORED') group.restored++;
+        else group.live++;
+      });
+    });
+
+    return Array.from(groups.values()).sort((a, b) => 
+      (b.planned + b.live) - (a.planned + a.live)
+    );
   }, [outages]);
 
-  if (outagesWithCoords.length === 0) {
+  if (locationGroups.length === 0) {
     return (
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-5 w-5" />
-            Outage Map
+            Outages by Location
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            No outages with location data to display on the map.
+            No location data available for current outages.
           </p>
         </CardContent>
       </Card>
@@ -91,7 +72,7 @@ export function OutageMap({ outages }: OutageMapProps) {
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-5 w-5" />
-            Outage Map
+            Outages by Location
           </CardTitle>
           <div className="flex items-center gap-3 text-xs">
             <div className="flex items-center gap-1">
@@ -110,68 +91,82 @@ export function OutageMap({ outages }: OutageMapProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <MapContainer
-          center={[9.082, 8.675]}
-          zoom={6}
-          style={{ height: '500px', width: '100%', borderRadius: '8px' }}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-
-          {outagesWithCoords.map((outage) => (
-            <CircleMarker
-              key={outage.id}
-              center={outage.coords}
-              radius={8}
-              fillColor={getMarkerColor(outage.status)}
-              color="#fff"
-              weight={2}
-              opacity={1}
-              fillOpacity={0.8}
-            >
-              <Popup>
-                <div className="min-w-[250px] space-y-2 p-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-semibold text-sm leading-tight">{outage.title}</h3>
-                    <Badge
-                      variant={
-                        outage.status === 'RESTORED'
-                          ? 'default'
-                          : outage.status === 'PLANNED'
-                            ? 'secondary'
-                            : 'destructive'
-                      }
-                      className="shrink-0"
-                    >
-                      {outage.status}
-                    </Badge>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {locationGroups.map((group) => (
+            <Card key={group.location} className="border-l-4 border-l-primary">
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-primary" />
+                    <CardTitle className="text-base">{group.location}</CardTitle>
                   </div>
-                  <p className="text-xs text-muted-foreground">{outage.summary?.slice(0, 150)}</p>
-                  <div className="flex items-center gap-1 text-xs">
-                    <MapPin className="h-3 w-3" />
-                    <span className="font-medium">{outage.city}</span>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    Source: {outage.sourceName || outage.source}
-                  </div>
-                  {outage.officialUrl && (
-                    <a
-                      href={outage.officialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-primary hover:underline"
-                    >
-                      View details →
-                    </a>
+                  <Badge variant="secondary" className="font-mono text-xs">
+                    {group.outages.length}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  {group.planned > 0 && (
+                    <div className="rounded-lg bg-blue-500/10 p-2">
+                      <div className="text-lg font-bold text-blue-600">{group.planned}</div>
+                      <div className="text-xs text-muted-foreground">Planned</div>
+                    </div>
+                  )}
+                  {group.live > 0 && (
+                    <div className="rounded-lg bg-red-500/10 p-2">
+                      <div className="text-lg font-bold text-red-600">{group.live}</div>
+                      <div className="text-xs text-muted-foreground">Live</div>
+                    </div>
+                  )}
+                  {group.restored > 0 && (
+                    <div className="rounded-lg bg-green-500/10 p-2">
+                      <div className="text-lg font-bold text-green-600">{group.restored}</div>
+                      <div className="text-xs text-muted-foreground">Restored</div>
+                    </div>
                   )}
                 </div>
-              </Popup>
-            </CircleMarker>
+
+                <div className="space-y-2">
+                  {group.outages.slice(0, 2).map((outage) => (
+                    <div
+                      key={outage.id}
+                      className="rounded border bg-muted/50 p-2 text-xs"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <div className="font-medium leading-tight line-clamp-2">
+                            {outage.title}
+                          </div>
+                          <div className="mt-1 text-xs text-muted-foreground">
+                            {outage.sourceName || outage.source}
+                          </div>
+                        </div>
+                        <Badge
+                          variant={
+                            outage.status === 'PLANNED'
+                              ? 'secondary'
+                              : outage.status === 'RESTORED'
+                              ? 'default'
+                              : 'destructive'
+                          }
+                          className="shrink-0 text-xs"
+                        >
+                          {outage.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                  {group.outages.length > 2 && (
+                    <div className="text-center text-xs text-muted-foreground">
+                      +{group.outages.length - 2} more
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           ))}
-        </MapContainer>
+        </div>
       </CardContent>
     </Card>
   );
