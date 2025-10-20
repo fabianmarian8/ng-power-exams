@@ -15,41 +15,9 @@
       "status": "UNPLANNED",
       "confidence": 0.6,
       "id": "d6123cc38a78"
-    },
-    {
-      "source": "EKEDC",
-      "sourceName": "Eko Electricity Distribution Company (via Guardian)",
-      "title": "Caverton-powered Drone Soccer holds inaugural training event",
-      "summary": "<p>Drone Soccer, a new sporting activity that combines the excitement of sports with technology and aspects of aeronautical engineering, made its debut in Lagos on Friday, October 17, 2025. </p> <p>The post <a href=\"https://guardian.ng/sport/caverton-powered-drone-soccer-holds-inaugural-training-event/\">Caverton-powered Drone Soccer holds inaugural training event</a> appeared first on <a href=\"https://guardian.ng\">The Guardian Nigeria News - Nigeria and World News</a>.</p>",
-      "officialUrl": "https://guardian.ng/sport/caverton-powered-drone-soccer-holds-inaugural-training-event/",
-      "verifiedBy": "MEDIA",
-      "publishedAt": "2025-10-20T04:57:50.000Z",
-      "raw": {
-        "description": "<p>Drone Soccer, a new sporting activity that combines the excitement of sports with technology and aspects of aeronautical engineering, made its debut in Lagos on Friday, October 17, 2025. </p> <p>The post <a href=\"https://guardian.ng/sport/caverton-powered-drone-soccer-holds-inaugural-training-event/\">Caverton-powered Drone Soccer holds inaugural training event</a> appeared first on <a href=\"https://guardian.ng\">The Guardian Nigeria News - Nigeria and World News</a>.</p>",
-        "relaySource": "guardian_ng"
-      },
-      "status": "UNPLANNED",
-      "confidence": 0.6,
-      "id": "7efabd66c8a2"
-    },
-    {
-      "source": "AEDC",
-      "sourceName": "Abuja Electricity Distribution Company (media relay)",
-      "title": "Scarcity of cooking gas persists in Lagos, Abuja, others",
-      "summary": "DESPITE the&#160; appeal by the minister of State Petroleum Resources (Gas), Honourable Ekperikpe Ekpo, urging&#160; marketers, distributors, and all stakeholders along the LPG (cooking gas) value chain to desist from hoarding the product and refrain from exploiting consumers for profit, the product’s scarcity persist in Lagos, Abuja, Delta States, others. Besides, for the few available [&#8230;]",
-      "officialUrl": "https://tribuneonlineng.com/scarcity-of-cooking-gas-persists-in-lagos-abuja-others/",
-      "verifiedBy": "MEDIA",
-      "publishedAt": "2025-10-20T04:05:00.000Z",
-      "raw": {
-        "description": "DESPITE the&#160; appeal by the minister of State Petroleum Resources (Gas), Honourable Ekperikpe Ekpo, urging&#160; marketers, distributors, and all stakeholders along the LPG (cooking gas) value chain to desist from hoarding the product and refrain from exploiting consumers for profit, the product’s scarcity persist in Lagos, Abuja, Delta States, others. Besides, for the few available [&#8230;]",
-        "relaySource": "media"
-      },
-      "status": "UNPLANNED",
-      "confidence": 0.6,
-      "id": "867c7a66d3af"
     }
   ],
   "planned": [],
-  "generatedAt": "2025-10-20T06:48:04.975Z",
+  "generatedAt": "2025-10-20T07:11:41.570Z",
   "latestSourceAt": "2025-10-20T06:10:07.000Z"
 }
