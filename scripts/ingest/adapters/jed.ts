@@ -1,6 +1,7 @@
 import { fetchHtml, load } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
+import { validateOutageRelevance, extractPlannedWindowAI } from '../lib/aiValidator';
 
 const PAGES = [
   'https://jedplc.com/feeder-availability.php',
@@ -140,13 +141,16 @@ export const jed: Adapter = async (ctx) => {
     const publishedAt = extractPublishedAt(html, $) ?? new Date().toISOString();
 
     if (fromFixture) {
-      $('item').each((_, entry) => {
+      const entries = $('item').toArray();
+      for (const entry of entries) {
         const node = $(entry);
         const title = normalize(node.find('title').text());
         const link = normalize(node.find('link').text());
         const description = normalize(node.find('description').text());
         const pubDate = node.find('pubDate').text();
-        if (!title) return;
+        if (!title) {
+          continue;
+        }
         const outage: OutageItem = {
           id: '',
           source: 'JED',
@@ -158,14 +162,38 @@ export const jed: Adapter = async (ctx) => {
           verifiedBy: 'DISCO',
           officialUrl: link || pageUrl,
           affectedAreas: [],
+          confidence: undefined,
           raw: { description }
         };
+        const validation = await validateOutageRelevance(outage.title, outage.summary ?? '');
+        if (!validation.isRelevant || validation.confidence < 0.65) {
+          console.log(`[JED] Skipping irrelevant (fixture): ${outage.title.slice(0, 60)}`);
+          continue;
+        }
+
+        if (validation.extractedInfo?.affectedAreas) {
+          outage.affectedAreas = validation.extractedInfo.affectedAreas;
+        }
+        if (validation.extractedInfo?.outageType && outage.status === 'UNPLANNED') {
+          outage.status = validation.extractedInfo.outageType;
+        }
+        const aiPlannedWindow = await extractPlannedWindowAI(
+          outage.title,
+          outage.summary ?? '',
+          outage.publishedAt
+        );
+        if (aiPlannedWindow) {
+          outage.plannedWindow = aiPlannedWindow;
+          outage.status = outage.status === 'UNPLANNED' ? 'PLANNED' : outage.status;
+        }
+        outage.confidence = Math.max(outage.confidence ?? 0, validation.confidence);
         items.push(outage);
-      });
+      }
       break;
     }
 
-    $('table').each((_, table) => {
+    const tables = $('table').toArray();
+    for (const table of tables) {
       const headerNodes = $(table).find('thead th');
       const headers = headerNodes.length
         ? headerNodes
@@ -173,59 +201,87 @@ export const jed: Adapter = async (ctx) => {
             .get()
         : [];
 
-      $(table)
-        .find('tbody tr, tr')
-        .each((_, row) => {
-          const cells = $(row)
-            .find('td')
-            .map((_, cell) => normalize($(cell).text()))
-            .get();
-          if (!cells.length) return;
+      const rows = $(table).find('tbody tr, tr').toArray();
+      for (const row of rows) {
+        const cells = $(row)
+          .find('td')
+          .map((_, cell) => normalize($(cell).text()))
+          .get();
+        if (!cells.length) {
+          continue;
+        }
 
-          const data: Record<string, string> = {};
-          if (headers.length === cells.length && headers.length > 0) {
-            headers.forEach((header, index) => {
-              data[header] = cells[index];
-            });
-          }
-
-          const feeder = data['feeder name'] || data['feeder'] || cells[0];
-          if (!feeder) return;
-
-          const businessUnit = data['business unit'] || data['undertaking'] || data['location'] || data['station'];
-          const band = data['band'] || data['customer band'] || data['band class'];
-          const hoursValue = data['hours of availability'] || data['hours availability'] || data['hours'];
-          const remarks = data['remarks'] || data['status'] || data['comment'] || data['downgraded from'];
-
-          const hours = parseHours(hoursValue);
-          const downgraded = /downgraded|band|upgrade|load/i.test(remarks ?? '') || /band/i.test(band ?? '');
-
-          if (hours === undefined && !downgraded) {
-            return;
-          }
-
-          if (hours !== undefined && hours > 4) {
-            return;
-          }
-
-          const item = buildItem({
-            sourceUrl: pageUrl,
-            feeder,
-            businessUnit,
-            band,
-            hours,
-            remarks,
-            publishedAt
+        const data: Record<string, string> = {};
+        if (headers.length === cells.length && headers.length > 0) {
+          headers.forEach((header, index) => {
+            data[header] = cells[index];
           });
+        }
 
-          const key = `${item.title}-${item.summary}`;
-          if (seenTitles.has(key)) {
-            return;
-          }
-          seenTitles.add(key);
-          items.push(item);
+        const feeder = data['feeder name'] || data['feeder'] || cells[0];
+        if (!feeder) {
+          continue;
+        }
+
+        const businessUnit = data['business unit'] || data['undertaking'] || data['location'] || data['station'];
+        const band = data['band'] || data['customer band'] || data['band class'];
+        const hoursValue = data['hours of availability'] || data['hours availability'] || data['hours'];
+        const remarks = data['remarks'] || data['status'] || data['comment'] || data['downgraded from'];
+
+        const hours = parseHours(hoursValue);
+        const downgraded = /downgraded|band|upgrade|load/i.test(remarks ?? '') || /band/i.test(band ?? '');
+
+        if (hours === undefined && !downgraded) {
+          continue;
+        }
+
+        if (hours !== undefined && hours > 4) {
+          continue;
+        }
+
+        const item = buildItem({
+          sourceUrl: pageUrl,
+          feeder,
+          businessUnit,
+          band,
+          hours,
+          remarks,
+          publishedAt
         });
-    });
+
+        const validation = await validateOutageRelevance(item.title, item.summary ?? '');
+        if (!validation.isRelevant || validation.confidence < 0.65) {
+          console.log(`[JED] Skipping irrelevant: ${item.title.slice(0, 60)}`);
+          continue;
+        }
+
+        if (validation.extractedInfo?.affectedAreas) {
+          item.affectedAreas = validation.extractedInfo.affectedAreas;
+        }
+        if (validation.extractedInfo?.outageType && item.status === 'UNPLANNED') {
+          item.status = validation.extractedInfo.outageType;
+        }
+        const aiPlannedWindow = await extractPlannedWindowAI(
+          item.title,
+          item.summary ?? '',
+          item.publishedAt
+        );
+        if (aiPlannedWindow) {
+          item.plannedWindow = aiPlannedWindow;
+          if (item.status === 'UNPLANNED') {
+            item.status = 'PLANNED';
+          }
+        }
+        item.confidence = Math.max(item.confidence ?? 0, validation.confidence);
+
+        const key = `${item.title}-${item.summary}`;
+        if (seenTitles.has(key)) {
+          continue;
+        }
+        seenTitles.add(key);
+        items.push(item);
+      }
+    }
   }
 
   const result = aggregateDowngradedFeeders(items);

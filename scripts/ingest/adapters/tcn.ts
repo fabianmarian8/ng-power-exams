@@ -2,6 +2,7 @@ import type { CheerioAPI } from 'cheerio';
 import { buildOutageItem, fetchHtml, load, resolvePlannedWindow, sanitizeText } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
+import { validateOutageRelevance, extractPlannedWindowAI } from '../lib/aiValidator';
 
 const LISTING_URLS = [
   'https://www.tcn.org.ng/category/latest-news/',
@@ -62,9 +63,13 @@ function createItem(params: {
   url: string;
   publishedAt: string;
   areas: string[];
+  plannedWindow?: ReturnType<typeof resolvePlannedWindow> | null;
+  confidence?: number;
+  status?: OutageItem['status'];
   raw?: Record<string, unknown>;
 }): OutageItem {
-  const plannedWindow = resolvePlannedWindow(`${params.title} ${params.summary}`, params.publishedAt);
+  const plannedWindow =
+    params.plannedWindow ?? resolvePlannedWindow(`${params.title} ${params.summary}`, params.publishedAt);
   return buildOutageItem({
     source: 'TCN',
     sourceName: 'Transmission Company of Nigeria',
@@ -75,6 +80,8 @@ function createItem(params: {
     verifiedBy: 'TCN',
     publishedAt: params.publishedAt,
     plannedWindow: plannedWindow ?? undefined,
+    confidence: params.confidence,
+    status: params.status,
     raw: params.raw
   });
 }
@@ -147,13 +154,26 @@ export const tcn: Adapter = async (ctx) => {
       const summary = summarise(bodyText || heading);
       const publishedAt = extractPublishedAt(articleHtml, article);
 
+      const validation = await validateOutageRelevance(heading, bodyText);
+
+      if (!validation.isRelevant || validation.confidence < 0.7) {
+        console.log(`[TCN] Skipping irrelevant: ${heading.slice(0, 60)}`);
+        continue;
+      }
+
+      const aiPlannedWindow = await extractPlannedWindowAI(heading, bodyText, publishedAt);
+      const finalPlannedWindow = aiPlannedWindow ?? resolvePlannedWindow(`${heading} ${bodyText}`, publishedAt);
+
       items.push(
         createItem({
           title: heading,
           summary,
           url,
           publishedAt,
-          areas,
+          areas: validation.extractedInfo?.affectedAreas ?? areas,
+          plannedWindow: finalPlannedWindow,
+          confidence: validation.confidence,
+          status: validation.extractedInfo?.outageType,
           raw: { bodyText }
         })
       );

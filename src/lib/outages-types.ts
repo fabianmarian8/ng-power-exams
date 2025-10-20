@@ -6,11 +6,14 @@ export type OutageSource =
   | 'AEDC'
   | 'IBEDC'
   | 'IKEJA'
+  | 'TWITTER'
+  | 'TELEGRAM'
+  | 'NERC'
   | 'OTHER';
 
 export type OutageStatus = 'PLANNED' | 'UNPLANNED' | 'RESTORED';
 
-export type VerificationSource = 'DISCO' | 'TCN' | 'MEDIA' | 'COMMUNITY' | 'UNKNOWN';
+export type VerificationSource = 'DISCO' | 'TCN' | 'MEDIA' | 'COMMUNITY' | 'REGULATORY' | 'UNKNOWN';
 
 export interface OutageItem {
   id: string;

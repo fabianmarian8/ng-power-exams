@@ -3,6 +3,9 @@ import { ikeja } from './ikeja';
 import { kaduna } from './kaduna';
 import { jed } from './jed';
 import { tcn } from './tcn';
+import { twitter } from './twitter';
+import { telegram } from './telegram';
+import { nerc } from './nerc';
 import type { AdapterContext } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
 
@@ -11,7 +14,19 @@ import { premiumTimes } from './premiumTimes';
 import { guardianNG } from './guardianNG';
 import { vanguardNews } from './vanguardNews';
 
-type AdapterName = 'tcn' | 'ikeja' | 'ekedc' | 'kaduna' | 'jed' | 'media' | 'premiumTimes' | 'guardian' | 'vanguard';
+type AdapterName =
+  | 'tcn'
+  | 'ikeja'
+  | 'ekedc'
+  | 'kaduna'
+  | 'jed'
+  | 'media'
+  | 'premiumTimes'
+  | 'guardian'
+  | 'vanguard'
+  | 'twitter'
+  | 'telegram'
+  | 'nerc';
 
 interface AdapterResult {
   items: OutageItem[];
@@ -29,7 +44,10 @@ export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> 
     media: () => mediaRelay(ctx),
     premiumTimes: () => premiumTimes(ctx),
     guardian: () => guardianNG(ctx),
-    vanguard: () => vanguardNews(ctx)
+    vanguard: () => vanguardNews(ctx),
+    twitter: () => twitter(ctx),
+    telegram: () => telegram(ctx),
+    nerc: () => nerc(ctx)
   };
 
   const stats: Record<AdapterName, number> = {
@@ -41,7 +59,10 @@ export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> 
     media: 0,
     premiumTimes: 0,
     guardian: 0,
-    vanguard: 0
+    vanguard: 0,
+    twitter: 0,
+    telegram: 0,
+    nerc: 0
   };
 
   const lastPublishedAtByAdapter: Record<AdapterName, string | null> = {
@@ -53,7 +74,10 @@ export async function fromAdapters(ctx: AdapterContext): Promise<AdapterResult> 
     media: null,
     premiumTimes: null,
     guardian: null,
-    vanguard: null
+    vanguard: null,
+    twitter: null,
+    telegram: null,
+    nerc: null
   };
 
   const items: OutageItem[] = [];

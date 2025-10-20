@@ -10,6 +10,8 @@ import schema from './schema/outages.schema.json' assert { type: 'json' };
 import type { OutageItem } from '../../src/lib/outages-types';
 import { ingestNews } from './news.js';
 import { deduplicateOutages } from './lib/deduplication.js';
+import { filterRecentOutages, sortOutagesByRelevance } from './lib/cleanOldData.js';
+import { validateOutageRelevance } from './lib/aiValidator.js';
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 addFormats(ajv);
@@ -97,25 +99,6 @@ function normalizeItem(item: OutageItem): OutageItem {
   };
 }
 
-function sortItems(items: OutageItem[]): OutageItem[] {
-  const planned = items
-    .filter((item) => item.status === 'PLANNED' && (item.start || item.plannedWindow?.start))
-    .sort((a, b) => {
-      const aStart = new Date(a.start ?? a.plannedWindow?.start ?? 0).valueOf();
-      const bStart = new Date(b.start ?? b.plannedWindow?.start ?? 0).valueOf();
-      return aStart - bStart;
-    });
-
-  const live = items
-    .filter((item) => item.status !== 'PLANNED')
-    .sort((a, b) => new Date(b.publishedAt).valueOf() - new Date(a.publishedAt).valueOf());
-
-  const plannedIds = new Set(planned.map((item) => item.id));
-  const remainder = items.filter((item) => item.status === 'PLANNED' && !plannedIds.has(item.id));
-
-  return [...planned, ...live, ...remainder];
-}
-
 async function main() {
   const { items, stats, lastPublishedAtByAdapter } = await fromAdapters({
     axios,
@@ -123,7 +106,41 @@ async function main() {
     userAgent: USER_AGENT
   });
 
-  const normalizedItems = items.map(normalizeItem);
+  console.log('[AI Validation] Starting validation of all items...');
+  const validatedItems: OutageItem[] = [];
+
+  for (const item of items) {
+    try {
+      const validation = await validateOutageRelevance(item.title, item.summary ?? '');
+
+      if (validation.isRelevant && validation.confidence >= 0.6) {
+        if (validation.extractedInfo?.affectedAreas && !item.affectedAreas) {
+          item.affectedAreas = validation.extractedInfo.affectedAreas;
+        }
+        if (validation.extractedInfo?.outageType && item.status === 'UNPLANNED') {
+          item.status = validation.extractedInfo.outageType;
+        }
+        if (typeof item.confidence !== 'number') {
+          item.confidence = validation.confidence;
+        }
+        validatedItems.push(item);
+      } else {
+        console.log(
+          `[AI Validation] Filtered out: ${item.title.slice(0, 60)} (confidence: ${validation.confidence})`
+        );
+      }
+    } catch (error) {
+      console.error('[AI Validation] Error:', error);
+      validatedItems.push(item);
+    }
+  }
+
+  console.log(`[AI Validation] ${validatedItems.length}/${items.length} items passed validation`);
+
+  const recentItems = filterRecentOutages(validatedItems);
+  console.log(`[Filter] ${recentItems.length}/${validatedItems.length} items within 30-day window`);
+
+  const normalizedItems = recentItems.map(normalizeItem);
   const deduped = deduplicateOutages(normalizedItems);
   const now = DateTime.now().setZone('Africa/Lagos');
   for (const item of deduped) {
@@ -153,7 +170,7 @@ async function main() {
       timezone: 'Africa/Lagos'
     };
   }
-  const sortedItems = sortItems(deduped);
+  const sortedItems = sortOutagesByRelevance(deduped);
   const latestSourceAt = sortedItems
     .map((item) => item.publishedAt)
     .filter(Boolean)
@@ -183,7 +200,10 @@ async function main() {
     Media: stats.media,
     PremiumTimes: stats.premiumTimes,
     Guardian: stats.guardian,
-    Vanguard: stats.vanguard
+    Vanguard: stats.vanguard,
+    Twitter: stats.twitter,
+    Telegram: stats.telegram,
+    NERC: stats.nerc
   };
   console.log('Adapters summary:', summaryLog);
   console.log('Last published per adapter:', lastPublishedAtByAdapter);

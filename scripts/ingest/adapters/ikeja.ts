@@ -1,6 +1,7 @@
 import { buildOutageItem, fetchHtml, load, resolvePlannedWindow, sanitizeText } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
+import { validateOutageRelevance, extractPlannedWindowAI } from '../lib/aiValidator';
 
 const BASE_URL = 'https://www.ikejaelectric.com';
 const CNN_URL = `${BASE_URL}/cnn/`;
@@ -33,8 +34,11 @@ function createItem(params: {
   summary: string;
   publishedAt?: string;
   affectedAreas?: string[];
+  plannedWindow?: ReturnType<typeof resolvePlannedWindow> | null;
+  confidence?: number;
+  status?: OutageItem['status'];
 }): OutageItem {
-  const plannedWindow = resolvePlannedWindow(params.summary, params.publishedAt);
+  const plannedWindow = params.plannedWindow ?? resolvePlannedWindow(params.summary, params.publishedAt);
   return buildOutageItem({
     source: 'IKEJA',
     sourceName: 'Ikeja Electric',
@@ -44,7 +48,9 @@ function createItem(params: {
     officialUrl: params.sourceUrl,
     verifiedBy: 'DISCO',
     plannedWindow: plannedWindow ?? undefined,
-    publishedAt: params.publishedAt
+    publishedAt: params.publishedAt,
+    confidence: params.confidence,
+    status: params.status
   });
 }
 
@@ -57,45 +63,73 @@ export const ikeja: Adapter = async (ctx) => {
     const $ = load(html, ctx.cheerio, { xmlMode: fromFixture });
 
     if (fromFixture) {
-      $('item').each((_, item) => {
-        const node = $(item);
+      const nodes = $('item').toArray();
+      for (const element of nodes) {
+        const node = $(element);
         const title = sanitizeText(node.find('title').text());
         const link = sanitizeText(node.find('link').text());
         const description = sanitizeText(node.find('description').text());
         const pubDate = sanitizeText(node.find('pubDate').text());
-        if (!title || BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) return;
-        const plannedWindow = resolvePlannedWindow(`${title} ${description}`);
+        if (!title || BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) {
+          continue;
+        }
+
+        const summary = description || title;
+        const validation = await validateOutageRelevance(title, summary);
+        if (!validation.isRelevant || validation.confidence < 0.65) {
+          console.log(`[IKEJA] Skipping irrelevant: ${title.slice(0, 60)}`);
+          continue;
+        }
+
+        const publishedAt = pubDate ? new Date(pubDate).toISOString() : undefined;
+        const aiPlannedWindow = await extractPlannedWindowAI(title, summary, publishedAt);
+        const finalPlannedWindow = aiPlannedWindow ?? resolvePlannedWindow(`${title} ${summary}`, publishedAt);
 
         collected.push(
           createItem({
             sourceUrl: link || CNN_URL,
             title,
-            summary: description || title,
-            publishedAt: pubDate ? new Date(pubDate).toISOString() : undefined,
-            affectedAreas: extractAreas(description || title)
+            summary,
+            publishedAt,
+            affectedAreas: validation.extractedInfo?.affectedAreas ?? extractAreas(summary),
+            plannedWindow: finalPlannedWindow,
+            confidence: validation.confidence,
+            status: validation.extractedInfo?.outageType
           })
         );
-      });
+      }
     } else {
       const processed = new Set<string>();
 
-      $('a, div, li').each((_, el) => {
+      const nodes = $('a, div, li').toArray();
+      for (const el of nodes) {
         const el$ = $(el);
         const card = el$.closest('a, div, li');
         const title = card.text().replace(/\s+/g, ' ').trim();
         if (!title || title.length < 15) {
-          return;
+          continue;
         }
-        if (processed.has(title)) return;
+        if (processed.has(title)) {
+          continue;
+        }
         processed.add(title);
 
         const href = card.find('a').attr('href') ?? CNN_URL;
         const url = new URL(href, CNN_URL).toString();
         if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) {
-          return;
+          continue;
         }
         const areas = extractAreas(title);
         const publishedAt = parsePublishedAt(title);
+
+        const validation = await validateOutageRelevance(title, title);
+        if (!validation.isRelevant || validation.confidence < 0.65) {
+          console.log(`[IKEJA] Skipping irrelevant: ${title.slice(0, 60)}`);
+          continue;
+        }
+
+        const aiPlannedWindow = await extractPlannedWindowAI(title, title, publishedAt);
+        const finalPlannedWindow = aiPlannedWindow ?? resolvePlannedWindow(title, publishedAt);
 
         collected.push(
           createItem({
@@ -103,10 +137,13 @@ export const ikeja: Adapter = async (ctx) => {
             title,
             summary: title,
             publishedAt,
-            affectedAreas: areas
+            affectedAreas: validation.extractedInfo?.affectedAreas ?? areas,
+            plannedWindow: finalPlannedWindow,
+            confidence: validation.confidence,
+            status: validation.extractedInfo?.outageType
           })
         );
-      });
+      }
 
       for (const unit of BUSINESS_UNITS) {
         const url = `${CNN_URL}index3.php?menu_bu=${encodeURIComponent(unit)}`;
@@ -114,12 +151,22 @@ export const ikeja: Adapter = async (ctx) => {
           const { html: unitHtml, status: unitStatus } = await fetchHtml(ctx, url);
           console.log(`[IKEJA] fetch ${url} status=${unitStatus}`);
           const unit$ = load(unitHtml, ctx.cheerio);
-          unit$('table tr').each((_, row) => {
+          const rows = unit$('table tr').toArray();
+          for (const row of rows) {
             const text = unit$(row).text().replace(/\s+/g, ' ').trim();
-            if (!text || text.length < 15) return;
-            if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(text))) return;
+            if (!text || text.length < 15) continue;
+            if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(text))) continue;
             const areas = extractAreas(text);
             const publishedAt = parsePublishedAt(text);
+
+            const validation = await validateOutageRelevance(text, text);
+            if (!validation.isRelevant || validation.confidence < 0.65) {
+              console.log(`[IKEJA] Skipping irrelevant: ${text.slice(0, 60)}`);
+              continue;
+            }
+
+            const aiPlannedWindow = await extractPlannedWindowAI(text, text, publishedAt);
+            const finalPlannedWindow = aiPlannedWindow ?? resolvePlannedWindow(text, publishedAt);
 
             collected.push(
               createItem({
@@ -127,10 +174,13 @@ export const ikeja: Adapter = async (ctx) => {
                 title: text,
                 summary: text,
                 publishedAt,
-                affectedAreas: areas
+                affectedAreas: validation.extractedInfo?.affectedAreas ?? areas,
+                plannedWindow: finalPlannedWindow,
+                confidence: validation.confidence,
+                status: validation.extractedInfo?.outageType
               })
             );
-          });
+          }
         } catch (error) {
           console.error(`IKEDC BU scrape failed (${unit})`, error);
         }

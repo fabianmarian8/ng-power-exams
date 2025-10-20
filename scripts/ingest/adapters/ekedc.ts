@@ -1,6 +1,7 @@
 import { buildOutageItem, fetchHtml, load, resolvePlannedWindow, sanitizeText } from './utils';
 import type { Adapter } from './types';
 import type { OutageItem } from '../../../src/lib/outages-types';
+import { validateOutageRelevance, extractPlannedWindowAI } from '../lib/aiValidator';
 
 const BASE_URL = 'https://ekedp.com';
 const NEWS_URL = `${BASE_URL}/news`;
@@ -27,8 +28,12 @@ function createItem(params: {
   summary: string;
   url: string;
   publishedAt?: string;
+  plannedWindow?: ReturnType<typeof resolvePlannedWindow> | null;
+  confidence?: number;
+  status?: OutageItem['status'];
 }): OutageItem {
-  const plannedWindow = resolvePlannedWindow(`${params.title} ${params.summary}`, params.publishedAt);
+  const plannedWindow =
+    params.plannedWindow ?? resolvePlannedWindow(`${params.title} ${params.summary}`, params.publishedAt);
   return buildOutageItem({
     source: 'EKEDC',
     sourceName: 'Eko Electricity Distribution Company',
@@ -37,7 +42,9 @@ function createItem(params: {
     officialUrl: params.url,
     verifiedBy: 'DISCO',
     publishedAt: params.publishedAt,
-    plannedWindow: plannedWindow ?? undefined
+    plannedWindow: plannedWindow ?? undefined,
+    confidence: params.confidence,
+    status: params.status
   });
 }
 
@@ -50,32 +57,53 @@ export const ekedc: Adapter = async (ctx) => {
     const $ = load(html, ctx.cheerio, { xmlMode: fromFixture });
 
     if (fromFixture) {
-      $('item').each((_, item) => {
-        const node = $(item);
+      const nodes = $('item').toArray();
+      for (const element of nodes) {
+        const node = $(element);
         const title = sanitizeText(node.find('title').text());
         const link = sanitizeText(node.find('link').text());
         const description = sanitizeText(node.find('description').text());
         const pubDate = sanitizeText(node.find('pubDate').text());
-        if (!title || !KEYWORDS.test(title)) return;
+        if (!title || !KEYWORDS.test(title)) {
+          continue;
+        }
+
+        const validation = await validateOutageRelevance(title, description || title);
+        if (!validation.isRelevant || validation.confidence < 0.65) {
+          console.log(`[EKEDC] Skipping irrelevant: ${title.slice(0, 60)}`);
+          continue;
+        }
+
+        const publishedAt = pubDate ? new Date(pubDate).toISOString() : undefined;
+        const aiPlannedWindow = await extractPlannedWindowAI(title, description || title, publishedAt ?? undefined);
+        const finalPlannedWindow = aiPlannedWindow ?? resolvePlannedWindow(`${title} ${description}`, publishedAt);
 
         items.push(
           createItem({
             title,
             summary: description || title,
             url: link || NEWS_URL,
-            publishedAt: pubDate ? new Date(pubDate).toISOString() : undefined
+            publishedAt,
+            plannedWindow: finalPlannedWindow,
+            confidence: validation.confidence,
+            status: validation.extractedInfo?.outageType
           })
         );
-      });
+      }
     } else {
-      $('article, .news-item, .card, a').each((_, element) => {
+      const nodes = $('article, .news-item, .card, a').toArray();
+      for (const element of nodes) {
         const node = $(element);
         const link = node.find('a').first();
         const titleNode = node.find('h1, h2, h3').first();
         const title = (titleNode.text() || node.text()).replace(/\s+/g, ' ').trim();
         const href = (link.attr('href') ?? node.attr('href')) ?? '';
-        if (!title || title.length < 10 || !href || !KEYWORDS.test(title)) return;
-        if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) return;
+        if (!title || title.length < 10 || !href || !KEYWORDS.test(title)) {
+          continue;
+        }
+        if (BLACKLIST_PATTERNS.some((pattern) => pattern.test(title))) {
+          continue;
+        }
 
         const absoluteUrl = new URL(href, NEWS_URL).toString();
         const dateText = node.find('time').attr('datetime') ?? node.find('time').text();
@@ -84,25 +112,37 @@ export const ekedc: Adapter = async (ctx) => {
 
         if (!publishedAt) {
           console.log(`[EKEDC] Skipping item without date: ${title}`);
-          return;
+          continue;
         }
 
         if (Date.now() - Date.parse(publishedAt) > 90 * 24 * 60 * 60 * 1000) {
           console.log(`[EKEDC] Skipping old item: ${title}`);
-          return;
+          continue;
         }
 
         const summary = node.find('p').first().text().replace(/\s+/g, ' ').trim() || title;
+
+        const validation = await validateOutageRelevance(title, summary);
+        if (!validation.isRelevant || validation.confidence < 0.65) {
+          console.log(`[EKEDC] Skipping irrelevant: ${title.slice(0, 60)}`);
+          continue;
+        }
+
+        const aiPlannedWindow = await extractPlannedWindowAI(title, summary, publishedAt);
+        const finalPlannedWindow = aiPlannedWindow ?? resolvePlannedWindow(`${title} ${summary}`, publishedAt);
 
         items.push(
           createItem({
             title,
             summary,
             url: absoluteUrl,
-            publishedAt
+            publishedAt,
+            plannedWindow: finalPlannedWindow,
+            confidence: validation.confidence,
+            status: validation.extractedInfo?.outageType
           })
         );
-      });
+      }
     }
   } catch (error) {
     console.error('EKEDC scrape failed', error);
