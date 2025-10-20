@@ -3,6 +3,22 @@
     {
       "source": "AEDC",
       "sourceName": "Abuja Electricity Distribution Company (media relay)",
+      "title": "FG deports 51 foreign nationals convicted of cybercrimes",
+      "summary": "The Economic and Financial Crimes Commission (EFCC) has, in collaboration with other agencies, deported another batch of 51 foreign nationals convicted of cyber-terrorism, internet fraud, and related financial crimes in Lagos. EFCC Spokesperson, Dele Oyewale, said this in a statement on Sunday in Abuja. Oyewale said the exercise was jointly carried out by the anti-graft [&#8230;]",
+      "officialUrl": "https://tribuneonlineng.com/fg-deports-51-foreign-nationals-convicted-of-cybercrimes/",
+      "verifiedBy": "MEDIA",
+      "publishedAt": "2025-10-20T06:10:07.000Z",
+      "raw": {
+        "description": "The Economic and Financial Crimes Commission (EFCC) has, in collaboration with other agencies, deported another batch of 51 foreign nationals convicted of cyber-terrorism, internet fraud, and related financial crimes in Lagos. EFCC Spokesperson, Dele Oyewale, said this in a statement on Sunday in Abuja. Oyewale said the exercise was jointly carried out by the anti-graft [&#8230;]",
+        "relaySource": "media"
+      },
+      "status": "UNPLANNED",
+      "confidence": 0.6,
+      "id": "d6123cc38a78"
+    },
+    {
+      "source": "AEDC",
+      "sourceName": "Abuja Electricity Distribution Company (media relay)",
       "title": "Scarcity of cooking gas persists in Lagos, Abuja, others",
       "summary": "DESPITE the&#160; appeal by the minister of State Petroleum Resources (Gas), Honourable Ekperikpe Ekpo, urging&#160; marketers, distributors, and all stakeholders along the LPG (cooking gas) value chain to desist from hoarding the product and refrain from exploiting consumers for profit, the product’s scarcity persist in Lagos, Abuja, Delta States, others. Besides, for the few available [&#8230;]",
       "officialUrl": "https://tribuneonlineng.com/scarcity-of-cooking-gas-persists-in-lagos-abuja-others/",
@@ -18,6 +34,6 @@
     }
   ],
   "planned": [],
-  "generatedAt": "2025-10-20T05:46:59.652Z",
-  "latestSourceAt": "2025-10-20T04:05:00.000Z"
+  "generatedAt": "2025-10-20T06:16:35.551Z",
+  "latestSourceAt": "2025-10-20T06:10:07.000Z"
 }
