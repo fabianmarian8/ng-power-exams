@@ -51,7 +51,9 @@ jobs:
           REDEPLOY_HOOK_URL: ${{ secrets.REDEPLOY_HOOK_URL }}
         run: |
           if [ -n "$REDEPLOY_HOOK_URL" ]; then
-            curl -sS -X POST "$REDEPLOY_HOOK_URL"
+            echo "Triggering redeploy..."
+            curl -sS -X POST "$REDEPLOY_HOOK_URL" || echo "Redeploy hook failed"
           else
-            echo "No redeploy hook configured"
+            echo "⚠️  REDEPLOY_HOOK_URL not configured - skipping redeploy"
+            echo "Configure it in GitHub Settings → Secrets → Actions"
           fi
