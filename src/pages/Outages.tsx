@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,13 +19,78 @@ import { useOutages } from "@/hooks/useOutages";
 import { PlannedBoard } from "@/components/outages/PlannedBoard";
 import { LiveBoard } from "@/components/outages/LiveBoard";
 import { NationalGridCard } from "@/components/outages/NationalGridCard";
+import { OutageFilters, type OutageFiltersState } from "@/components/outages/OutageFilters";
+import { OutageMap } from "@/components/outages/OutageMap";
 
 const Outages = () => {
   const { t, language } = useLanguage();
   usePageMetadata("meta.outages.title", "meta.outages.description");
   const news = useNews();
   const outages = useOutages();
-  const liveItems = useMemo(() => [...outages.active, ...outages.restored], [outages.active, outages.restored]);
+  const [filters, setFilters] = useState<OutageFiltersState>({
+    state: "all",
+    disco: "all",
+    status: "all",
+    source: "all",
+    dateRange: "7days",
+  });
+  const filteredOutages = useMemo(() => {
+    let filtered = outages.all;
+
+    if (filters.state !== "all") {
+      filtered = filtered.filter((item) =>
+        item.affectedAreas?.some((area) => area.toLowerCase().includes(filters.state.toLowerCase()))
+      );
+    }
+
+    if (filters.disco !== "all") {
+      filtered = filtered.filter((item) =>
+        (item.sourceName ?? item.source).toLowerCase().includes(filters.disco.toLowerCase())
+      );
+    }
+
+    if (filters.status !== "all") {
+      filtered = filtered.filter((item) => item.status === filters.status);
+    }
+
+    if (filters.source !== "all") {
+      if (filters.source === "DISCO") {
+        filtered = filtered.filter((item) => item.verifiedBy === "DISCO");
+      } else if (filters.source === "TCN") {
+        filtered = filtered.filter((item) => item.source === "TCN");
+      } else if (filters.source === "MEDIA") {
+        filtered = filtered.filter((item) => item.verifiedBy === "MEDIA");
+      } else if (filters.source === "NERC") {
+        filtered = filtered.filter((item) => item.verifiedBy === "REGULATORY");
+      } else if (filters.source === "TWITTER") {
+        filtered = filtered.filter((item) => item.source === "TWITTER");
+      } else if (filters.source === "TELEGRAM") {
+        filtered = filtered.filter((item) => item.source === "TELEGRAM");
+      }
+    }
+
+    const now = new Date();
+    if (filters.dateRange === "24h") {
+      const since = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      filtered = filtered.filter((item) => new Date(item.publishedAt) >= since);
+    } else if (filters.dateRange === "7days") {
+      const since = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      filtered = filtered.filter((item) => new Date(item.publishedAt) >= since);
+    } else if (filters.dateRange === "30days") {
+      const since = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+      filtered = filtered.filter((item) => new Date(item.publishedAt) >= since);
+    }
+
+    return filtered;
+  }, [filters, outages.all]);
+  const filteredLiveItems = useMemo(
+    () => filteredOutages.filter((item) => item.status !== "PLANNED"),
+    [filteredOutages]
+  );
+  const filteredPlannedItems = useMemo(
+    () => filteredOutages.filter((item) => item.status === "PLANNED"),
+    [filteredOutages]
+  );
   const latestTcn = useMemo(
     () => outages.all.find((item) => item.source === "TCN"),
     [outages.all]
@@ -151,9 +216,18 @@ const Outages = () => {
         </section>
 
         <section className="container py-10 space-y-10">
-          <PlannedBoard items={outages.planned} lastUpdated={outages.lastIngest} />
+          <OutageFilters
+            onFilterChange={setFilters}
+            activeFiltersCount={Object.values(filters).filter(
+              (value) => value !== "all" && value !== "7days"
+            ).length}
+          />
 
-          <LiveBoard items={liveItems} />
+          <OutageMap outages={filteredOutages} />
+
+          <PlannedBoard items={filteredPlannedItems} lastUpdated={outages.lastIngest} />
+
+          <LiveBoard items={filteredLiveItems} />
 
           <NationalGridCard item={latestTcn} />
 
