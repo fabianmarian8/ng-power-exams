@@ -1,6 +1,26 @@
 {
-  "generatedAt": "2025-10-20T02:28:44.972Z",
+  "generatedAt": "2025-10-20T04:01:55.316Z",
   "items": [
+    {
+      "id": "85563f8c984d1d5b1e4e8b1b18690627496237d2",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Daily Trust",
+      "title": "Togo, Mali, Niger owe Nigeria N29.1bn electricity bills in 6 months",
+      "summary": "International customers that get their power supply failed to pay the sum of $19.84m (N29.18bn) from the $34.71m (51bn) bills issued to them from January to June of 2025, analysis of quarterly reports by the Nigerian Electricity Regulatory Commission has shown. The report said the countries that got the supply through their electricity utility companies […]",
+      "publishedAt": "2025-10-20T03:41:00+01:00",
+      "officialUrl": "https://dailytrust.com/togo-mali-niger-owe-nigeria-n29-1bn-electricity-bills-in-6-months/"
+    },
+    {
+      "id": "b0cc3d52af97a3b4df44b28a9d55dd2b82adc080",
+      "domain": "POWER",
+      "tier": "MEDIA",
+      "source": "Vanguard",
+      "title": "Omi Eko project to save Lagosians 3 hours of travel time, says EU chief",
+      "summary": "Omi Eko project to save Lagosians 3 hours of travel time, says EU chief Vanguard News",
+      "publishedAt": "2025-10-20T03:06:00+01:00",
+      "officialUrl": "https://www.vanguardngr.com/2025/10/omi-eko-project-to-save-lagosians-3-hours-of-travel-time-says-eu-chief/"
+    },
     {
       "id": "a167c6a1f85e9b6e3c10acc86d9a367b2e968b90",
       "domain": "POWER",
@@ -20,16 +40,6 @@
       "summary": "In a bold move to empower rural processors and farmers across Nigeria’s cassava value chain, Cassavaverse, an agro-enterprise focused on",
       "publishedAt": "2025-10-19T22:34:00+01:00",
       "officialUrl": "https://tribuneonlineng.com/firm-donates-cassava-processing-machine-to-ogun-community/"
-    },
-    {
-      "id": "e7d9b4654685e44e99245920cf8f3bc1a2f3b6a8",
-      "domain": "EXAMS",
-      "tier": "MEDIA",
-      "source": "Daily Trust",
-      "title": "Cameroonian opposition candidate kicks as official results put Biya in early lead",
-      "summary": "Opposition presidential candidate, Issa Tchiroma Bakary, has announced plans to publish ‘original’ polling station reports to prove his victory in Cameroon’s October 12 presidential election. He said this while challenging early trends that favor incumbent President Paul Biya. In a statement released Sunday, Tchiroma said, “To ensure transparency and prevent any manipulation, our campaign team […]",
-      "publishedAt": "2025-10-19T14:19:00+01:00",
-      "officialUrl": "https://dailytrust.com/cameroonian-opposition-candidate-kicks-as-official-results-put-biya-in-early-lead/"
     },
     {
       "id": "dc662a0be2603e5ef3a7dbe1cf5c8d3e82035509",
