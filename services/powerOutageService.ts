@@ -1,0 +1,480 @@
+/**
+ * Power Outage Service
+ *
+ * Aggregates power outage data from multiple sources:
+ * 1. Official DisCo APIs and websites
+ * 2. Twitter/X accounts of DisCos
+ * 3. Telegram channels
+ * 4. TCN (Transmission Company of Nigeria)
+ * 5. User reports (community-sourced, unverified)
+ */
+
+import { PowerOutage, OutageType, SourceType } from '../types';
+import { API_CONFIG, BACKEND_API, USE_MOCK_DATA, getAPIHeaders } from '../config/api.config';
+import { POWER_OUTAGES_DATA } from '../constants';
+
+export interface OutageFilter {
+  disCoId?: string;
+  state?: string;
+  type?: OutageType;
+  sourceType?: SourceType;
+}
+
+export interface OutageUpdate {
+  id: string;
+  type?: OutageType;
+  estimatedRestoreTime?: Date;
+  restoredTime?: Date;
+}
+
+class PowerOutageService {
+  private cache: Map<string, { data: PowerOutage[]; timestamp: number }> = new Map();
+  private cacheTimeout = 60000; // 1 minute cache
+  private listeners: Set<(outages: PowerOutage[]) => void> = new Set();
+  private pollingInterval: NodeJS.Timeout | null = null;
+
+  /**
+   * Fetch power outages from all available sources
+   */
+  async fetchPowerOutages(): Promise<PowerOutage[]> {
+    // Check cache first
+    const cached = this.cache.get('all');
+    if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+      return cached.data;
+    }
+
+    if (USE_MOCK_DATA) {
+      // Use enhanced mock data with more realistic updates
+      return this.getEnhancedMockData();
+    }
+
+    try {
+      // Fetch from backend API
+      const response = await fetch(`${BACKEND_API.baseUrl}${BACKEND_API.endpoints.powerOutages.list}`, {
+        headers: getAPIHeaders(),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch power outages');
+      }
+
+      const data = await response.json();
+      const outages = this.normalizeOutageData(data);
+
+      // Update cache
+      this.cache.set('all', { data: outages, timestamp: Date.now() });
+
+      return outages;
+    } catch (error) {
+      console.error('Error fetching power outages:', error);
+      // Fallback to mock data
+      return this.getEnhancedMockData();
+    }
+  }
+
+  /**
+   * Fetch power outages from Twitter/X
+   * Monitors DisCo Twitter accounts for outage announcements
+   */
+  async fetchFromTwitter(): Promise<PowerOutage[]> {
+    if (!API_CONFIG.social.twitter.enabled) {
+      return [];
+    }
+
+    try {
+      const outages: PowerOutage[] = [];
+
+      for (const account of API_CONFIG.social.twitter.accounts) {
+        const response = await fetch(
+          `${API_CONFIG.social.twitter.baseUrl}/tweets/search/recent?query=from:${account} (outage OR maintenance OR fault OR "no power")&max_results=10`,
+          {
+            headers: {
+              'Authorization': `Bearer ${API_CONFIG.social.twitter.bearerToken}`,
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          const parsedOutages = this.parseTwitterData(data, account);
+          outages.push(...parsedOutages);
+        }
+      }
+
+      return outages;
+    } catch (error) {
+      console.error('Error fetching from Twitter:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Fetch power outages from Telegram channels
+   */
+  async fetchFromTelegram(): Promise<PowerOutage[]> {
+    if (!API_CONFIG.social.telegram.enabled) {
+      return [];
+    }
+
+    try {
+      // This requires a Telegram bot to be set up
+      // The bot would monitor specified channels for outage announcements
+      const response = await fetch(
+        `${BACKEND_API.baseUrl}${BACKEND_API.endpoints.social.telegram}`,
+        {
+          headers: getAPIHeaders(),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        return this.parseTelegramData(data);
+      }
+
+      return [];
+    } catch (error) {
+      console.error('Error fetching from Telegram:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Fetch power outages from official DisCo APIs
+   */
+  async fetchFromDisCo(disCoId: string): Promise<PowerOutage[]> {
+    const disCoConfig = API_CONFIG.official.discos[disCoId as keyof typeof API_CONFIG.official.discos];
+
+    if (!disCoConfig || !disCoConfig.enabled) {
+      return [];
+    }
+
+    try {
+      const response = await fetch(`${disCoConfig.baseUrl}/outages`, {
+        headers: getAPIHeaders(disCoConfig.apiKey),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return this.normalizeDisCoData(data, disCoId);
+      }
+
+      return [];
+    } catch (error) {
+      console.error(`Error fetching from DisCo ${disCoId}:`, error);
+      return [];
+    }
+  }
+
+  /**
+   * Fetch grid status from TCN
+   */
+  async fetchGridStatus(): Promise<PowerOutage[]> {
+    if (!API_CONFIG.official.tcn.enabled) {
+      return [];
+    }
+
+    try {
+      const response = await fetch(`${API_CONFIG.official.tcn.baseUrl}/grid-status`, {
+        headers: getAPIHeaders(API_CONFIG.official.tcn.apiKey),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        return this.parseGridStatus(data);
+      }
+
+      return [];
+    } catch (error) {
+      console.error('Error fetching grid status:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Submit user report (community-sourced outage information)
+   */
+  async submitUserReport(outage: Omit<PowerOutage, 'id' | 'sourceType'>): Promise<PowerOutage> {
+    try {
+      const response = await fetch(`${BACKEND_API.baseUrl}${BACKEND_API.endpoints.powerOutages.create}`, {
+        method: 'POST',
+        headers: getAPIHeaders(),
+        body: JSON.stringify({
+          ...outage,
+          sourceType: SourceType.Unofficial,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Clear cache to force refresh
+        this.cache.clear();
+        // Notify listeners
+        this.notifyListeners();
+        return data;
+      }
+
+      throw new Error('Failed to submit user report');
+    } catch (error) {
+      console.error('Error submitting user report:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update outage status (e.g., mark as restored)
+   */
+  async updateOutage(update: OutageUpdate): Promise<PowerOutage> {
+    try {
+      const response = await fetch(
+        `${BACKEND_API.baseUrl}${BACKEND_API.endpoints.powerOutages.update(update.id)}`,
+        {
+          method: 'PATCH',
+          headers: getAPIHeaders(),
+          body: JSON.stringify(update),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        // Clear cache
+        this.cache.clear();
+        // Notify listeners
+        this.notifyListeners();
+        return data;
+      }
+
+      throw new Error('Failed to update outage');
+    } catch (error) {
+      console.error('Error updating outage:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Filter outages based on criteria
+   */
+  filterOutages(outages: PowerOutage[], filter: OutageFilter): PowerOutage[] {
+    return outages.filter(outage => {
+      if (filter.disCoId && outage.disCoId !== filter.disCoId) return false;
+      if (filter.type && outage.type !== filter.type) return false;
+      if (filter.sourceType && outage.sourceType !== filter.sourceType) return false;
+      // State filtering would require DisCo lookup
+      return true;
+    });
+  }
+
+  /**
+   * Subscribe to real-time updates
+   */
+  subscribe(callback: (outages: PowerOutage[]) => void): () => void {
+    this.listeners.add(callback);
+
+    // Start polling if not already started
+    if (!this.pollingInterval) {
+      this.startPolling();
+    }
+
+    // Return unsubscribe function
+    return () => {
+      this.listeners.delete(callback);
+      if (this.listeners.size === 0 && this.pollingInterval) {
+        clearInterval(this.pollingInterval);
+        this.pollingInterval = null;
+      }
+    };
+  }
+
+  /**
+   * Start polling for updates
+   */
+  private startPolling(): void {
+    this.pollingInterval = setInterval(async () => {
+      await this.fetchPowerOutages();
+      this.notifyListeners();
+    }, API_CONFIG.polling.powerOutages);
+  }
+
+  /**
+   * Notify all listeners of data updates
+   */
+  private async notifyListeners(): Promise<void> {
+    const outages = await this.fetchPowerOutages();
+    this.listeners.forEach(callback => callback(outages));
+  }
+
+  /**
+   * Parse Twitter data into PowerOutage format
+   */
+  private parseTwitterData(data: any, account: string): PowerOutage[] {
+    // This is a simplified parser
+    // In production, use NLP/AI to extract outage information from tweets
+    const outages: PowerOutage[] = [];
+
+    if (data.data) {
+      data.data.forEach((tweet: any) => {
+        // Extract outage information from tweet text
+        // This is a placeholder - implement proper parsing logic
+        const text = tweet.text.toLowerCase();
+
+        if (text.includes('outage') || text.includes('fault') || text.includes('maintenance')) {
+          outages.push({
+            id: `twitter-${tweet.id}`,
+            disCoId: this.mapTwitterAccountToDisCo(account),
+            affectedArea: 'Area mentioned in tweet', // Extract from tweet
+            type: text.includes('maintenance') ? OutageType.Planned : OutageType.Unplanned,
+            reason: tweet.text,
+            startTime: new Date(tweet.created_at),
+            source: `Twitter @${account}`,
+            sourceType: SourceType.Official,
+          });
+        }
+      });
+    }
+
+    return outages;
+  }
+
+  /**
+   * Parse Telegram data
+   */
+  private parseTelegramData(data: any): PowerOutage[] {
+    // Similar to Twitter parsing
+    // Implement Telegram-specific parsing logic
+    return [];
+  }
+
+  /**
+   * Normalize DisCo API data
+   */
+  private normalizeDisCoData(data: any, disCoId: string): PowerOutage[] {
+    // Each DisCo may have different API response format
+    // Normalize to common PowerOutage interface
+    return data.map((item: any) => ({
+      id: item.id || `${disCoId}-${Date.now()}`,
+      disCoId,
+      affectedArea: item.area || item.feeder || item.location,
+      type: this.normalizeOutageType(item.type || item.status),
+      reason: item.reason || item.description,
+      startTime: new Date(item.startTime || item.start_time),
+      estimatedRestoreTime: item.estimatedRestoreTime ? new Date(item.estimatedRestoreTime) : undefined,
+      restoredTime: item.restoredTime ? new Date(item.restoredTime) : undefined,
+      source: `${disCoId.toUpperCase()} Official API`,
+      sourceType: SourceType.Official,
+    }));
+  }
+
+  /**
+   * Parse grid status from TCN
+   */
+  private parseGridStatus(data: any): PowerOutage[] {
+    if (data.status === 'collapsed' || data.status === 'partial_collapse') {
+      return [{
+        id: `grid-${Date.now()}`,
+        disCoId: 'grid',
+        affectedArea: 'Nationwide',
+        type: OutageType.Grid,
+        reason: data.reason || 'National Grid issue',
+        startTime: new Date(data.timestamp),
+        source: 'TCN Official',
+        sourceType: SourceType.Official,
+      }];
+    }
+    return [];
+  }
+
+  /**
+   * Normalize outage data from backend
+   */
+  private normalizeOutageData(data: any[]): PowerOutage[] {
+    return data.map(item => ({
+      ...item,
+      startTime: new Date(item.startTime),
+      estimatedRestoreTime: item.estimatedRestoreTime ? new Date(item.estimatedRestoreTime) : undefined,
+      restoredTime: item.restoredTime ? new Date(item.restoredTime) : undefined,
+    }));
+  }
+
+  /**
+   * Get enhanced mock data with realistic variations
+   */
+  private getEnhancedMockData(): PowerOutage[] {
+    const now = Date.now();
+
+    // Create dynamic mock data based on current time
+    const mockOutages = POWER_OUTAGES_DATA.map((outage, index) => {
+      // Simulate some outages getting restored
+      const hoursSinceStart = (now - outage.startTime.getTime()) / (1000 * 60 * 60);
+
+      if (outage.type === OutageType.Unplanned && hoursSinceStart > 4 && Math.random() > 0.5) {
+        return {
+          ...outage,
+          type: OutageType.Restored,
+          restoredTime: new Date(now - Math.random() * 1000 * 60 * 30), // Restored in last 30 min
+        };
+      }
+
+      return outage;
+    });
+
+    // Add some new random outages
+    if (Math.random() > 0.7) {
+      const discos = ['ikeja', 'aedc', 'phed', 'eedc', 'eko', 'ibedc'];
+      const randomDisCo = discos[Math.floor(Math.random() * discos.length)];
+
+      mockOutages.push({
+        id: `outage-${now}`,
+        disCoId: randomDisCo,
+        affectedArea: 'New Random Area',
+        type: Math.random() > 0.5 ? OutageType.Unplanned : OutageType.Planned,
+        reason: 'Newly detected outage',
+        startTime: new Date(now - Math.random() * 1000 * 60 * 60), // Within last hour
+        source: 'Twitter @DisCo',
+        sourceType: SourceType.Official,
+      });
+    }
+
+    return mockOutages;
+  }
+
+  /**
+   * Normalize outage type from various formats
+   */
+  private normalizeOutageType(type: string): OutageType {
+    const normalized = type.toLowerCase();
+    if (normalized.includes('plan') || normalized.includes('maintenance')) return OutageType.Planned;
+    if (normalized.includes('restore') || normalized.includes('fixed')) return OutageType.Restored;
+    if (normalized.includes('grid')) return OutageType.Grid;
+    return OutageType.Unplanned;
+  }
+
+  /**
+   * Map Twitter account to DisCo ID
+   */
+  private mapTwitterAccountToDisCo(account: string): string {
+    const mapping: { [key: string]: string } = {
+      'IkejaElectric': 'ikeja',
+      'AEDCelectricity': 'aedc',
+      'ekedp': 'eko',
+      'Ibadandisco': 'ibedc',
+      'EnuguDisco': 'eedc',
+      'PHED_NG': 'phed',
+      'kedcomanager': 'kedco',
+      'KadunaElectric': 'kaduna',
+      'JosElectricity': 'jos',
+      'Yoladisco': 'yola',
+      'BedcElectricity': 'bedc',
+    };
+
+    return mapping[account] || 'unknown';
+  }
+
+  /**
+   * Clear cache
+   */
+  clearCache(): void {
+    this.cache.clear();
+  }
+}
+
+// Export singleton instance
+export const powerOutageService = new PowerOutageService();

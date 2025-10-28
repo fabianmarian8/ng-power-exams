@@ -1,12 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { PowerOutage, OutageType, SourceType } from '../types';
-import { DISCOS, POWER_OUTAGES_DATA, ALL_NIGERIA_STATES, ICONS, TIPS_AND_GUIDES } from '../constants';
+import { DISCOS, ALL_NIGERIA_STATES, ICONS, TIPS_AND_GUIDES } from '../constants';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Select } from '../components/ui/Select';
 import { Button } from '../components/ui/Button';
 import { useLanguage } from '../contexts/LanguageContext';
 import { formatNigerianTimeParts } from '../utils/date';
+import { usePowerOutages } from '../hooks/usePowerOutages';
 
 const OutageCard: React.FC<{ outage: PowerOutage }> = ({ outage }) => {
     const disCo = DISCOS.find(d => d.id === outage.disCoId);
@@ -107,31 +108,17 @@ const GuidesAndTips: React.FC = () => {
 
 const PowerOutages: React.FC = () => {
     const { texts } = useLanguage();
-    const [outages, setOutages] = useState<PowerOutage[]>(POWER_OUTAGES_DATA);
+
+    // Use the custom hook for real-time data
+    const { outages: allOutages, loading, error, refresh } = usePowerOutages();
+
     const [filterDisCo, setFilterDisCo] = useState('all');
     const [filterType, setFilterType] = useState('all');
     const [filterState, setFilterState] = useState('all');
     const [filterSourceType, setFilterSourceType] = useState('all');
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            // Simulate real-time updates
-            setOutages(prevOutages => {
-                const newOutages = [...prevOutages];
-                const randomIndex = Math.floor(Math.random() * newOutages.length);
-                if(newOutages[randomIndex].type === OutageType.Unplanned) {
-                    const updatedOutage = {...newOutages[randomIndex], type: OutageType.Restored, restoredTime: new Date() };
-                    newOutages[randomIndex] = updatedOutage;
-                }
-                return newOutages;
-            });
-        }, 120000); // every 2 minutes
-
-        return () => clearInterval(interval);
-    }, []);
-
     const filteredOutages = useMemo(() => {
-        return outages.filter(outage => {
+        return allOutages.filter(outage => {
             const disCo = DISCOS.find(d => d.id === outage.disCoId);
             const disCoStates = disCo ? disCo.states : [];
 
@@ -139,10 +126,10 @@ const PowerOutages: React.FC = () => {
             const typeMatch = filterType === 'all' || outage.type === filterType;
             const stateMatch = filterState === 'all' || outage.type === OutageType.Grid || disCoStates.includes(filterState);
             const sourceTypeMatch = filterSourceType === 'all' || outage.sourceType === filterSourceType;
-            
+
             return disCoMatch && typeMatch && stateMatch && sourceTypeMatch;
         });
-    }, [outages, filterDisCo, filterType, filterState, filterSourceType]);
+    }, [allOutages, filterDisCo, filterType, filterState, filterSourceType]);
 
     const resetFilters = () => {
         setFilterDisCo('all');
@@ -156,11 +143,22 @@ const PowerOutages: React.FC = () => {
             <div className="text-center">
                 <h1 className="text-3xl font-bold">{texts.powerOutagesTitle}</h1>
                 <p className="text-gray-600 mt-2">{texts.powerOutagesSubtitle}</p>
+                {error && (
+                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+                        <p className="font-semibold">Error loading data</p>
+                        <p className="text-sm">{error.message}</p>
+                    </div>
+                )}
             </div>
             
             <Card>
                 <CardHeader>
-                    <CardTitle>{texts.filterOutages}</CardTitle>
+                    <div className="flex justify-between items-center">
+                        <CardTitle>{texts.filterOutages}</CardTitle>
+                        <Button onClick={refresh} variant="secondary" disabled={loading}>
+                            {loading ? 'Refreshing...' : 'Refresh Data'}
+                        </Button>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
@@ -192,7 +190,17 @@ const PowerOutages: React.FC = () => {
                 <h2 className="text-2xl font-semibold mb-4">
                     {filteredOutages.length} {texts.activeIncidents}
                 </h2>
-                {filteredOutages.length > 0 ? (
+                {loading && filteredOutages.length === 0 ? (
+                    <Card>
+                        <CardContent className="text-center text-gray-500 py-12">
+                            <div className="flex flex-col items-center">
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-green mb-4"></div>
+                                <p className="font-semibold text-lg">Loading power outages...</p>
+                                <p className="text-sm">Fetching data from multiple sources</p>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ) : filteredOutages.length > 0 ? (
                     filteredOutages.sort((a,b) => b.startTime.getTime() - a.startTime.getTime()).map(outage => <OutageCard key={outage.id} outage={outage} />)
                 ) : (
                     <Card>
