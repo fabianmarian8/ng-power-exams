@@ -1,32 +1,44 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NaijaInfo - Nigeria Power Outages & Exam Results</title>
-    <meta name="description" content="Get real-time power outage updates across all Nigerian DisCos and check JAMB, WAEC, NECO exam results with official links and guides." />
-    <meta name="author" content="NaijaInfo" />
-    <meta name="keywords" content="Nigeria power outage, JAMB results, WAEC results, NECO results, NEPA, electricity, DisCo, Ikeja Electric, Eko Disco" />
-    
-    <link rel="alternate" hreflang="en" href="https://naijainfo.lovable.app/?lang=en" />
-    <link rel="alternate" hreflang="pcm" href="https://naijainfo.lovable.app/?lang=pcm" />
-    <link rel="alternate" hreflang="ha" href="https://naijainfo.lovable.app/?lang=ha" />
-    <link rel="alternate" hreflang="yo" href="https://naijainfo.lovable.app/?lang=yo" />
-    <link rel="alternate" hreflang="ig" href="https://naijainfo.lovable.app/?lang=ig" />
-    <link rel="alternate" hreflang="x-default" href="https://naijainfo.lovable.app/" />
-
-    <meta property="og:title" content="NaijaInfo - Nigeria Power Outages & Exam Results" />
-    <meta property="og:description" content="Real-time power outage updates and exam results checker for Nigeria" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
-
-  <body>
+    <title>Naija Power & Portal Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'brand-green': '#008751',
+              'brand-dark': '#121212',
+              'brand-light': '#f0f2f5',
+            },
+          },
+        },
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.4"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="bg-brand-light dark:bg-brand-dark font-sans">
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>
