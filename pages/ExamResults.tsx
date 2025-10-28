@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ExamGuide, ExamStatus } from '../types';
-import { EXAM_GUIDES_DATA } from '../constants';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { formatNigerianTime } from '../utils/date';
+import { useExamStatus } from '../hooks/useExamStatus';
 
 const StatusBadge: React.FC<{ status: ExamStatus }> = ({ status }) => {
     switch (status) {
@@ -98,30 +98,11 @@ const ExpandedGuideContent: React.FC<{ guide: ExamGuide }> = ({ guide }) => {
 
 const ExamResults: React.FC = () => {
     const { texts } = useLanguage();
-    const [guides, setGuides] = useState<ExamGuide[]>(EXAM_GUIDES_DATA);
+
+    // Use the custom hook for real-time exam status
+    const { guides, loading, error, refresh } = useExamStatus();
+
     const [selectedGuide, setSelectedGuide] = useState<string | null>(null);
-
-    useEffect(() => {
-        // Simulate real-time status updates
-        const interval = setInterval(() => {
-            setGuides(prevGuides => {
-                const newGuides = [...prevGuides];
-                const randomIndex = Math.floor(Math.random() * newGuides.length);
-                const statuses = Object.values(ExamStatus);
-                const currentStatus = newGuides[randomIndex].status;
-                let newStatus = statuses[Math.floor(Math.random() * statuses.length)];
-                // Avoid setting the same status
-                while(newStatus === currentStatus) {
-                    newStatus = statuses[Math.floor(Math.random() * statuses.length)];
-                }
-
-                newGuides[randomIndex] = { ...newGuides[randomIndex], status: newStatus, lastChecked: new Date() };
-                return newGuides;
-            });
-        }, 30000); // every 30 seconds
-
-        return () => clearInterval(interval);
-    }, []);
 
     const toggleGuide = (id: string) => {
         setSelectedGuide(prev => (prev === id ? null : id));
@@ -132,9 +113,31 @@ const ExamResults: React.FC = () => {
             <div className="text-center">
                 <h1 className="text-3xl font-bold">{texts.examResultsTitle}</h1>
                 <p className="text-gray-600 mt-2">{texts.examResultsSubtitle}</p>
+                {error && (
+                    <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+                        <p className="font-semibold">Error loading exam status</p>
+                        <p className="text-sm">{error.message}</p>
+                    </div>
+                )}
+                <div className="mt-4">
+                    <Button onClick={refresh} variant="secondary" disabled={loading}>
+                        {loading ? 'Refreshing...' : 'Refresh Status'}
+                    </Button>
+                </div>
             </div>
 
-            <div className="space-y-4">
+            {loading && guides.length === 0 ? (
+                <Card>
+                    <CardContent className="text-center text-gray-500 py-12">
+                        <div className="flex flex-col items-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-green mb-4"></div>
+                            <p className="font-semibold text-lg">Checking exam portal status...</p>
+                            <p className="text-sm">Monitoring JAMB, WAEC, and NECO portals</p>
+                        </div>
+                    </CardContent>
+                </Card>
+            ) : (
+                <div className="space-y-4">
                 {guides.map(guide => (
                     <Card key={guide.id}>
                         <CardHeader 
@@ -163,7 +166,8 @@ const ExamResults: React.FC = () => {
                         )}
                     </Card>
                 ))}
-            </div>
+                </div>
+            )}
         </div>
     );
 };
