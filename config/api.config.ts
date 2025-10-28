@@ -141,22 +141,28 @@ export const API_CONFIG: DataSourceConfig = {
       apiKey: process.env.VITE_TCN_API_KEY,
       enabled: false,
     },
-    // Exam Boards APIs
+    // Exam Boards APIs - Note: No public APIs available per research report
     examBoards: {
       jamb: {
-        baseUrl: 'https://api.jamb.gov.ng/v1',
+        baseUrl: 'https://efacility.jamb.gov.ng', // e-Facility portal (login required)
         apiKey: process.env.VITE_JAMB_API_KEY,
-        enabled: false, // JAMB doesn't have public API, use web scraping or manual updates
+        enabled: false, // No public API - results via portal/SMS only
+        // Twitter: @JAMBHQ for announcements
+        // Website: https://www.jamb.gov.ng/ for bulletins
       },
       waec: {
-        baseUrl: 'https://api.waec.org/v1',
+        baseUrl: 'https://www.waecdirect.org', // Result checker (requires scratch card)
         apiKey: process.env.VITE_WAEC_API_KEY,
-        enabled: false, // WAEC doesn't have public API
+        enabled: false, // No public API - verification API for institutions only (paid)
+        // Twitter: @waecnigeria for announcements
+        // Website: https://www.waecnigeria.org/
       },
       neco: {
-        baseUrl: 'https://api.neco.gov.ng/v1',
+        baseUrl: 'https://results.neco.gov.ng', // Results portal
         apiKey: process.env.VITE_NECO_API_KEY,
-        enabled: false, // NECO doesn't have public API
+        enabled: false, // No public API - verification via NERVS (paid for institutions)
+        // Twitter: @OfficialNecoNG for announcements
+        // Website: https://www.neco.gov.ng/
       },
     },
   },
@@ -188,32 +194,54 @@ export const API_CONFIG: DataSourceConfig = {
       baseUrl: 'https://api.telegram.org',
       botToken: process.env.VITE_TELEGRAM_BOT_TOKEN,
       enabled: !!process.env.VITE_TELEGRAM_BOT_TOKEN,
-      // Telegram channels to monitor (if public)
+      // Telegram channels to monitor - Updated with real channels from research report
       channels: [
-        '@ikejaelectric',
-        '@aedcofficial',
-        '@ekedp',
-        '@ibedc',
-        // Add more as available
+        // News channels
+        '@PunchNewspaper',      // Punch Newspapers official channel (~29k subscribers)
+        '@tvcnews_nigeria',     // TVC News Nigeria
+        '@nmliveupdates',       // Nairametrics Live Updates (business/energy news)
+
+        // DisCo bots (for outage information)
+        '@aedcelectricity',     // AEDC Telegram chat bot
+        '@PHEDConnect_bot',     // PHED bot (nicknamed "Ibinabo")
+
+        // Other potential channels (add as discovered)
+        '@theelectricityhub',   // The Electricity Hub (industry news)
       ],
     },
   },
 
-  // News Sources
+  // News Sources - Updated with real RSS feeds from research report
   news: {
     // RSS Feeds for energy and education news
     rss: [
-      'https://punchng.com/topics/power/feed/',
-      'https://www.premiumtimesng.com/news/headlines/feed',
-      'https://guardian.ng/category/news/feed/',
+      // General news feeds
+      'http://punchng.com/feed',
+      'https://www.premiumtimesng.com/feed',
+      'https://guardian.ng/feed',
       'https://www.vanguardngr.com/feed/',
+      'https://www.channelstv.com/feed/',
+
+      // Category-specific feeds
+      'https://www.premiumtimesng.com/category/education/feed', // Education
+      'https://guardian.ng/category/energy/feed', // Energy
     ],
-    // News websites to scrape (requires backend service)
+    // Official DisCo and exam board websites (for scraping)
     websites: [
+      // DisCo outage pages
+      'https://www.ikejaelectric.com/fault-log',
+      'https://www.ibedc.com/outage-information',
+      'https://www.ekedp.com/service-alert',
+
+      // News sites
       'https://punchng.com',
       'https://www.premiumtimesng.com',
       'https://guardian.ng',
       'https://www.vanguardngr.com',
+
+      // Government/Regulatory
+      'https://nerc.gov.ng',
+      'https://tcn.org.ng',
     ],
   },
 
@@ -274,8 +302,9 @@ export const BACKEND_API = {
 /**
  * Mock Data Configuration
  * Use mock data when external APIs are not available
+ * Set VITE_USE_MOCK_DATA=false in .env.local to use real data sources
  */
-export const USE_MOCK_DATA = process.env.VITE_USE_MOCK_DATA === 'true' || true; // Default to true for development
+export const USE_MOCK_DATA = process.env.VITE_USE_MOCK_DATA !== 'false'; // Default to mock unless explicitly disabled
 
 /**
  * Helper function to check if a data source is available

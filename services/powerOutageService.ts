@@ -12,6 +12,9 @@
 import { PowerOutage, OutageType, SourceType } from '../types';
 import { API_CONFIG, BACKEND_API, USE_MOCK_DATA, getAPIHeaders } from '../config/api.config';
 import { POWER_OUTAGES_DATA } from '../constants';
+import { ikejaElectricScraper } from './scrapers/ikejaElectricScraper';
+import { ibedcScraper } from './scrapers/ibedcScraper';
+import { telegramService } from './integrations/telegramService';
 
 export interface OutageFilter {
   disCoId?: string;
@@ -49,26 +52,100 @@ class PowerOutageService {
     }
 
     try {
-      // Fetch from backend API
+      // Aggregate outages from multiple sources in parallel
+      const [
+        backendOutages,
+        ikejaOutages,
+        ibedcOutages,
+        telegramOutages,
+      ] = await Promise.allSettled([
+        this.fetchFromBackend(),
+        this.fetchFromIkeja(),
+        this.fetchFromIBEDC(),
+        this.fetchFromTelegram(),
+      ]);
+
+      // Combine all results
+      const allOutages: PowerOutage[] = [];
+
+      if (backendOutages.status === 'fulfilled') {
+        allOutages.push(...backendOutages.value);
+      }
+      if (ikejaOutages.status === 'fulfilled') {
+        allOutages.push(...ikejaOutages.value);
+      }
+      if (ibedcOutages.status === 'fulfilled') {
+        allOutages.push(...ibedcOutages.value);
+      }
+      if (telegramOutages.status === 'fulfilled') {
+        allOutages.push(...telegramOutages.value);
+      }
+
+      // Remove duplicates and sort by start time
+      const uniqueOutages = this.removeDuplicates(allOutages);
+      uniqueOutages.sort((a, b) => b.startTime.getTime() - a.startTime.getTime());
+
+      // Update cache
+      this.cache.set('all', { data: uniqueOutages, timestamp: Date.now() });
+
+      console.log(`Aggregated ${uniqueOutages.length} outages from ${this.countSources(allOutages)} sources`);
+
+      return uniqueOutages;
+    } catch (error) {
+      console.error('Error fetching power outages:', error);
+      // Fallback to mock data
+      return this.getEnhancedMockData();
+    }
+  }
+
+  /**
+   * Fetch outages from backend API
+   */
+  private async fetchFromBackend(): Promise<PowerOutage[]> {
+    try {
       const response = await fetch(`${BACKEND_API.baseUrl}${BACKEND_API.endpoints.powerOutages.list}`, {
         headers: getAPIHeaders(),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch power outages');
+        throw new Error('Failed to fetch from backend');
       }
 
       const data = await response.json();
-      const outages = this.normalizeOutageData(data);
+      return this.normalizeOutageData(data);
+    } catch (error) {
+      console.error('Backend fetch failed:', error);
+      return [];
+    }
+  }
 
-      // Update cache
-      this.cache.set('all', { data: outages, timestamp: Date.now() });
-
+  /**
+   * Fetch outages from Ikeja Electric scraper
+   */
+  private async fetchFromIkeja(): Promise<PowerOutage[]> {
+    try {
+      console.log('Scraping Ikeja Electric fault log...');
+      const outages = await ikejaElectricScraper.scrapeFaultLog();
+      console.log(`Scraped ${outages.length} outages from Ikeja Electric`);
       return outages;
     } catch (error) {
-      console.error('Error fetching power outages:', error);
-      // Fallback to mock data
-      return this.getEnhancedMockData();
+      console.error('Ikeja Electric scraping failed:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Fetch outages from IBEDC scraper
+   */
+  private async fetchFromIBEDC(): Promise<PowerOutage[]> {
+    try {
+      console.log('Scraping IBEDC outage information...');
+      const outages = await ibedcScraper.scrapeOutages();
+      console.log(`Scraped ${outages.length} outages from IBEDC`);
+      return outages;
+    } catch (error) {
+      console.error('IBEDC scraping failed:', error);
+      return [];
     }
   }
 
@@ -117,21 +194,24 @@ class PowerOutageService {
     }
 
     try {
-      // This requires a Telegram bot to be set up
-      // The bot would monitor specified channels for outage announcements
-      const response = await fetch(
-        `${BACKEND_API.baseUrl}${BACKEND_API.endpoints.social.telegram}`,
-        {
-          headers: getAPIHeaders(),
-        }
-      );
+      console.log('Monitoring Telegram DisCo bots...');
 
-      if (response.ok) {
-        const data = await response.json();
-        return this.parseTelegramData(data);
+      // Check if Telegram service is initialized
+      if (!telegramService.isInitialized()) {
+        const botToken = API_CONFIG.social.telegram.botToken;
+        if (botToken) {
+          telegramService.initialize(botToken);
+        } else {
+          console.warn('Telegram bot token not configured');
+          return [];
+        }
       }
 
-      return [];
+      // Monitor DisCo bots for outage information
+      const outages = await telegramService.monitorDisCoBots();
+      console.log(`Retrieved ${outages.length} outages from Telegram bots`);
+
+      return outages;
     } catch (error) {
       console.error('Error fetching from Telegram:', error);
       return [];
@@ -466,6 +546,53 @@ class PowerOutageService {
     };
 
     return mapping[account] || 'unknown';
+  }
+
+  /**
+   * Remove duplicate outages based on similarity
+   */
+  private removeDuplicates(outages: PowerOutage[]): PowerOutage[] {
+    const seen = new Map<string, PowerOutage>();
+
+    for (const outage of outages) {
+      // Create a unique key based on location and time
+      const key = this.createOutageKey(outage);
+
+      // Keep the first occurrence or the one with more details
+      if (!seen.has(key)) {
+        seen.set(key, outage);
+      } else {
+        const existing = seen.get(key)!;
+        // Prefer official sources
+        if (outage.sourceType === SourceType.Official && existing.sourceType !== SourceType.Official) {
+          seen.set(key, outage);
+        }
+        // Prefer entries with more information
+        else if (outage.reason.length > existing.reason.length) {
+          seen.set(key, outage);
+        }
+      }
+    }
+
+    return Array.from(seen.values());
+  }
+
+  /**
+   * Create a unique key for outage deduplication
+   */
+  private createOutageKey(outage: PowerOutage): string {
+    const area = outage.affectedArea.toLowerCase().replace(/[^\w]/g, '');
+    const disco = outage.disCoId.toLowerCase();
+    const date = outage.startTime.toDateString();
+    return `${disco}-${area}-${date}`;
+  }
+
+  /**
+   * Count number of different sources
+   */
+  private countSources(outages: PowerOutage[]): number {
+    const sources = new Set(outages.map(o => o.source));
+    return sources.size;
   }
 
   /**

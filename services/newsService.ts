@@ -11,6 +11,8 @@
 import { NewsItem } from '../types';
 import { API_CONFIG, BACKEND_API, USE_MOCK_DATA, getAPIHeaders } from '../config/api.config';
 import { NEWS_DATA } from '../constants';
+import { rssFeedParser } from './parsers/rssFeedParser';
+import { telegramService } from './integrations/telegramService';
 
 export type NewsCategory = 'ENERGY' | 'EDUCATION' | 'ALL';
 
@@ -42,6 +44,65 @@ class NewsService {
     }
 
     try {
+      // Aggregate news from multiple sources in parallel
+      const [
+        backendNews,
+        rssNews,
+        telegramNews,
+      ] = await Promise.allSettled([
+        this.fetchFromBackend(filter),
+        this.fetchFromRSS(filter),
+        this.fetchFromTelegramChannels(filter),
+      ]);
+
+      // Combine all results
+      const allNews: NewsItem[] = [];
+
+      if (backendNews.status === 'fulfilled') {
+        allNews.push(...backendNews.value);
+      }
+      if (rssNews.status === 'fulfilled') {
+        allNews.push(...rssNews.value);
+      }
+      if (telegramNews.status === 'fulfilled') {
+        allNews.push(...telegramNews.value);
+      }
+
+      // Filter by category
+      let filteredNews = allNews;
+      if (filter.category && filter.category !== 'ALL') {
+        filteredNews = allNews.filter(item => item.category === filter.category);
+      }
+
+      // Filter by date
+      if (filter.since) {
+        filteredNews = filteredNews.filter(item => item.timestamp >= filter.since!);
+      }
+
+      // Remove duplicates and sort by timestamp
+      const uniqueNews = this.removeDuplicates(filteredNews);
+      uniqueNews.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+
+      // Apply limit
+      const limitedNews = filter.limit ? uniqueNews.slice(0, filter.limit) : uniqueNews;
+
+      // Update cache
+      this.cache.set(cacheKey, { data: limitedNews, timestamp: Date.now() });
+
+      console.log(`Aggregated ${limitedNews.length} news items from ${this.countSources(allNews)} sources`);
+
+      return limitedNews;
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      return this.getEnhancedMockData(filter);
+    }
+  }
+
+  /**
+   * Fetch news from backend API
+   */
+  private async fetchFromBackend(filter: NewsFilter): Promise<NewsItem[]> {
+    try {
       const params = new URLSearchParams();
       if (filter.category && filter.category !== 'ALL') {
         params.append('category', filter.category);
@@ -61,19 +122,14 @@ class NewsService {
       );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch news');
+        throw new Error('Failed to fetch from backend');
       }
 
       const data = await response.json();
-      const news = this.normalizeNewsData(data);
-
-      // Update cache
-      this.cache.set(cacheKey, { data: news, timestamp: Date.now() });
-
-      return news;
+      return this.normalizeNewsData(data);
     } catch (error) {
-      console.error('Error fetching news:', error);
-      return this.getEnhancedMockData(filter);
+      console.error('Backend news fetch failed:', error);
+      return [];
     }
   }
 
@@ -103,22 +159,56 @@ class NewsService {
 
   /**
    * Fetch news from RSS feeds
-   * This should be done on backend to parse RSS properly
    */
-  async fetchFromRSS(): Promise<NewsItem[]> {
+  private async fetchFromRSS(filter: NewsFilter): Promise<NewsItem[]> {
     try {
-      const response = await fetch(`${BACKEND_API.baseUrl}/news/rss`, {
-        headers: getAPIHeaders(),
-      });
+      console.log('Fetching news from RSS feeds...');
 
-      if (response.ok) {
-        const data = await response.json();
-        return this.normalizeNewsData(data);
-      }
+      const category = filter.category || 'ALL';
+      const news = await rssFeedParser.fetchByCategory(category);
 
-      return [];
+      console.log(`Retrieved ${news.length} news items from RSS feeds`);
+      return news;
     } catch (error) {
       console.error('Error fetching RSS feeds:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Fetch news from Telegram channels
+   */
+  private async fetchFromTelegramChannels(filter: NewsFilter): Promise<NewsItem[]> {
+    if (!API_CONFIG.social.telegram.enabled) {
+      return [];
+    }
+
+    try {
+      console.log('Monitoring Telegram news channels...');
+
+      // Check if Telegram service is initialized
+      if (!telegramService.isInitialized()) {
+        const botToken = API_CONFIG.social.telegram.botToken;
+        if (botToken) {
+          telegramService.initialize(botToken);
+        } else {
+          console.warn('Telegram bot token not configured');
+          return [];
+        }
+      }
+
+      // Monitor news channels
+      let news = await telegramService.monitorChannels();
+
+      // Filter by category if specified
+      if (filter.category && filter.category !== 'ALL') {
+        news = news.filter(item => item.category === filter.category);
+      }
+
+      console.log(`Retrieved ${news.length} news items from Telegram channels`);
+      return news;
+    } catch (error) {
+      console.error('Error fetching from Telegram channels:', error);
       return [];
     }
   }
@@ -417,6 +507,55 @@ class NewsService {
     }
 
     return news;
+  }
+
+  /**
+   * Remove duplicate news items
+   */
+  private removeDuplicates(items: NewsItem[]): NewsItem[] {
+    const seen = new Map<string, NewsItem>();
+
+    for (const item of items) {
+      // Create a unique key based on normalized title
+      const key = this.normalizeForComparison(item.title);
+
+      // Keep the first occurrence or prefer items with URLs
+      if (!seen.has(key)) {
+        seen.set(key, item);
+      } else {
+        const existing = seen.get(key)!;
+        // Prefer items with URLs
+        if (item.url && !existing.url) {
+          seen.set(key, item);
+        }
+        // Prefer items with longer summaries
+        else if (item.summary.length > existing.summary.length) {
+          seen.set(key, item);
+        }
+      }
+    }
+
+    return Array.from(seen.values());
+  }
+
+  /**
+   * Normalize text for comparison
+   */
+  private normalizeForComparison(text: string): string {
+    return text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '') // Remove punctuation
+      .replace(/\s+/g, ' ') // Normalize whitespace
+      .trim()
+      .substring(0, 100); // Compare first 100 chars
+  }
+
+  /**
+   * Count number of different sources
+   */
+  private countSources(items: NewsItem[]): number {
+    const sources = new Set(items.map(item => item.source));
+    return sources.size;
   }
 
   /**
