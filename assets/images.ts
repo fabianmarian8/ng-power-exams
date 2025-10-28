@@ -1,7 +1,7 @@
 // AI-generated thematic images for Nigerian audience
 // Each image represents a unique aspect of the platform
 
-// Hero section - Lagos cityscape at dusk representing energy and progress
+// Hero section - Lagos skyline with electrical infrastructure representing Nigeria's energy sector
 import heroImage from './hero-lagos.jpg';
 
 // Power Outage Tracker - Happy Nigerian family with reliable electricity
