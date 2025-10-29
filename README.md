@@ -58,34 +58,26 @@ Aplikácia bude dostupná na `http://localhost:5173`
 
 ## 📊 Dátové zdroje
 
-### ✅ Funguje automaticky (bez konfigurácie)
-Aplikácia **funguje ihneď** s týmito zdrojmi pomocou client-side web scrapingu a RSS parsingu:
+Aplikácia agreguje dáta pomocou **Lovable Cloud** (Supabase) backendu:
 
-- **Ikeja Electric** - Real-time fault log scraping (Lagos area)
-- **IBEDC** - Real-time outage scraping (Oyo, Ogun, Osun, Kwara)
-- **RSS News Feeds** - 7 hlavných nigérijských news sources:
-  - Punch Nigeria
-  - Premium Times  
-  - Guardian Nigeria
-  - Vanguard
-  - Channels TV
-  - Daily Trust
-  - This Day
+### ✅ Automatické zdroje (fungujú okamžite)
+- **Ikeja Electric** - Server-side scraping výpadkov (Lagos area)
+- **IBEDC** - Server-side scraping výpadkov (Oyo, Ogun, Osun, Kwara)
+- **Nigerian News RSS** - 5 hlavných news sources (Punch, Premium Times, Guardian, Vanguard, Channels TV)
 
-### ⚙️ Vyžaduje konfiguráciu (optional pre rozšírenú funkcionalitu)
+### 🚀 Backend architektúra
+- **Supabase Edge Functions** - Serverless scraping každých 5-10 minút
+- **Real-time updates** - Automatická synchronizácia cez Supabase Realtime
+- **Database caching** - PostgreSQL ukladá dáta pre rýchly prístup
+- **Row Level Security** - Verejný read prístup, write len pre backend
 
-**Telegram Bot API** (`VITE_TELEGRAM_BOT_TOKEN`)
-- Monitoring news channels: @PunchNewspaper, @tvcnews_nigeria, @nmliveupdates
-- DisCo bots: @aedcelectricity, @PHEDConnect_bot
-- [Ako získať token →](docs/DATA_STATUS.md#4-telegram-bot-api)
+### ⚙️ Voliteľné zdroje (vyžadujú konfiguráciu)
+- **Telegram Bot API** - Pre monitoring Telegram kanálov (`VITE_TELEGRAM_BOT_TOKEN`)
+- **Twitter/X API** - Pre monitoring Twitter účtov DisCos (`VITE_TWITTER_BEARER_TOKEN`)
 
-**Twitter/X API** (`VITE_TWITTER_BEARER_TOKEN`)
-- Monitoring DisCo Twitter účtov pre outage announcements
-- Monitoring exam board účtov pre updates
-- [Ako získať token →](docs/DATA_STATUS.md#5-twitterx-api)
-
-### ℹ️ Viac informácií
-Pre detailný status všetkých zdrojov a návod na testovanie pozri **[Data Status](docs/DATA_STATUS.md)**.
+### ℹ️ Dokumentácia
+- **[Supabase Backend Architecture](docs/SUPABASE_BACKEND.md)** - Kompletná dokumentácia backendu
+- **[Data Sources Status](docs/DATA_STATUS.md)** - Status všetkých dátových zdrojov
 
 ## ⚙️ Konfigurácia
 

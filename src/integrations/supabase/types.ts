@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      exam_guides: {
+        Row: {
+          acronym: string
+          common_issues: Json | null
+          created_at: string | null
+          description: string | null
+          id: string
+          last_checked: string
+          name: string
+          portal_url: string | null
+          quick_links: Json | null
+          sms_guide: Json | null
+          status: string
+          steps: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          acronym: string
+          common_issues?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id: string
+          last_checked: string
+          name: string
+          portal_url?: string | null
+          quick_links?: Json | null
+          sms_guide?: Json | null
+          status: string
+          steps?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          acronym?: string
+          common_issues?: Json | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          last_checked?: string
+          name?: string
+          portal_url?: string | null
+          quick_links?: Json | null
+          sms_guide?: Json | null
+          status?: string
+          steps?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      news_items: {
+        Row: {
+          category: string
+          created_at: string | null
+          id: number
+          metadata: Json | null
+          source: string | null
+          summary: string | null
+          timestamp: string
+          title: string
+          url: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          id?: number
+          metadata?: Json | null
+          source?: string | null
+          summary?: string | null
+          timestamp: string
+          title: string
+          url?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          id?: number
+          metadata?: Json | null
+          source?: string | null
+          summary?: string | null
+          timestamp?: string
+          title?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      power_outages: {
+        Row: {
+          affected_area: string
+          created_at: string | null
+          disco_id: string
+          estimated_restore_time: string | null
+          id: string
+          metadata: Json | null
+          reason: string | null
+          restored_time: string | null
+          source: string
+          source_type: string
+          start_time: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          affected_area: string
+          created_at?: string | null
+          disco_id: string
+          estimated_restore_time?: string | null
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          restored_time?: string | null
+          source: string
+          source_type: string
+          start_time: string
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          affected_area?: string
+          created_at?: string | null
+          disco_id?: string
+          estimated_restore_time?: string | null
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          restored_time?: string | null
+          source?: string
+          source_type?: string
+          start_time?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

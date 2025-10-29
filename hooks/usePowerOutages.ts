@@ -7,6 +7,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { PowerOutage, OutageType, SourceType } from '../types';
 import { powerOutageService, OutageFilter } from '../services/powerOutageService';
+import { supabase } from '../src/integrations/supabase/client';
 
 export interface UsePowerOutagesResult {
   outages: PowerOutage[];
@@ -56,18 +57,28 @@ export function usePowerOutages(filter?: OutageFilter): UsePowerOutagesResult {
     fetchOutages();
   }, [fetchOutages]);
 
-  // Subscribe to real-time updates
+  // Subscribe to real-time updates from Supabase
   useEffect(() => {
-    const unsubscribe = powerOutageService.subscribe((updatedOutages) => {
-      const filtered = filter
-        ? powerOutageService.filterOutages(updatedOutages, filter)
-        : updatedOutages;
+    const channel = supabase
+      .channel('power-outages-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'power_outages'
+        },
+        (payload) => {
+          console.log('⚡ Real-time power outage update:', payload);
+          fetchOutages(); // Refetch when database changes
+        }
+      )
+      .subscribe();
 
-      setOutages(filtered);
-    });
-
-    return unsubscribe;
-  }, [filter]);
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchOutages]);
 
   return {
     outages,

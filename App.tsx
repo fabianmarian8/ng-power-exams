@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import PowerOutages from './pages/PowerOutages';
 import ExamResults from './pages/ExamResults';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { DataSourcesDebug } from './components/DataSourcesDebug';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,8 @@ const App: React.FC = () => {
             </Routes>
           </main>
           <Footer />
+          {/* Debug panel - only visible in development */}
+          <DataSourcesDebug />
         </div>
       </HashRouter>
     </LanguageProvider>

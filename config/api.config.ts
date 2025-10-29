@@ -263,33 +263,39 @@ export const API_CONFIG: DataSourceConfig = {
  * 4. Provides WebSocket support for real-time updates
  */
 export const BACKEND_API = {
-  baseUrl: process.env.VITE_BACKEND_URL || 'http://localhost:3000/api',
+  baseUrl: import.meta.env.VITE_SUPABASE_URL 
+    ? `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`
+    : 'http://localhost:54321/functions/v1',
   endpoints: {
     powerOutages: {
-      list: '/power-outages',
-      byDisCo: (disCoId: string) => `/power-outages/disco/${disCoId}`,
-      byState: (state: string) => `/power-outages/state/${state}`,
-      create: '/power-outages',
-      update: (id: string) => `/power-outages/${id}`,
+      list: '/api-power-outages',
+      byDisCo: (disCoId: string) => `/api-power-outages?disco_id=${disCoId}`,
+      byState: (state: string) => `/api-power-outages?state=${state}`,
+      create: '/api-power-outages',
+      update: (id: string) => `/api-power-outages?id=${id}`,
     },
     examStatus: {
-      list: '/exam-status',
-      byBoard: (boardId: string) => `/exam-status/${boardId}`,
-      check: (boardId: string) => `/exam-status/${boardId}/check`,
+      list: '/api-exam-status',
+      byBoard: (boardId: string) => `/api-exam-status?board_id=${boardId}`,
+      check: (boardId: string) => `/api-exam-status?board_id=${boardId}`,
     },
     news: {
-      list: '/news',
-      byCategory: (category: string) => `/news/category/${category}`,
-      latest: '/news/latest',
+      list: '/api-news',
+      byCategory: (category: string) => `/api-news?category=${category}`,
+      latest: '/api-news?limit=10',
     },
     social: {
       twitter: '/social/twitter',
       telegram: '/social/telegram',
     },
+    scraping: {
+      powerOutages: '/scrape-power-outages',
+      news: '/scrape-news',
+    },
   },
   // WebSocket configuration for real-time updates
   websocket: {
-    url: process.env.VITE_WS_URL || 'ws://localhost:3000',
+    url: import.meta.env.VITE_WS_URL || 'ws://localhost:3000',
     reconnectInterval: 5000,
     channels: {
       powerOutages: 'power-outages',
