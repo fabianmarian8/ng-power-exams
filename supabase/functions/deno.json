@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "types": []
+  },
+  "importMap": "./import_map.json"
+}
