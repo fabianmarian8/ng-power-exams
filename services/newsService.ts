@@ -39,10 +39,6 @@ class NewsService {
       return cached.data;
     }
 
-    if (USE_MOCK_DATA) {
-      return this.getEnhancedMockData(filter);
-    }
-
     try {
       // Aggregate news from multiple sources in parallel
       const [
@@ -93,8 +89,9 @@ class NewsService {
 
       return limitedNews;
     } catch (error) {
-      console.error('Error fetching news:', error);
-      return this.getEnhancedMockData(filter);
+      console.error('⚠️ Error fetching news:', error);
+      console.log('⚠️ Returning empty array - no mock data fallback');
+      return [];
     }
   }
 

@@ -304,7 +304,7 @@ export const BACKEND_API = {
  * Use mock data when external APIs are not available
  * Set VITE_USE_MOCK_DATA=false in .env.local to use real data sources
  */
-export const USE_MOCK_DATA = process.env.VITE_USE_MOCK_DATA !== 'false'; // Default to mock unless explicitly disabled
+export const USE_MOCK_DATA = false; // Production: Use only real data sources
 
 /**
  * Helper function to check if a data source is available

@@ -46,11 +46,6 @@ class PowerOutageService {
       return cached.data;
     }
 
-    if (USE_MOCK_DATA) {
-      // Use enhanced mock data with more realistic updates
-      return this.getEnhancedMockData();
-    }
-
     try {
       // Aggregate outages from multiple sources in parallel
       const [
@@ -92,9 +87,9 @@ class PowerOutageService {
 
       return uniqueOutages;
     } catch (error) {
-      console.error('Error fetching power outages:', error);
-      // Fallback to mock data
-      return this.getEnhancedMockData();
+      console.error('⚠️ Error fetching power outages:', error);
+      console.log('⚠️ Returning empty array - no mock data fallback');
+      return [];
     }
   }
 

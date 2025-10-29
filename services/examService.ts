@@ -37,10 +37,6 @@ class ExamService {
       return cached.data;
     }
 
-    if (USE_MOCK_DATA) {
-      return this.getEnhancedMockData();
-    }
-
     try {
       const response = await fetch(`${BACKEND_API.baseUrl}${BACKEND_API.endpoints.examStatus.list}`, {
         headers: getAPIHeaders(),
@@ -58,8 +54,9 @@ class ExamService {
 
       return guides;
     } catch (error) {
-      console.error('Error fetching exam statuses:', error);
-      return this.getEnhancedMockData();
+      console.error('⚠️ Error fetching exam statuses:', error);
+      console.log('⚠️ Returning empty array - no mock data fallback');
+      return [];
     }
   }
 
@@ -180,7 +177,7 @@ class ExamService {
    * Monitor portal for changes
    * Uses backend service to periodically check portal and detect changes
    */
-  async monitorPortal(boardId: string, callback: (status: ExamStatusCheck) => void): () => void {
+  monitorPortal(boardId: string, callback: (status: ExamStatusCheck) => void): () => void {
     const intervalId = setInterval(async () => {
       const status = await this.checkExamBoard(boardId);
       callback(status);

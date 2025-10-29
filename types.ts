@@ -33,6 +33,7 @@ export interface PowerOutage {
   restoredTime?: Date;
   source: string;
   sourceType: SourceType;
+  metadata?: Record<string, any>;
 }
 
 export enum ExamStatus {
@@ -72,6 +73,9 @@ export interface NewsItem {
   title: string;
   summary: string;
   timestamp: Date;
+  url?: string;
+  source?: string;
+  metadata?: Record<string, any>;
 }
 
 export interface Language {
