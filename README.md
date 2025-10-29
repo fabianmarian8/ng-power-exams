@@ -45,6 +45,7 @@ Aplikácia bude dostupná na `http://localhost:5173`
 
 - **[Setup Guide](docs/SETUP_GUIDE.md)** - Kompletný sprievodca nastavením (SK)
 - **[Data Sources](docs/DATA_SOURCES.md)** - Dokumentácia všetkých dátových zdrojov (EN)
+- **[Data Status](docs/DATA_STATUS.md)** - Aktuálny stav dátových zdrojov a testovanie (SK)
 
 ## 🔧 Technológie
 
@@ -57,25 +58,34 @@ Aplikácia bude dostupná na `http://localhost:5173`
 
 ## 📊 Dátové zdroje
 
-### Power Outages
-✅ **Ikeja Electric** - Fault log scraping
-✅ **IBEDC** - Outage information scraping
-✅ **Telegram Bots** - AEDC & PHED
-⏳ **Ďalšie DisCos** - V pláne
+### ✅ Funguje automaticky (bez konfigurácie)
+Aplikácia **funguje ihneď** s týmito zdrojmi pomocou client-side web scrapingu a RSS parsingu:
 
-### News
-✅ **Punch Nigeria** - RSS feed
-✅ **Premium Times** - RSS feed
-✅ **Guardian Nigeria** - RSS feed
-✅ **Vanguard** - RSS feed
-✅ **Channels TV** - RSS feed
+- **Ikeja Electric** - Real-time fault log scraping (Lagos area)
+- **IBEDC** - Real-time outage scraping (Oyo, Ogun, Osun, Kwara)
+- **RSS News Feeds** - 7 hlavných nigérijských news sources:
+  - Punch Nigeria
+  - Premium Times  
+  - Guardian Nigeria
+  - Vanguard
+  - Channels TV
+  - Daily Trust
+  - This Day
 
-### Telegram
-✅ **@PunchNewspaper** - News channel
-✅ **@tvcnews_nigeria** - News channel
-✅ **@nmliveupdates** - Business/Energy news
-✅ **@aedcelectricity** - AEDC bot
-✅ **@PHEDConnect_bot** - PHED bot
+### ⚙️ Vyžaduje konfiguráciu (optional pre rozšírenú funkcionalitu)
+
+**Telegram Bot API** (`VITE_TELEGRAM_BOT_TOKEN`)
+- Monitoring news channels: @PunchNewspaper, @tvcnews_nigeria, @nmliveupdates
+- DisCo bots: @aedcelectricity, @PHEDConnect_bot
+- [Ako získať token →](docs/DATA_STATUS.md#4-telegram-bot-api)
+
+**Twitter/X API** (`VITE_TWITTER_BEARER_TOKEN`)
+- Monitoring DisCo Twitter účtov pre outage announcements
+- Monitoring exam board účtov pre updates
+- [Ako získať token →](docs/DATA_STATUS.md#5-twitterx-api)
+
+### ℹ️ Viac informácií
+Pre detailný status všetkých zdrojov a návod na testovanie pozri **[Data Status](docs/DATA_STATUS.md)**.
 
 ## ⚙️ Konfigurácia
 

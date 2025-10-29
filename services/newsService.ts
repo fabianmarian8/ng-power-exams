@@ -147,10 +147,12 @@ class NewsService {
         return this.normalizeNewsData(data);
       }
 
-      return this.getEnhancedMockData({ limit });
+      console.log('⚠️ Backend API returned non-OK response, returning empty array');
+      return [];
     } catch (error) {
-      console.error('Error fetching latest news:', error);
-      return this.getEnhancedMockData({ limit });
+      console.error('⚠️ Error fetching latest news:', error);
+      console.log('⚠️ Returning empty array - no mock data fallback');
+      return [];
     }
   }
 
